@@ -4,6 +4,7 @@ import Footer from "../components/menu/Footer";
 import VisiMisi from "../components/landing_page/VisiMisi";
 import PendetaGKJ from "../components/about_page/PendetaGKJ";
 import MajelisGKJ from "../components/about_page/MajelisGKJ";
+import Separator from "../components/landing_page/Separator";
 
 const AboutPage = () => {
   return (
@@ -42,6 +43,7 @@ const AboutPage = () => {
             ></iframe>
           </div>
         </section>
+        <Separator />
         <VisiMisi />
         <PendetaGKJ />
         <MajelisGKJ />
