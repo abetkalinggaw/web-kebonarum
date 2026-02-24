@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 import logo from "../../assets/logo.png";
 
@@ -40,50 +41,50 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
       <div className="navbar-container">
         <div className="navbar-logo">
-          <a href="/">
+          <Link to="/">
             <img src={logo} alt="Kebonarum Logo" className="logo-image" />
-          </a>
+          </Link>
         </div>
 
         <div className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
           <ul className="navbar-menu-list">
             <li>
-              <a href="/about">About</a>
+              <Link to="/about">About</Link>
             </li>
             <li>
-              <a href="/sejarah">Sejarah</a>
+              <Link to="/sejarah">Sejarah</Link>
             </li>
             <li>
-              <a href="/gereja">Gereja</a>
+              <Link to="/gereja">Gereja</Link>
             </li>
             <li className="navbar-dropdown-parent">
-              <a href="/media">Media</a>
+              <span>Media</span>
               <ul className="navbar-dropdown">
                 <li>
-                  <a href="/youtube">YouTube</a>
+                  <Link to="/youtube">YouTube</Link>
                 </li>
                 <li>
-                  <a href="/instagram">Instagram</a>
+                  <Link to="/instagram">Instagram</Link>
                 </li>
                 <li>
-                  <a href="/documentation">Documentation</a>
+                  <Link to="/documentation">Documentation</Link>
                 </li>
               </ul>
             </li>
             <li>
-              <a href="/pengumuman">Pengumuman</a>
+              <Link to="/pengumuman">Pengumuman</Link>
             </li>
             <li>
-              <a href="/komisi">Komisi</a>
+              <Link to="/komisi">Komisi</Link>
             </li>
             <li>
-              <a href="/statistik">Statistik</a>
+              <Link to="/statistik">Statistik</Link>
             </li>
             <li>
-              <a href="/formulir">Formulir</a>
+              <Link to="/formulir">Formulir</Link>
             </li>
             <li>
-              <a href="/persembahan">Persembahan</a>
+              <Link to="/persembahan">Persembahan</Link>
             </li>
           </ul>
 
