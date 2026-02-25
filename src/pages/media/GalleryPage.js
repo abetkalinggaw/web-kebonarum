@@ -346,10 +346,7 @@ const GalleryPage = () => {
                       className="gallery-item"
                       onClick={() => handleImageClick(image)}
                     >
-                      <img
-                        src={image}
-                        alt={`${item?.title || "Dokumentasi"} - ${index + 1}`}
-                      />
+                      <img src={image} alt="" loading="lazy" decoding="async" />
                       <div className="gallery-item-overlay"></div>
                     </div>
                   ))}
@@ -378,7 +375,7 @@ const GalleryPage = () => {
             <button className="gallery-modal-close" onClick={closeModal}>
               ✕
             </button>
-            <img src={selectedImage} alt="Preview" />
+            <img src={selectedImage} alt="" />
           </div>
         </div>
       )}
