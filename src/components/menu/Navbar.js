@@ -24,7 +24,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (!(window.innerWidth <= 768 && isMenuOpen)) {
+    if (!(window.innerWidth <= 1024 && isMenuOpen)) {
       return;
     }
 
@@ -57,7 +57,7 @@ const Navbar = () => {
   };
 
   const handleDropdownToggle = (dropdownKey, e) => {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 1024) {
       e.preventDefault();
       setOpenDropdown((prev) => (prev === dropdownKey ? null : dropdownKey));
     }
@@ -99,7 +99,7 @@ const Navbar = () => {
                 openDropdown === "media" ? "active" : ""
               }`}
             >
-              <Link to="/" onClick={(e) => handleDropdownToggle("media", e)}>
+              <Link to="#" onClick={(e) => handleDropdownToggle("media", e)}>
                 <span className="dropdown-trigger">
                   Media
                   <span className="dropdown-arrow" aria-hidden="true">
@@ -139,7 +139,7 @@ const Navbar = () => {
               }`}
             >
               <Link
-                to="/"
+                to="#"
                 onClick={(e) => handleDropdownToggle("pengumuman", e)}
               >
                 <span className="dropdown-trigger">
@@ -177,7 +177,7 @@ const Navbar = () => {
                 openDropdown === "komisi" ? "active" : ""
               }`}
             >
-              <Link to="/" onClick={(e) => handleDropdownToggle("komisi", e)}>
+              <Link to="#" onClick={(e) => handleDropdownToggle("komisi", e)}>
                 <span className="dropdown-trigger">
                   Komisi
                   <span className="dropdown-arrow" aria-hidden="true">

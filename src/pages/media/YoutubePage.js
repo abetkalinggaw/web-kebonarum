@@ -221,9 +221,9 @@ const YoutubePage = () => {
               GKJ Kebonarum
             </h1>
             <p className="youtube-lead">
-              Temukan berbagai konten video terbaru dari GKJ Kebonarum, mulai
-              dari siaran langsung ibadah, acara khusus, hingga video inspiratif
-              yang membangun iman dan mempererat persekutuan jemaat.
+              Saksikan berbagai video ibadah, acara, dan kegiatan GKJ Kebonarum
+              di saluran YouTube resmi kami. Jangan lupa untuk subscribe agar
+              tidak ketinggalan update terbaru dari pelayanan dan kegiatan kami.
             </p>
             <a
               className="youtube-account-link"

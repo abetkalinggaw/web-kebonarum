@@ -171,8 +171,8 @@
 
 @media (max-width: 768px) {
   .documentation-hero {
-    min-height: 40vh;
-    padding: 4rem 0 2rem;
+    min-height: 50vh;
+    padding: 4rem 0 2.5rem;
   }
 
   .documentation-title {
@@ -181,6 +181,7 @@
 
   .documentation-lead {
     font-size: 1rem;
+    line-height: 1.7;
   }
 
   .documentation-grid {
@@ -195,5 +196,16 @@
 
   .documentation-filter-btn {
     width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .documentation-hero-content,
+  .documentation-section-inner {
+    padding: 0 var(--container-pad-mobile);
+  }
+
+  .documentation-title {
+    font-size: 1.7rem;
   }
 }

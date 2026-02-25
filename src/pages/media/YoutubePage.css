@@ -151,7 +151,7 @@
 
 @media (max-width: 768px) {
   .youtube-hero {
-    min-height: 40vh;
+    min-height: 50vh;
     padding: 4.5rem 0 2.5rem;
   }
 
@@ -164,6 +164,10 @@
     font-size: 2rem;
   }
 
+  .youtube-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
   .youtube-section-title {
     font-size: 1.6rem;
   }

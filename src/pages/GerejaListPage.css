@@ -206,6 +206,7 @@
 
   .gereja-list-lead {
     font-size: 1rem;
+    line-height: 1.7;
   }
 
   .gereja-list-section {
@@ -252,12 +253,13 @@
   }
 
   .gereja-list-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     margin-bottom: 0.75rem;
   }
 
   .gereja-list-lead {
-    font-size: 0.95rem;
+    font-size: 1rem;
+    line-height: 1.7;
   }
 
   .gereja-list-inner {
@@ -273,7 +275,7 @@
   }
 
   .gereja-item-title {
-    font-size: 1.3rem;
+    font-size: 2rem;
   }
 
   .gereja-item-address {

@@ -194,6 +194,7 @@
 
   .majelis-list-lead {
     font-size: 1rem;
+    line-height: 1.7;
   }
 
   .majelis-list-section {
@@ -244,7 +245,7 @@
   }
 
   .majelis-list-title {
-    font-size: 1.7rem;
+    font-size: 2rem;
   }
 
   .majelis-list-inner {

@@ -224,7 +224,7 @@
 }
 
 /* Mobile Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .close-menu-btn {
     display: block;
   }
@@ -416,5 +416,19 @@
 
   .navbar-menu-list {
     gap: 1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .navbar-menu-list a {
+    font-size: 1rem;
+  }
+
+  .navbar-dropdown a {
+    font-size: 0.9rem;
+  }
+
+  .navbar-search.mobile .search-input {
+    font-size: 0.95rem;
   }
 }

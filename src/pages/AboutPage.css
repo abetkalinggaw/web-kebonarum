@@ -120,6 +120,7 @@
 
   .about-lead {
     font-size: 1rem;
+    line-height: 1.7;
   }
 
   .about-video-title {
@@ -151,12 +152,13 @@
   }
 
   .about-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     margin-bottom: 0.75rem;
   }
 
   .about-lead {
-    font-size: 0.95rem;
+    font-size: 1rem;
+    line-height: 1.7;
   }
 
   .about-video-title {
