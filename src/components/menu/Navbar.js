@@ -8,6 +8,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,8 +23,44 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!(window.innerWidth <= 768 && isMenuOpen)) {
+      return;
+    }
+
+    const scrollY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+    document.body.style.overscrollBehavior = "none";
+
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      document.body.style.overscrollBehavior = "";
+      window.scrollTo(0, scrollY);
+    };
+  }, [isMenuOpen]);
+
   const toggleMenu = () => {
+    if (isMenuOpen) {
+      setOpenDropdown(null);
+    }
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleDropdownToggle = (dropdownKey, e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      setOpenDropdown((prev) => (prev === dropdownKey ? null : dropdownKey));
+    }
   };
 
   const toggleSearch = () => {
@@ -57,8 +94,33 @@ const Navbar = () => {
             <li>
               <Link to="/gereja">Gereja</Link>
             </li>
-            <li className="navbar-dropdown-parent">
-              <Link to="/media">Media</Link>
+            <li
+              className={`navbar-dropdown-parent ${
+                openDropdown === "media" ? "active" : ""
+              }`}
+            >
+              <Link to="/" onClick={(e) => handleDropdownToggle("media", e)}>
+                <span className="dropdown-trigger">
+                  Media
+                  <span className="dropdown-arrow" aria-hidden="true">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 3.5L5 6.5L8 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </Link>
               <ul className="navbar-dropdown">
                 <li>
                   <Link to="/media/youtube">YouTube</Link>
@@ -71,8 +133,36 @@ const Navbar = () => {
                 </li>
               </ul>
             </li>
-            <li className="navbar-dropdown-parent">
-              <Link to="/pengumuman">Pengumuman</Link>
+            <li
+              className={`navbar-dropdown-parent ${
+                openDropdown === "pengumuman" ? "active" : ""
+              }`}
+            >
+              <Link
+                to="/"
+                onClick={(e) => handleDropdownToggle("pengumuman", e)}
+              >
+                <span className="dropdown-trigger">
+                  Pengumuman
+                  <span className="dropdown-arrow" aria-hidden="true">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 3.5L5 6.5L8 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </Link>
               <ul className="navbar-dropdown">
                 <li>
                   <Link to="/pengumuman/event">Event</Link>
@@ -82,8 +172,33 @@ const Navbar = () => {
                 </li>
               </ul>
             </li>
-            <li className="navbar-dropdown-parent">
-              <Link to="/komisi">Komisi</Link>
+            <li
+              className={`navbar-dropdown-parent ${
+                openDropdown === "komisi" ? "active" : ""
+              }`}
+            >
+              <Link to="/" onClick={(e) => handleDropdownToggle("komisi", e)}>
+                <span className="dropdown-trigger">
+                  Komisi
+                  <span className="dropdown-arrow" aria-hidden="true">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 3.5L5 6.5L8 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </Link>
               <ul className="navbar-dropdown">
                 <li>
                   <Link to="/komisi/pwg">PWG & Ibadah</Link>
@@ -109,45 +224,42 @@ const Navbar = () => {
 
           {/* Mobile search inside the fullscreen menu */}
           <div className="navbar-search mobile">
-            <button className="search-icon" onClick={toggleSearch}>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M14.9999 14.9999L19 19"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-            {isSearchOpen && (
-              <form
-                className="search-form mobile-search-form"
-                onSubmit={handleSearchSubmit}
-              >
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="search-input"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  autoFocus
-                />
-              </form>
-            )}
+            <form
+              className="search-form mobile-search-form"
+              onSubmit={handleSearchSubmit}
+            >
+              <span className="mobile-search-inline-icon" aria-hidden="true">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
+                    stroke="rgba(255, 255, 255, 0.65)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M14.9999 14.9999L19 19"
+                    stroke="rgba(255, 255, 255, 0.65)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              <input
+                type="text"
+                placeholder="Search..."
+                className="search-input"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+            </form>
           </div>
         </div>
 
