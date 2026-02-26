@@ -22,8 +22,11 @@ const GOOGLE_DRIVE_ROOT_FOLDER_ID =
   "1u8W7fIhWNg4Hlh6y165AhWo1NcpuzSEW";
 const GOOGLE_DRIVE_API_BASE_URL = "https://www.googleapis.com/drive/v3/files";
 
-const createDriveThumbnailUrl = (fileId, size = 1200) =>
-  `https://drive.google.com/thumbnail?id=${fileId}&sz=w${size}`;
+// const createDriveThumbnailUrl = (fileId, size = 1200) =>
+//   `https://drive.google.com/thumbnail?id=${fileId}&sz=w${size}`;
+
+const createDriveThumbnailUrl = (fileId) =>
+  `https://lh3.googleusercontent.com/d/${fileId}=w1600`;
 
 const buildFolderImageQuery = (folderId) =>
   `'${folderId}' in parents and mimeType contains 'image/' and trashed=false`;
@@ -149,7 +152,7 @@ const fetchDriveFolderCoverUrl = async (folderId) => {
 
 const fetchDriveFolderImagePage = async ({
   folderId,
-  pageSize = 12,
+  pageSize = 8,
   pageToken = "",
 }) => {
   const data = await fetchDriveFiles({
@@ -170,7 +173,7 @@ const fetchDriveFolderImagePage = async ({
 
 const fetchDriveChildFolderPage = async ({
   folderId,
-  pageSize = 12,
+  pageSize = 8,
   pageToken = "",
 }) => {
   const data = await fetchDriveFiles({
