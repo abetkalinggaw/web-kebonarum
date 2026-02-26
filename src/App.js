@@ -9,6 +9,7 @@ import YoutubePage from "./pages/media/YoutubePage";
 import InstagramPage from "./pages/media/InstagramPage";
 import DocumentationPage from "./pages/media/DocumentationPage";
 import GalleryPage from "./pages/media/GalleryPage";
+import WartaGerejaPage from "./pages/pengumuman/WartaGerejaPage";
 
 function App() {
   return (
@@ -26,6 +27,10 @@ function App() {
           <Route
             path="/media/documentation/gallery/:id"
             element={<GalleryPage />}
+          />
+          <Route
+            path="/pengumuman/warta-gereja"
+            element={<WartaGerejaPage />}
           />
           <Route path="*" element={<LandingPage />} />
         </Routes>

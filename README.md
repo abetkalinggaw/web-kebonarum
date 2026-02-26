@@ -62,14 +62,6 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Google Drive Gallery Setup (Backend API)
 
-Architecture used:
-
-React
-↓
-Backend (Node/Express)
-↓
-Google Drive API
-
 1. In Google Cloud Console:
    - Enable `Google Drive API`
    - Create an API key for backend/server usage
