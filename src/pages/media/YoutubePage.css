@@ -137,15 +137,44 @@
   position: relative;
   width: 100%;
   padding-top: 56.25%;
+  display: block;
+  overflow: hidden;
+  background: #000;
+  text-decoration: none;
 }
 
-.youtube-video-frame {
+.youtube-video-thumbnail {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border: 0;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.youtube-video-frame-wrapper:hover .youtube-video-thumbnail {
+  transform: scale(1.03);
+  opacity: 0.82;
+}
+
+.youtube-play-button {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.youtube-play-button svg {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.55));
+  transition: transform 0.2s ease;
+}
+
+.youtube-video-frame-wrapper:hover .youtube-play-button svg {
+  transform: scale(1.12);
 }
 
 .youtube-video-meta {
@@ -173,6 +202,7 @@
   margin: auto 0 0;
   color: #5d5d5d;
   font-size: 0.92rem;
+  text-align: right;
 }
 
 .youtube-error-text {
@@ -217,6 +247,105 @@
   }
 }
 
+
+.youtube-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(4px);
+  animation: youtube-modal-fade-in 0.18s ease;
+}
+
+@keyframes youtube-modal-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.youtube-modal-panel {
+  width: 100%;
+  max-width: 1200px;
+  background: #1a1a1a;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+  animation: youtube-modal-slide-up 0.22s ease;
+}
+
+@keyframes youtube-modal-slide-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.youtube-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem 0.75rem;
+}
+
+.youtube-modal-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #f0f0f0;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.youtube-modal-close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.youtube-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.youtube-modal-video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
+}
+
+.youtube-modal-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.youtube-modal-date {
+  margin: 0;
+  padding: 0.65rem 1.25rem 1rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: right;
+}
+
+
 @media (max-width: 1024px) {
   .youtube-title {
     font-size: 2.4rem;
@@ -255,6 +384,52 @@
   .youtube-grid-six {
     grid-template-columns: 1fr;
   }
+  .youtube-modal-backdrop {
+    padding: 1rem;
+  }
+
+  .youtube-modal-panel {
+    max-width: 100%;
+  }
+
+  .youtube-modal-header {
+    padding: 0.875rem 1rem 0.625rem;
+  }
+
+  .youtube-modal-title {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .youtube-modal-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .youtube-modal-panel {
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .youtube-modal-header {
+    padding: 0.75rem 1rem 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .youtube-modal-title {
+    font-size: 0.9rem;
+  }
+
+  .youtube-modal-close {
+    width: 32px;
+    height: 32px;
+  }
+
+  .youtube-modal-date {
+    padding: 0.5rem 1rem 0.75rem;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -265,5 +440,31 @@
 
   .youtube-title {
     font-size: 1.7rem;
+  }
+
+  .youtube-modal-backdrop {
+    padding: 0;
+  }
+
+  .youtube-modal-header {
+    padding: 0.65rem 0.875rem 0.4rem;
+  }
+
+  .youtube-modal-title {
+    font-size: 0.85rem;
+  }
+
+  .youtube-modal-close {
+    width: 28px;
+    height: 28px;
+  }
+
+  .youtube-modal-close svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .youtube-modal-date {
+    padding: 0.4rem 0.875rem 0.65rem;
   }
 }

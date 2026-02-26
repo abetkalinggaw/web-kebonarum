@@ -177,13 +177,20 @@ const fetchChannelRssVideos = async ({ pageSize = 24 } = {}) => {
 
 const splitRssVideosForSections = ({ videos, livestreamPageSize = 12 }) => {
   const livestreamHintRegex = buildMediaKeywordRegex();
+
   const livestreamItems = videos.filter((item) =>
     livestreamHintRegex.test(item.title || ""),
+  );
+
+  // Videos whose titles do NOT match any media keyword — these go to Our Content
+  const contentItems = videos.filter(
+    (item) => !livestreamHintRegex.test(item.title || ""),
   );
 
   if (livestreamItems.length > 0) {
     return {
       items: videos,
+      contentItems,
       livestreamItems: livestreamItems.slice(
         0,
         Math.max(1, Math.min(livestreamPageSize, 50)),
@@ -191,8 +198,11 @@ const splitRssVideosForSections = ({ videos, livestreamPageSize = 12 }) => {
     };
   }
 
+  // No keyword matches at all — treat all as general content,
+  // and use the first N as livestream placeholders
   return {
     items: videos,
+    contentItems: videos,
     livestreamItems: videos.slice(
       0,
       Math.max(1, Math.min(livestreamPageSize, 50)),

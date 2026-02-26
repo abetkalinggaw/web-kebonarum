@@ -64,18 +64,96 @@ const formatDate = (value) => {
   });
 };
 
-const VideoCard = ({ item }) => (
-  <article className="youtube-video-card">
-    <div className="youtube-video-frame-wrapper">
-      <iframe
-        className="youtube-video-frame"
-        src={`https://www.youtube.com/embed/${item.id}`}
-        title={item.title}
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      ></iframe>
+const PlayIcon = () => (
+  <svg viewBox="0 0 68 48" width="68" height="48">
+    <path
+      d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z"
+      fill="#ff0000"
+    />
+    <path d="M45 24 27 14v20" fill="#fff" />
+  </svg>
+);
+
+const VideoModal = ({ item, onClose }) => {
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="youtube-modal-backdrop"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.title}
+    >
+      <div className="youtube-modal-panel" onClick={(e) => e.stopPropagation()}>
+        <div className="youtube-modal-header">
+          <h2 className="youtube-modal-title">{item.title}</h2>
+          <button
+            className="youtube-modal-close"
+            onClick={onClose}
+            aria-label="Tutup"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            >
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div className="youtube-modal-video-wrapper">
+          <iframe
+            className="youtube-modal-iframe"
+            src={`https://www.youtube.com/embed/${item.id}?autoplay=1&rel=0`}
+            title={item.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        </div>
+        <p className="youtube-modal-date">{formatDate(item.uploadedAt)}</p>
+      </div>
     </div>
+  );
+};
+
+const VideoCard = ({ item, onOpen }) => (
+  <article className="youtube-video-card">
+    <button
+      className="youtube-video-frame-wrapper"
+      onClick={() => onOpen(item)}
+      aria-label={`Tonton: ${item.title}`}
+    >
+      <img
+        className="youtube-video-thumbnail"
+        src={`https://i.ytimg.com/vi/${item.id}/maxresdefault.jpg`}
+        alt={item.title}
+        loading="lazy"
+        onError={(e) => {
+          if (!e.target.src.includes("mqdefault")) {
+            e.target.src = `https://i.ytimg.com/vi/${item.id}/mqdefault.jpg`;
+          }
+        }}
+      />
+      <span className="youtube-play-button" aria-hidden="true">
+        <PlayIcon />
+      </span>
+    </button>
     <div className="youtube-video-meta">
       <h3 className="youtube-video-title">{item.title}</h3>
       <p className="youtube-video-date">{formatDate(item.uploadedAt)}</p>
@@ -112,6 +190,7 @@ const YoutubePage = () => {
   const [liveNowVideos, setLiveNowVideos] = useState([]);
   const [isLoadingYoutubeVideos, setIsLoadingYoutubeVideos] = useState(false);
   const [youtubeError, setYoutubeError] = useState("");
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     const cachedContent = readYoutubeCache();
@@ -200,7 +279,10 @@ const YoutubePage = () => {
               {isLoadingYoutubeVideos ? (
                 <SkeletonCard />
               ) : upcomingLivestream ? (
-                <VideoCard item={upcomingLivestream} />
+                <VideoCard
+                  item={upcomingLivestream}
+                  onOpen={setSelectedVideo}
+                />
               ) : youtubeError ? (
                 <p className="youtube-error-text">{youtubeError}</p>
               ) : (
@@ -220,7 +302,11 @@ const YoutubePage = () => {
                 ))
               ) : pastLivestreams.length > 0 ? (
                 pastLivestreams.map((item) => (
-                  <VideoCard key={item.id} item={item} />
+                  <VideoCard
+                    key={item.id}
+                    item={item}
+                    onOpen={setSelectedVideo}
+                  />
                 ))
               ) : (
                 <p className="youtube-error-text">Belum ada data livestream.</p>
@@ -239,7 +325,11 @@ const YoutubePage = () => {
                 ))
               ) : ourContent.length > 0 ? (
                 ourContent.map((item) => (
-                  <VideoCard key={item.id} item={item} />
+                  <VideoCard
+                    key={item.id}
+                    item={item}
+                    onOpen={setSelectedVideo}
+                  />
                 ))
               ) : (
                 <p className="youtube-error-text">Belum ada video terbaru.</p>
@@ -262,6 +352,13 @@ const YoutubePage = () => {
         </section>
       </main>
       <Footer />
+
+      {selectedVideo && (
+        <VideoModal
+          item={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
     </>
   );
 };

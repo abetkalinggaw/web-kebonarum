@@ -82,6 +82,11 @@ router.get("/videos", async (req, res) => {
     livestreamResult.status === "fulfilled" ? livestreamResult.value : [];
   let liveNowItems =
     liveNowResult.status === "fulfilled" ? liveNowResult.value : [];
+  // contentItems: non-livestream videos for the "Our Content" section.
+  // When the YouTube API works normally, this is derived on the frontend
+  // by filtering items against livestream IDs. During RSS fallback we
+  // populate it explicitly using keyword matching.
+  let contentItems = null;
 
   console.log(
     `[YouTubeAPI] Results - items: ${items.length}, livestreamItems: ${livestreamItems.length}, liveNowItems: ${liveNowItems.length}`,
@@ -112,10 +117,12 @@ router.get("/videos", async (req, res) => {
       );
 
       if (!items.length) {
-        // Provide all RSS videos as items so the frontend can filter out
-        // livestream ones itself; this ensures Our Content is never empty
-        // when there are non-livestream uploads available.
         items = rssSplit.items.slice(0, pageSize);
+      }
+
+      if (!contentItems) {
+        // Use keyword-filtered content so Our Content shows only non-livestream videos
+        contentItems = rssSplit.contentItems.slice(0, pageSize);
       }
 
       if (!livestreamItems.length) {
@@ -128,9 +135,8 @@ router.get("/videos", async (req, res) => {
       if (!liveNowItems.length && rssSplit.livestreamItems.length > 0) {
         liveNowItems = rssSplit.livestreamItems.slice(0, 1);
       }
-
       console.log(
-        `[YouTubeAPI] RSS fallback - items: ${items.length}, livestreamItems: ${livestreamItems.length}, liveNowItems: ${liveNowItems.length}`,
+        `[YouTubeAPI] RSS fallback - items: ${items.length}, contentItems: ${contentItems?.length ?? 0}, livestreamItems: ${livestreamItems.length}, liveNowItems: ${liveNowItems.length}`,
       );
     } catch (rssError) {
       logYoutubeError({
@@ -142,6 +148,8 @@ router.get("/videos", async (req, res) => {
 
   return res.json({
     items,
+    // null means "not explicitly set" — frontend will derive from items
+    contentItems,
     livestreamItems,
     liveNowItems,
     pageSize,
