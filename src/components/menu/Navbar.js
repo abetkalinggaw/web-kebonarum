@@ -5,8 +5,6 @@ import logo from "../../assets/logo.png";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const getBasePath = () => {
@@ -80,17 +78,6 @@ const Navbar = () => {
       e.preventDefault();
       setOpenDropdown((prev) => (prev === dropdownKey ? null : dropdownKey));
     }
-  };
-
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
-    setSearchInput("");
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    console.log("Search for:", searchInput);
-    // Add your search logic here
   };
 
   const handleNavigation = (path, e) => {
@@ -244,6 +231,14 @@ const Navbar = () => {
                     Warta Gereja
                   </a>
                 </li>
+                <li>
+                  <a
+                    href="/formulir"
+                    onClick={(e) => handleNavigation("/formulir", e)}
+                  >
+                    Formulir
+                  </a>
+                </li>
               </ul>
             </li>
             <li
@@ -327,86 +322,6 @@ const Navbar = () => {
               </a>
             </li>
           </ul>
-
-          {/* Mobile search inside the fullscreen menu */}
-          <div className="navbar-search mobile">
-            <form
-              className="search-form mobile-search-form"
-              onSubmit={handleSearchSubmit}
-            >
-              <span className="mobile-search-inline-icon" aria-hidden="true">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                    stroke="rgba(255, 255, 255, 0.65)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M14.9999 14.9999L19 19"
-                    stroke="rgba(255, 255, 255, 0.65)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-              <input
-                type="text"
-                placeholder="Search..."
-                className="search-input"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
-            </form>
-          </div>
-        </div>
-
-        {/* Desktop search (hidden on mobile) */}
-        <div className="navbar-search desktop">
-          <button className="search-icon" onClick={toggleSearch}>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M14.9999 14.9999L19 19"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-          {isSearchOpen && (
-            <form className="search-form" onSubmit={handleSearchSubmit}>
-              <input
-                type="text"
-                placeholder="Search..."
-                className="search-input"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                autoFocus
-              />
-            </form>
-          )}
         </div>
 
         <div className="hamburger" onClick={toggleMenu}>

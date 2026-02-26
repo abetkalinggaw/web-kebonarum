@@ -10,6 +10,7 @@ import InstagramPage from "./pages/media/InstagramPage";
 import DocumentationPage from "./pages/media/DocumentationPage";
 import GalleryPage from "./pages/media/GalleryPage";
 import WartaListPage from "./pages/pengumuman/WartaListPage";
+import FormulirPage from "./pages/FormulirPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             element={<GalleryPage />}
           />
           <Route path="/pengumuman/warta-gereja" element={<WartaListPage />} />
+          <Route path="/formulir" element={<FormulirPage />} />
           <Route path="*" element={<LandingPage />} />
         </Routes>
       </div>
