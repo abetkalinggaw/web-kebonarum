@@ -120,6 +120,16 @@
     line-height: 1.7;
   }
 
+  .instagram-blockquote-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .instagram-media {
+    width: 100% !important;
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -130,5 +140,15 @@
 
   .instagram-title {
     font-size: 1.7rem;
+  }
+
+  .instagram-blockquote-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem;
+  }
+
+  .instagram-media {
+    width: 100% !important;
   }
 }
