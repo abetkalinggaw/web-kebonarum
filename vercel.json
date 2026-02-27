@@ -6,14 +6,11 @@
   "functions": {
     "api/**/*.js": {
       "memory": 1024,
-      "maxDuration": 10
+      "maxDuration": 10,
+      "includeFiles": "backend/**"
     }
   },
   "rewrites": [
-    {
-      "source": "/api/documentation/:id/images",
-      "destination": "/api/documentation/images?id=:id"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
