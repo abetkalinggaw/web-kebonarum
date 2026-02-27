@@ -131,6 +131,36 @@ const fetchDriveFolderCoverUrl = async (folderId) => {
   return firstImage?.id ? createDriveThumbnailUrl(firstImage.id) : null;
 };
 
+/**
+ * Fetches cover images for multiple folders in a single API call.
+ * Returns a map of { folderId -> thumbnailUrl }.
+ */
+const fetchDriveFolderCoversMap = async (folderIds) => {
+  if (!folderIds.length) return {};
+
+  const query = `(${folderIds.map((id) => `'${id}' in parents`).join(" or ")}) and mimeType contains 'image/' and trashed=false`;
+
+  const data = await fetchDriveFiles({
+    query,
+    pageSize: folderIds.length, // at most 1 cover image needed per folder
+    orderBy: "createdTime",
+    fields: "files(id,parents,mimeType,createdTime)",
+  });
+
+  const files = Array.isArray(data.files) ? data.files : [];
+
+  // Keep only the first image found per folder
+  const coverMap = {};
+  for (const file of files) {
+    const parentId = file.parents?.[0];
+    if (parentId && !coverMap[parentId] && file.id) {
+      coverMap[parentId] = createDriveThumbnailUrl(file.id);
+    }
+  }
+
+  return coverMap;
+};
+
 const fetchDriveFolderImagePage = async ({
   folderId,
   pageSize = 8,
@@ -191,6 +221,7 @@ module.exports = {
   resolveFolderId,
   fetchDriveFileById,
   fetchDriveFolderCoverUrl,
+  fetchDriveFolderCoversMap,
   fetchDriveFolderImagePage,
   fetchDriveChildFolderPage,
   mapFolderToDocumentationItem,

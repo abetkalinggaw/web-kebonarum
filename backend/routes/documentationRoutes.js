@@ -6,12 +6,21 @@ const {
   resolveFolderId,
   fetchDriveFileById,
   fetchDriveFolderCoverUrl,
+  fetchDriveFolderCoversMap,
   fetchDriveFolderImagePage,
   fetchDriveChildFolderPage,
   mapFolderToDocumentationItem,
 } = require("../services/googleDriveApi");
 
 const router = express.Router();
+
+const foldersToItems = (folders, coverMap) =>
+  folders.map((folder) =>
+    mapFolderToDocumentationItem({
+      folder,
+      imageUrl: coverMap[folder.id] || "",
+    }),
+  );
 
 router.get("/", async (req, res) => {
   const rootFolderId = resolveFolderId("");
@@ -31,54 +40,21 @@ router.get("/", async (req, res) => {
   }
 
   try {
+    // Fetch current page folders and (if available) next page folders in parallel
     const currentPage = await fetchDriveChildFolderPage({
       folderId: rootFolderId,
       pageSize,
       pageToken,
     });
 
-    const items = await Promise.all(
-      currentPage.folders.map(async (folder) => {
-        try {
-          const coverUrl = await fetchDriveFolderCoverUrl(folder.id);
-          return mapFolderToDocumentationItem({
-            folder,
-            imageUrl: coverUrl || "",
-          });
-        } catch (error) {
-          return mapFolderToDocumentationItem({ folder });
-        }
-      }),
-    );
-
-    let prefetchedNextPage = null;
-
+    let nextPage = null;
     if (currentPage.nextPageToken) {
       try {
-        const nextPage = await fetchDriveChildFolderPage({
+        nextPage = await fetchDriveChildFolderPage({
           folderId: rootFolderId,
           pageSize,
           pageToken: currentPage.nextPageToken,
         });
-
-        const prefetchedItems = await Promise.all(
-          nextPage.folders.map(async (folder) => {
-            try {
-              const coverUrl = await fetchDriveFolderCoverUrl(folder.id);
-              return mapFolderToDocumentationItem({
-                folder,
-                imageUrl: coverUrl || "",
-              });
-            } catch (error) {
-              return mapFolderToDocumentationItem({ folder });
-            }
-          }),
-        );
-
-        prefetchedNextPage = {
-          items: prefetchedItems,
-          nextPageToken: nextPage.nextPageToken,
-        };
       } catch (prefetchError) {
         logDriveError({
           context: "documentation.list.prefetch",
@@ -86,6 +62,28 @@ router.get("/", async (req, res) => {
         });
       }
     }
+
+    // Collect all folder IDs from both pages and fetch all covers in ONE request
+    const allFolders = [...currentPage.folders, ...(nextPage?.folders || [])];
+    const allFolderIds = allFolders.map((f) => f.id);
+
+    let coverMap = {};
+    if (allFolderIds.length) {
+      try {
+        coverMap = await fetchDriveFolderCoversMap(allFolderIds);
+      } catch (error) {
+        logDriveError({ context: "documentation.list.covers", error });
+      }
+    }
+
+    const items = foldersToItems(currentPage.folders, coverMap);
+
+    const prefetchedNextPage = nextPage
+      ? {
+          items: foldersToItems(nextPage.folders, coverMap),
+          nextPageToken: nextPage.nextPageToken,
+        }
+      : null;
 
     return res.json({
       items,
