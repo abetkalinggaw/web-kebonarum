@@ -5,7 +5,7 @@ const path = require("path");
 // Load environment variables
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
-const { FRONTEND_ORIGIN } = require("../backend/config/appConfig");
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN;
 
 // CORS middleware
 const corsMiddleware = cors({
