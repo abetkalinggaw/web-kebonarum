@@ -6,8 +6,7 @@
   "functions": {
     "api/**/*.js": {
       "memory": 1024,
-      "maxDuration": 10,
-      "includeFiles": "backend/**"
+      "maxDuration": 10
     }
   },
   "rewrites": [
