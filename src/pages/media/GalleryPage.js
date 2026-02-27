@@ -64,7 +64,6 @@ const GalleryPage = () => {
   const [hasMoreImages, setHasMoreImages] = useState(false);
   const [isLoadingItem, setIsLoadingItem] = useState(false);
   const [isLoadingDriveImages, setIsLoadingDriveImages] = useState(false);
-  const [itemLoadWarning, setItemLoadWarning] = useState("");
   const [driveImageError, setDriveImageError] = useState("");
   const [isLoadingMoreImages, setIsLoadingMoreImages] = useState(false);
   const loadMoreRef = useRef(null);
@@ -75,7 +74,6 @@ const GalleryPage = () => {
 
     const loadItem = async () => {
       setIsLoadingItem(true);
-      setItemLoadWarning("");
 
       if (fallbackItem) {
         setItem(fallbackItem);
@@ -87,14 +85,8 @@ const GalleryPage = () => {
           setItem(nextItem || null);
         }
       } catch (error) {
-        if (!isCancelled) {
-          if (!fallbackItem) {
-            setItem(null);
-          } else {
-            setItemLoadWarning(
-              "Menampilkan data sementara. Detail dokumentasi belum berhasil dimuat.",
-            );
-          }
+        if (!isCancelled && !fallbackItem) {
+          setItem(null);
         }
       } finally {
         if (!isCancelled) {
@@ -346,9 +338,6 @@ const GalleryPage = () => {
             )}
             {displayDescription && (
               <p className="gallery-description">{displayDescription}</p>
-            )}
-            {itemLoadWarning && (
-              <p className="gallery-no-images">{itemLoadWarning}</p>
             )}
           </div>
         </section>
