@@ -29,6 +29,7 @@ function App() {
             path="/media/documentation/gallery/:id"
             element={<GalleryPage />}
           />
+
           <Route path="/pengumuman/warta-gereja" element={<WartaListPage />} />
           <Route path="/formulir" element={<FormulirPage />} />
           <Route path="*" element={<LandingPage />} />

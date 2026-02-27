@@ -215,10 +215,10 @@ const Navbar = () => {
               <ul className="navbar-dropdown">
                 <li>
                   <a
-                    href="/pengumuman/event"
-                    onClick={(e) => handleNavigation("/pengumuman/event", e)}
+                    href="/pengumuman/events"
+                    onClick={(e) => handleNavigation("/pengumuman/events", e)}
                   >
-                    Event
+                    Events
                   </a>
                 </li>
                 <li>
@@ -229,14 +229,6 @@ const Navbar = () => {
                     }
                   >
                     Warta Gereja
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/formulir"
-                    onClick={(e) => handleNavigation("/formulir", e)}
-                  >
-                    Formulir
                   </a>
                 </li>
               </ul>
