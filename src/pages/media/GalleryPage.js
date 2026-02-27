@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./GalleryPage.css";
 import Navbar from "../../components/menu/Navbar";
 import Footer from "../../components/menu/Footer";
-import GalleryError from "../../components/media/GalleryError";
 import {
   getDocumentationImagesById,
   getDocumentationItemById,
@@ -273,23 +272,14 @@ const GalleryPage = () => {
     };
   }, [hasMoreImages, isLoadingItem, loadMoreImages]);
 
-  const handleGalleryErrorBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-      return;
+  useEffect(() => {
+    if (!isLoadingItem && !item) {
+      navigate("/media/documentation", { replace: true });
     }
-
-    navigate("/media/documentation", { replace: true });
-  };
+  }, [isLoadingItem, item, navigate]);
 
   if (!item && !isLoadingItem) {
-    return (
-      <>
-        <main className="gallery-page">
-          <GalleryError onBack={handleGalleryErrorBack} />
-        </main>
-      </>
-    );
+    return null;
   }
 
   const handleImageClick = (image) => {
