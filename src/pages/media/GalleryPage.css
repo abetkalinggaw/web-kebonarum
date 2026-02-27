@@ -144,8 +144,10 @@
 }
 
 .gallery-no-images {
+  grid-column: 1 / -1;
   text-align: center;
   padding: 4rem 2rem;
+  font-family: var(--font-heading);
   font-size: 1.2rem;
   color: var(--color-text-500);
 }

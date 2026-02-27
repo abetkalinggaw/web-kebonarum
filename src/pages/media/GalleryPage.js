@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./GalleryPage.css";
 import Navbar from "../../components/menu/Navbar";
 import Footer from "../../components/menu/Footer";
@@ -51,12 +51,7 @@ const GallerySkeleton = ({ count = 8 }) => (
 const GalleryPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const fallbackItem =
-    location.state?.item && location.state.item.id === id
-      ? location.state.item
-      : null;
-  const [item, setItem] = useState(fallbackItem);
+  const [item, setItem] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [driveImages, setDriveImages] = useState([]);
   const [nextPageToken, setNextPageToken] = useState("");
@@ -75,17 +70,13 @@ const GalleryPage = () => {
     const loadItem = async () => {
       setIsLoadingItem(true);
 
-      if (fallbackItem) {
-        setItem(fallbackItem);
-      }
-
       try {
         const nextItem = await getDocumentationItemById(id);
         if (!isCancelled) {
           setItem(nextItem || null);
         }
       } catch (error) {
-        if (!isCancelled && !fallbackItem) {
+        if (!isCancelled) {
           setItem(null);
         }
       } finally {
@@ -100,7 +91,7 @@ const GalleryPage = () => {
     return () => {
       isCancelled = true;
     };
-  }, [id, fallbackItem]);
+  }, [id]);
 
   const galleryImages = useMemo(() => {
     if (driveImages.length > 0) {
@@ -282,11 +273,20 @@ const GalleryPage = () => {
     };
   }, [hasMoreImages, isLoadingItem, loadMoreImages]);
 
+  const handleGalleryErrorBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+
+    navigate("/media/documentation", { replace: true });
+  };
+
   if (!item && !isLoadingItem) {
     return (
       <>
         <main className="gallery-page">
-          <GalleryError onBack={() => navigate("/media/documentation")} />
+          <GalleryError onBack={handleGalleryErrorBack} />
         </main>
       </>
     );

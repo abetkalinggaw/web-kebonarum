@@ -2,7 +2,7 @@ import "./GalleryError.css";
 
 const GalleryError = ({
   title = "Folder Dokumentasi tidak ditemukan",
-  buttonText = "Kembali ke Dokumentasi",
+  buttonText = "Kembali",
   onBack,
 }) => {
   return (
