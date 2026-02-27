@@ -11,7 +11,7 @@ In the project directory, you can run:
 Runs frontend and backend together in development mode.
 
 - React app: [http://localhost:3000](http://localhost:3000)
-- Backend API: [http://localhost:5000](http://localhost:5000)
+- Backend API: [http://localhost:5050](http://localhost:5050)
 
 ### `npm start`
 
