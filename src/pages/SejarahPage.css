@@ -6,24 +6,47 @@
 }
 
 .sejarah-hero {
-  min-height: 60vh;
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  background:
-    linear-gradient(140deg, rgba(58, 63, 60, 0.85), rgba(31, 36, 34, 0.9)),
-    url("../assets/gkj-bg.png");
-  background-size: cover;
-  background-position: center;
-  background-attachment: scroll;
+  overflow: hidden;
   color: var(--color-white);
   padding: 6rem 0 4rem;
+  z-index: 1;
+}
+
+.sejarah-hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  will-change: transform;
+}
+
+.sejarah-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  z-index: 2;
 }
 
 .sejarah-hero-content {
+  position: relative;
+  z-index: 3;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--content-padding-desktop);
+  text-align: center;
 }
+
 
 .sejarah-kicker {
   text-transform: uppercase;
@@ -41,11 +64,13 @@
 .sejarah-lead {
   font-size: 1.2rem;
   line-height: 1.7;
-  margin: 0;
+  margin: 0 auto;
   max-width: 1000px;
 }
 
 .sejarah-section {
+  position: relative;
+  z-index: 4;
   padding: 4.5rem 0 5.5rem;
   background:
     linear-gradient(140deg, rgba(60, 60, 60, 0.75), rgba(37, 37, 37, 0.8)),
@@ -70,6 +95,7 @@
   text-decoration-thickness: 3px;
 }
 
+
 .sejarah-timeline {
   display: grid;
   gap: 2.9rem;
@@ -81,9 +107,9 @@
   grid-template-columns: minmax(280px, 1.2fr) minmax(240px, 1fr);
   grid-template-areas: "image content";
   gap: 2.2rem;
-  padding: 0;
   align-items: stretch;
 }
+
 
 .timeline-year {
   position: absolute;
@@ -97,7 +123,6 @@
   letter-spacing: 0.03em;
   color: transparent;
   -webkit-text-stroke: 2px rgba(255, 255, 255, 0.2);
-  text-shadow: 0 0 0 transparent;
   pointer-events: none;
   user-select: none;
 }
@@ -106,13 +131,40 @@
   z-index: 0;
 }
 
+
 .timeline-image {
   grid-area: image;
   width: 100%;
   height: 400px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.12);
+  will-change: transform;
 }
+
+/* Remove the grid-area on the wrapper added by SmoothSection */
+.timeline-image > .timeline-image-wrap,
+.timeline-image-wrap {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.timeline-image-wrap img {
+  width: 100%;
+  height: 115%; /* extra for parallax travel */
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+/* Legacy fallback (non-parallax) */
+.timeline-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 
 .timeline-content {
   grid-area: content;
@@ -124,6 +176,7 @@
   min-height: 100%;
   padding: 0.25rem 0;
 }
+
 
 .timeline-item--reverse {
   grid-template-columns: minmax(240px, 1fr) minmax(280px, 1.2fr);
@@ -150,11 +203,9 @@
   right: auto;
 }
 
+
 .timeline-item--double {
-  grid-template-columns: minmax(200px, 1fr) minmax(230px, 1fr) minmax(
-      200px,
-      1fr
-    );
+  grid-template-columns: minmax(200px, 1fr) minmax(230px, 1fr) minmax(200px, 1fr);
   grid-template-areas: "image content image-secondary";
   align-items: center;
 }
@@ -180,12 +231,6 @@
   transform: translate(-50%, -68%);
 }
 
-.timeline-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
 
 .timeline-title {
   margin: 0 0 0.7rem;
@@ -211,8 +256,10 @@
   max-width: 100%;
 }
 
+
 @media (max-width: 1024px) {
   .sejarah-hero {
+    min-height: 80vh;
     padding: 4.5rem 0 3rem;
   }
 
@@ -239,7 +286,7 @@
 
 @media (max-width: 768px) {
   .sejarah-hero {
-    min-height: 50vh;
+    min-height: 768px;
     padding: 3.5rem 0 2.5rem;
   }
 
@@ -314,7 +361,7 @@
 
 @media (max-width: 480px) {
   .sejarah-hero {
-    min-height: 45vh;
+    min-height: 680px;
     padding: 3rem 0 2rem;
   }
 
