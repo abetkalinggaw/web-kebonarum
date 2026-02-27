@@ -8,7 +8,7 @@ const {
   fetchDriveFolderCoverUrl,
   fetchDriveFolderImagePage,
   mapFolderToDocumentationItem,
-} = require("../../backend/services/googleDriveApi");
+} = require("../services/googleDriveApi");
 
 module.exports = async (req, res) => {
   await runMiddleware(req, res, corsMiddleware);

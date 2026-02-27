@@ -9,7 +9,7 @@ const {
   fetchLiveAndUpcomingLivestreams,
   fetchChannelRssVideos,
   splitRssVideosForSections,
-} = require("../../backend/services/youtubeApi");
+} = require("../services/youtubeApi");
 
 module.exports = async (req, res) => {
   const requestedPageSize = Number(req.query?.pageSize || 24);
