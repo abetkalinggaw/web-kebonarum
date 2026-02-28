@@ -10,7 +10,6 @@ import event3 from "../assets/sejarah/3.jpg";
 import event4 from "../assets/sejarah/4.jpg";
 import event5 from "../assets/sejarah/5.jpg";
 
-/* ─── Smooth-scroll wrapper ─────────────────────────────────────── */
 const SmoothSection = ({ children, className, delay = 0 }) => (
   <motion.div
     className={className}
@@ -27,14 +26,13 @@ const SmoothSection = ({ children, className, delay = 0 }) => (
   </motion.div>
 );
 
-/* ─── Parallax image ─────────────────────────────────────────────── */
 const ParallaxImage = ({ src, alt, strength = 60 }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const rawY = useTransform(scrollYProgress, [0, 1], [-strength, strength]);
+  const rawY = useTransform(scrollYProgress, [0, 1.5], [-strength, strength]);
   const y = useSpring(rawY, { stiffness: 60, damping: 20, mass: 0.8 });
 
   return (
@@ -44,7 +42,6 @@ const ParallaxImage = ({ src, alt, strength = 60 }) => {
   );
 };
 
-/* ─── Hero parallax ─────────────────────────────────────────────── */
 const HeroParallax = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -112,7 +109,6 @@ const HeroParallax = () => {
   );
 };
 
-/* ─── Timeline item ──────────────────────────────────────────────── */
 const TimelineItemComponent = ({ item, index, isDouble, isReverse }) => {
   const fromLeft = isReverse ? 50 : -50;
 
@@ -187,7 +183,6 @@ const TimelineItemComponent = ({ item, index, isDouble, isReverse }) => {
   );
 };
 
-/* ─── Page ───────────────────────────────────────────────────────── */
 const SejarahPage = () => {
   const timelineItems = [
     {
