@@ -2,63 +2,112 @@ import "./WartaListPage.css";
 import Navbar from "../../components/menu/Navbar";
 import Footer from "../../components/menu/Footer";
 
+const wartaList = [
+  {
+    id: 1,
+    title: "Warta Gereja Minggu, 1 Maret 2026",
+    date: "2026-03-01",
+    description:
+      "Warta jemaat minggu pertama bulan Maret 2026, memuat pengumuman kegiatan ibadah, pelayanan diakonia, dan agenda persekutuan doa bersama jemaat GKJ Kebonarum.",
+  },
+  {
+    id: 2,
+    title: "Warta Gereja Minggu, 22 Februari 2026",
+    date: "2026-02-22",
+    description:
+      "Informasi kegiatan ibadah, jadwal pelayanan, serta laporan perkembangan renovasi gedung gereja dan rencana kegiatan Paskah mendatang.",
+  },
+  {
+    id: 3,
+    title: "Warta Gereja Minggu, 15 Februari 2026",
+    date: "2026-02-15",
+    description:
+      "Pengumuman pembentukan panitia hari jadi gereja, jadwal pemuda-pemudi, dan informasi terkait penerimaan anggota jemaat baru.",
+  },
+  {
+    id: 4,
+    title: "Warta Gereja Minggu, 8 Februari 2026",
+    date: "2026-02-08",
+    description:
+      "Warta jemaat memuat agenda pendampingan pastoral, kegiatan sekolah minggu, serta pengumuman dari majelis gereja untuk bulan Februari.",
+  },
+  {
+    id: 5,
+    title: "Warta Gereja Minggu, 1 Februari 2026",
+    date: "2026-02-01",
+    description:
+      "Laporan diakonia bulan Januari, informasi kunjungan majelis, jadwal ibadah rumah tangga, dan agenda persekutuan seluruh jemaat.",
+  },
+];
+
+const MONTHS_ID = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "Mei",
+  "Jun",
+  "Jul",
+  "Agu",
+  "Sep",
+  "Okt",
+  "Nov",
+  "Des",
+];
+
+const MONTHS_FULL_ID = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
+
+function parseDate(dateStr) {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  return { day, month, year };
+}
+
+function groupByMonth(list) {
+  const groups = [];
+  const seen = {};
+  list.forEach((warta) => {
+    const { month, year } = parseDate(warta.date);
+    const key = `${year}-${month}`;
+    if (!seen[key]) {
+      seen[key] = true;
+      groups.push({ key, month, year, items: [] });
+    }
+    groups.find((g) => g.key === key).items.push(warta);
+  });
+  return groups;
+}
+
 const WartaListPage = () => {
-  const wartaList = [
-    {
-      id: 1,
-      title: "Renungan Minggu Ini",
-      date: "26 Februari 2024",
-      excerpt:
-        "Mari kita merenungkan firman Tuhan yang menceritakan tentang kasih karunia dan pengampunan dalam kehidupan sehari-hari kita.",
-      content:
-        "Dalam renungan minggu ini, kami mengajak seluruh jemaat untuk merenungkan makna kasih karunia Tuhan yang begitu besar bagi kehidupan kita. Firman Tuhan menunjukkan bahwa pengampunan adalah dasar dari iman Kristen yang sejati.",
-    },
-    {
-      id: 2,
-      title: "Jadwal Kegiatan Bulan Maret",
-      date: "25 Februari 2024",
-      excerpt:
-        "Berikut adalah jadwal kegiatan gereja GKJ Kebonarum untuk bulan Maret 2024. Mohon perhatian dan partisipasi aktif dari seluruh jemaat.",
-      content:
-        "Bulan Maret akan ada berbagai kegiatan gereja yang penting termasuk persekutuan doa, kebaktian khusus, dan kegiatan pelayanan sosial kepada masyarakat sekitar.",
-    },
-    {
-      id: 3,
-      title: "Berita Gembira Dari Pelayanan",
-      date: "24 Februari 2024",
-      excerpt:
-        "Tuhan telah melakukan hal-hal yang luar biasa melalui pelayanan gereja kami. Baca cerita sukses dari misi kita.",
-      content:
-        "Puji Tuhan, dalam beberapa minggu terakhir kami melihat bagaimana Tuhan bekerja luar biasa melalui pelayanan sosial dan misi penjangkauan kami kepada masyarakat yang membutuhkan.",
-    },
-    {
-      id: 4,
-      title: "Undangan Kebaktian Spesial",
-      date: "23 Februari 2024",
-      excerpt:
-        "Kami mengundang seluruh jemaat untuk hadir dalam kebaktian spesial yang akan dilaksanakan minggu depan dengan pembicara tamu istimewa.",
-      content:
-        "Kebaktian spesial akan menghadirkan pembicara tamu yang berpengalaman untuk berbagi tentang kehidupan rohani dan pendalaman firman Tuhan di zaman yang penuh tantangan ini.",
-    },
-    {
-      id: 5,
-      title: "Program Pendampingan Jemaat Baru",
-      date: "22 Februari 2024",
-      excerpt:
-        "Program baru untuk mendampingi jemaat yang baru bergabung dengan GKJ Kebonarum telah dimulai.",
-      content:
-        "Program pendampingan ini dirancang untuk membantu jemaat baru memahami nilai-nilai gereja dan terintegrasi dengan baik dalam komunitas GKJ Kebonarum.",
-    },
-    {
-      id: 6,
-      title: "Laporan Kolekta Sosial",
-      date: "21 Februari 2024",
-      excerpt:
-        "Terima kasih atas dukungan jemaat dalam program kolekta sosial bulan Februari ini.",
-      content:
-        "Hasil kolekta sosial bulan ini telah disumbangkan kepada keluarga yang membutuhkan dan lembaga sosial yang kami dukung. Semoga berkah Tuhan selalu menyertai kebaikan jemaat.",
-    },
-  ];
+  const groupedWarta = groupByMonth(wartaList);
+
+  const navigateTo = (path) => {
+    const publicUrl = process.env.PUBLIC_URL || "";
+    let basePath = "";
+    if (publicUrl) {
+      try {
+        basePath = new URL(publicUrl, window.location.origin).pathname.replace(
+          /\/+$/,
+          "",
+        );
+      } catch {
+        basePath = publicUrl.replace(/\/+$/, "");
+      }
+    }
+    window.location.assign(`${basePath}${path}`);
+  };
 
   return (
     <>
@@ -73,32 +122,91 @@ const WartaListPage = () => {
               GKJ Kebonarum
             </h1>
             <p className="warta-lead">
-              Dapatkan informasi terbaru seputar kegiatan, pengumuman, dan
-              berita penting lainnya dari GKJ Kebonarum melalui Warta Gereja
-              kami. Tetap terhubung dengan komunitas dan pelayanan gereja.
+              Kumpulan warta jemaat GKJ Kebonarum. Temukan pengumuman, jadwal
+              kegiatan, dan informasi pelayanan gereja setiap minggunya.
             </p>
           </div>
         </section>
 
-        <section className="warta-section">
-          <div className="warta-inner">
-            <div className="warta-grid">
-              {wartaList.map((warta) => (
-                <article key={warta.id} className="warta-item">
-                  <div className="warta-item-content">
-                    <div className="warta-meta">
-                      <time className="warta-date">{warta.date}</time>
-                    </div>
-                    <h2 className="warta-item-title">{warta.title}</h2>
-                    <p className="warta-excerpt">{warta.excerpt}</p>
-                    <p className="warta-read-more">
-                      {warta.content.substring(0, 100)}...
-                    </p>
-                    <button className="warta-button">Baca Selengkapnya</button>
-                  </div>
-                </article>
-              ))}
+        <section className="warta-list-section">
+          <div className="warta-list-inner">
+            <div className="warta-list-header">
+              <h2 className="warta-list-section-title">Daftar Warta Gereja</h2>
+              <p className="warta-list-section-description">
+                Arsip warta jemaat terbaru GKJ Kebonarum
+              </p>
             </div>
+
+            {wartaList.length === 0 ? (
+              <div className="warta-empty">
+                <div className="warta-empty-icon">📋</div>
+                <p>Belum ada warta gereja yang tersedia.</p>
+              </div>
+            ) : (
+              <div className="warta-months">
+                {groupedWarta.map(({ key, month, year, items }) => (
+                  <div key={key} className="warta-month-group">
+                    <h3 className="warta-month-heading">
+                      {MONTHS_FULL_ID[month - 1]} {year}
+                    </h3>
+                    <div className="warta-grid">
+                      {items.map((warta) => {
+                        const { day, month: m } = parseDate(warta.date);
+                        return (
+                          <article key={warta.id} className="warta-card">
+                            <div className="warta-card-body">
+                              <div className="warta-card-meta">
+                                <span className="warta-card-date-day">
+                                  {day}
+                                </span>
+                                <span className="warta-card-date-month">
+                                  {MONTHS_ID[m - 1]}
+                                </span>
+                                <span className="warta-card-date-year">
+                                  {year}
+                                </span>
+                              </div>
+                              <div className="warta-card-divider" />
+                              <div className="warta-card-content">
+                                <h3 className="warta-card-title">
+                                  {warta.title}
+                                </h3>
+                                <p className="warta-card-description">
+                                  {warta.description}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="warta-card-footer">
+                              <button
+                                className="warta-read-btn"
+                                onClick={() =>
+                                  navigateTo(
+                                    `/pengumuman/warta-gereja/${warta.id}`,
+                                  )
+                                }
+                              >
+                                Baca Warta
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <line x1="5" y1="12" x2="19" y2="12" />
+                                  <polyline points="12 5 19 12 12 19" />
+                                </svg>
+                              </button>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </main>
