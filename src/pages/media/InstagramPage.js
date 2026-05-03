@@ -7,15 +7,11 @@ const INSTAGRAM_ACCOUNT_URL = "https://www.instagram.com/gkj_kebonarum/";
 
 const InstagramPage = () => {
   useEffect(() => {
-    // Load Instagram embed script
-    if (window.instgrm) {
-      window.instgrm.Embeds.process();
-    } else {
-      const script = document.createElement("script");
-      script.src = "https://www.instagram.com/embed.js";
-      script.async = true;
-      document.body.appendChild(script);
-    }
+    // Load Elfsight script
+    const script = document.createElement("script");
+    script.src = "https://elfsightcdn.com/platform.js";
+    script.async = true;
+    document.body.appendChild(script);
   }, []);
 
   return (
@@ -51,12 +47,10 @@ const InstagramPage = () => {
               className="instagram-blockquote-container"
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <blockquote
-                className="instagram-media"
-                data-instgrm-permalink="https://www.instagram.com/gkj_kebonarum/"
-                data-instgrm-version="12"
-                style={{ width: "800px", border: "none", overflow: "hidden" }}
-              ></blockquote>
+              <div
+                className="elfsight-app-ab7d7f90-c03e-4fb3-b283-25594f2c6ffb"
+                data-elfsight-app-lazy
+              ></div>
             </div>
           </div>
         </section>

@@ -66,28 +66,6 @@
   padding: 0 var(--container-pad-desktop);
 }
 
-.instagram-iframe-container {
-  background: var(--color-white);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-}
-
-.instagram-iframe {
-  border: none;
-  min-height: 600px;
-}
-
-.instagram-blockquote-container {
-  width: 800px;
-  margin: 0 auto;
-  background: var(--color-white);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-  padding: 1rem;
-}
-
 .instagram-media {
   background: var(--color-white);
   border: none;

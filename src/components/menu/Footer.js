@@ -40,6 +40,12 @@ const Footer = () => {
               +62 812 345 678
             </a>
           </div>
+          <div className="contact-item">
+            <span className="contact-label">Email:</span>
+            <a href="mailto:gkjkebonarumklaten@gmail.com">
+              gkjkebonarumklaten@gmail.com
+            </a>
+          </div>
         </div>
 
         <div className="footer-section footer-social">
