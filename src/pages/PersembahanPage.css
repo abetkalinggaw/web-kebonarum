@@ -1,0 +1,242 @@
+.persembahan-page {
+  color: var(--color-text-900);
+}
+
+.persembahan-hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(140deg, rgba(58, 63, 60, 0.85), rgba(31, 36, 34, 0.9)),
+    url("../assets/gkj-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+  color: var(--color-white);
+  padding: 6rem 0 4rem;
+}
+
+.persembahan-hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--container-pad-desktop);
+}
+
+.persembahan-kicker {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.persembahan-title {
+  font-size: 3rem;
+  margin: 0 0 1rem;
+  font-weight: 700;
+}
+
+.persembahan-lead {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 1000px;
+}
+
+/* Persembahan List Section */
+.persembahan-list-section {
+  padding: 3rem 0;
+
+}
+
+.persembahan-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem var(--container-pad-desktop);
+
+}
+
+.persembahan-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  background: #e8e8e8;
+  border-radius: 8px;
+  gap: 2rem;
+
+}
+
+.persembahan-item:last-child {
+  margin-bottom: 0;
+}
+
+.persembahan-item-content {
+  flex: 1;
+}
+
+.persembahan-item-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--color-text-900);
+}
+
+.persembahan-item-account {
+  font-size: 0.95rem;
+  color: var(--color-text-700);
+  margin: 0 0 0.5rem;
+}
+
+.persembahan-item-note {
+  font-size: 0.9rem;
+  color: var(--color-text-700);
+  margin: 0;
+  font-style: italic;
+}
+
+.persembahan-item-qr {
+  flex-shrink: 0;
+  width: 128px;
+  height: 128px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.persembahan-item-qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .persembahan-hero {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .persembahan-title {
+    font-size: 2.5rem;
+  }
+
+  .persembahan-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .persembahan-item-qr {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .persembahan-hero {
+    min-height: 50vh;
+    padding: 3rem 0 2rem;
+  }
+
+  .persembahan-hero-content {
+    padding: 0 var(--container-pad-tablet);
+  }
+
+  .persembahan-kicker {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+  }
+
+  .persembahan-title {
+    font-size: 2rem;
+  }
+
+  .persembahan-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .persembahan-list-container {
+    padding: 1.5rem var(--container-pad-tablet);
+  }
+
+  .persembahan-item {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .persembahan-item-name {
+    font-size: 1rem;
+  }
+
+  .persembahan-item-account {
+    font-size: 0.9rem;
+  }
+
+  .persembahan-item-note {
+    font-size: 0.85rem;
+  }
+
+  .persembahan-item-qr {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .persembahan-hero {
+    min-height: 45vh;
+    padding: 2.5rem 0 1.5rem;
+  }
+
+  .persembahan-hero-content {
+    padding: 0 var(--container-pad-mobile);
+  }
+
+  .persembahan-kicker {
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+  }
+
+  .persembahan-title {
+    font-size: 1.6rem;
+    line-height: 1.3;
+  }
+
+  .persembahan-lead {
+    font-size: 0.9rem;
+  }
+
+  .persembahan-list-container {
+    padding: 1rem var(--container-pad-mobile);
+  }
+
+  .persembahan-item {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    gap: 1rem;
+  }
+
+  .persembahan-item-name {
+    font-size: 0.9rem;
+  }
+
+  .persembahan-item-account {
+    font-size: 0.85rem;
+  }
+
+  .persembahan-item-note {
+    font-size: 0.8rem;
+  }
+
+  .persembahan-item-qr {
+    width: 80px;
+    height: 80px;
+  }
+}
+

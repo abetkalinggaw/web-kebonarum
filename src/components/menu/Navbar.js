@@ -30,7 +30,6 @@ const DesktopDropdown = ({ children, isOpen, onMouseEnter, onMouseLeave }) => (
   </ul>
 );
 
-/* ─── Mobile accordion ───────────────────────────────────────────── */
 const MobileDropdown = ({ isOpen, children }) => (
   <>
     {isOpen && (
@@ -61,9 +60,9 @@ const dropdownData = {
     { label: "Warta Gereja", path: "/pengumuman/warta-gereja" },
   ],
   komisi: [
-    { label: "PWG & Ibadah", path: "/komisi/pwg" },
-    { label: "Diaken", path: "/komisi/diaken" },
-    { label: "Penatalayanan", path: "/komisi/Penatalayanan" },
+    { label: "Diaken & Ibadah", path: "/komisi/diaken-ibadah" },
+    { label: "Penatalayanan", path: "/komisi/penatalayanan" },
+    { label: "PWG", path: "/komisi/pwg" },
   ],
 };
 

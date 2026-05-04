@@ -8,6 +8,7 @@ const EMPTY_FORM = {
   date: "",
   description: "",
   paragraphs: [""],
+  googleDriveFiles: [],
 };
 
 const WartaFormPage = () => {
@@ -34,6 +35,35 @@ const WartaFormPage = () => {
     setForm((prev) => ({
       ...prev,
       paragraphs: prev.paragraphs.filter((_, i) => i !== index),
+    }));
+  };
+
+  const addGoogleDriveFile = () => {
+    // Open Google Drive file picker
+    const popup = window.open(
+      "https://www.google.com/drive/",
+      "google-drive-picker",
+      "width=800,height=600",
+    );
+    // In production, you would use Google Picker API
+    // For now, we'll use a dialog to input file info
+    const fileId = prompt("Masukkan Google Drive File ID:");
+    const fileName = prompt("Masukkan nama file:");
+    if (fileId && fileName) {
+      setForm((prev) => ({
+        ...prev,
+        googleDriveFiles: [
+          ...prev.googleDriveFiles,
+          { id: fileId, name: fileName },
+        ],
+      }));
+    }
+  };
+
+  const removeGoogleDriveFile = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      googleDriveFiles: prev.googleDriveFiles.filter((_, i) => i !== index),
     }));
   };
 
@@ -212,6 +242,82 @@ const WartaFormPage = () => {
                           <line x1="5" y1="12" x2="19" y2="12" />
                         </svg>
                         Tambah Paragraf
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="warta-field-full">
+                    <p className="warta-google-drive-label">
+                      File Google Drive{" "}
+                      <span style={{ color: "#888" }}>(Opsional)</span>
+                    </p>
+                    <div className="warta-google-drive-files">
+                      {form.googleDriveFiles.map((file, index) => (
+                        <div
+                          key={index}
+                          className="warta-google-drive-file-item"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+                            <polyline points="13 2 13 9 20 9" />
+                          </svg>
+                          <div className="warta-google-drive-file-info">
+                            <span className="warta-google-drive-file-name">
+                              {file.name}
+                            </span>
+                            <span className="warta-google-drive-file-id">
+                              {file.id}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            className="warta-google-drive-remove"
+                            onClick={() => removeGoogleDriveFile(index)}
+                            title="Hapus file"
+                          >
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <line x1="18" y1="6" x2="6" y2="18" />
+                              <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        className="warta-add-google-drive-btn"
+                        onClick={addGoogleDriveFile}
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M12 5v14M5 12h14" />
+                        </svg>
+                        Tambah File dari Google Drive
                       </button>
                     </div>
                   </div>

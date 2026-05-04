@@ -17,6 +17,7 @@ const wartaList = [
       "Persekutuan doa bersama akan diadakan setiap Rabu malam pukul 19.00 WIB di gedung gereja. Mari kita saling menguatkan dalam doa.",
       "Untuk informasi lebih lanjut tentang kegiatan gereja, silakan menghubungi sekretariat GKJ Kebonarum.",
     ],
+    googleDriveFiles: [],
   },
   {
     id: 2,
@@ -30,6 +31,7 @@ const wartaList = [
       "Persiapan Paskah: Panitia Paskah 2026 telah dibentuk. Terdapat berbagai kegiatan yang akan dipersiapkan, mulai dari ibadah Kamis Putih, Jumat Agung, hingga Kebaktian Pagi Paskah.",
       "Jadwal pelayanan bulan Maret akan segera diumumkan. Jemaat yang ingin terlibat dalam tim pelayanan dapat mendaftarkan diri kepada koordinator masing-masing bidang.",
     ],
+    googleDriveFiles: [],
   },
   {
     id: 3,
@@ -43,6 +45,7 @@ const wartaList = [
       "Kegiatan Pemuda-Pemudi: Persekutuan Pemuda-Pemudi GKJ Kebonarum mengundang seluruh anak muda jemaat untuk hadir dalam pertemuan bulanan yang akan diadakan Sabtu ini pukul 16.00 WIB.",
       "Penerimaan Anggota Jemaat Baru: Bagi keluarga atau perorangan yang ingin menjadi anggota jemaat GKJ Kebonarum, silakan menghubungi majelis gereja untuk mendapatkan informasi lebih lanjut mengenai proses dan persyaratan.",
     ],
+    googleDriveFiles: [],
   },
   {
     id: 4,
@@ -56,6 +59,7 @@ const wartaList = [
       "Sekolah Minggu: Kelas Sekolah Minggu untuk anak-anak dibuka setiap minggu bersamaan dengan ibadah pagi. Orang tua diharapkan mendaftarkan anak-anak mereka kepada pengurus Sekolah Minggu.",
       "Pengumuman Majelis: Rapat Majelis bulan Februari akan diadakan pada Selasa, 10 Februari 2026 pukul 19.00 WIB. Seluruh anggota majelis dimohon hadir tepat waktu.",
     ],
+    googleDriveFiles: [],
   },
   {
     id: 5,
@@ -69,6 +73,7 @@ const wartaList = [
       "Ibadah Rumah Tangga: Jadwal ibadah rumah tangga bulan Februari telah tersedia dan dapat diambil di meja informasi gereja. Jemaat diundang untuk membuka pintu rumah sebagai tempat ibadah dan persekutuan.",
       "Agenda Persekutuan: Persekutuan jemaat seluruh GKJ Kebonarum akan diadakan pada akhir bulan Februari. Informasi tempat dan waktu akan segera diumumkan. Mari hadir dan mempererat tali persaudaraan kita sebagai satu tubuh Kristus.",
     ],
+    googleDriveFiles: [],
   },
 ];
 
@@ -150,6 +155,63 @@ const WartaReadPage = () => {
                 <p key={index}>{paragraph}</p>
               ))}
             </div>
+            {warta.googleDriveFiles && warta.googleDriveFiles.length > 0 && (
+              <div className="warta-google-drive-section">
+                <h3 className="warta-google-drive-title">File Terlampir</h3>
+                <div className="warta-google-drive-files-list">
+                  {warta.googleDriveFiles.map((file, index) => (
+                    <a
+                      key={index}
+                      href={`https://drive.google.com/file/d/${file.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="warta-google-drive-file-link"
+                    >
+                      <div className="warta-google-drive-file-card">
+                        <div className="warta-google-drive-file-icon">
+                          <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+                            <polyline points="13 2 13 9 20 9" />
+                          </svg>
+                        </div>
+                        <div className="warta-google-drive-file-details">
+                          <p className="warta-google-drive-file-name">
+                            {file.name}
+                          </p>
+                          <p className="warta-google-drive-file-source">
+                            Google Drive
+                          </p>
+                        </div>
+                        <div className="warta-google-drive-file-arrow">
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                          </svg>
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
           </article>
         ) : (
           <div className="warta-not-found">

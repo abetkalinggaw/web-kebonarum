@@ -11,9 +11,10 @@ import DocumentationPage from "./pages/media/DocumentationPage";
 import GalleryPage from "./pages/media/GalleryPage";
 import WartaListPage from "./pages/pengumuman/WartaListPage";
 import WartaReadPage from "./pages/pengumuman/WartaReadPage";
-import WartaFormPage from "./pages/pengumuman/WartaFormPage";
 import FormulirPage from "./pages/FormulirPage";
 import SejarahPage from "./pages/SejarahPage";
+import PersembahanPage from "./pages/PersembahanPage";
+import WartaFormPage from "./admin/warta/WartaFormPage";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
           <Route path="/sejarah" element={<SejarahPage />} />
           <Route path="/pengumuman/warta-gereja" element={<WartaListPage />} />
           <Route
-            path="/pengumuman/warta-gereja/input"
+            path="/admin/warta-gereja/formulir/:id?"
             element={<WartaFormPage />}
           />
           <Route
@@ -44,6 +45,7 @@ function App() {
           />
           <Route path="/formulir" element={<FormulirPage />} />
           <Route path="*" element={<LandingPage />} />
+          <Route path="/persembahan" element={<PersembahanPage />} />
         </Routes>
         <Analytics />
       </div>

@@ -130,13 +130,6 @@ const WartaListPage = () => {
 
         <section className="warta-list-section">
           <div className="warta-list-inner">
-            <div className="warta-list-header">
-              <h2 className="warta-list-section-title">Daftar Warta Gereja</h2>
-              <p className="warta-list-section-description">
-                Arsip warta jemaat terbaru GKJ Kebonarum
-              </p>
-            </div>
-
             {wartaList.length === 0 ? (
               <div className="warta-empty">
                 <div className="warta-empty-icon">📋</div>
