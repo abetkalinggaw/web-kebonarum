@@ -361,3 +361,34 @@
 .gallery-drive-button:hover svg {
   color: var(--color-white);
 }
+
+/* Google Drive Button */
+.gallery-drive-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-white);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.gallery-drive-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(-4px);
+}
+
+.gallery-drive-button svg {
+  transition: transform 0.3s ease;
+}
+
+.gallery-drive-button:hover svg {
+  transform: translateX(-3px);
+}
