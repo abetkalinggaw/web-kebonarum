@@ -2,6 +2,22 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Environment Setup
+
+Before running the project, you need to configure environment variables. See [ENV_SETUP.md](./ENV_SETUP.md) for detailed instructions on:
+
+- Setting up YouTube API
+- Configuring Google Drive API
+- Local development environment variables
+
+Quick start:
+
+```bash
+cp .env.example .env
+# Edit .env with your API keys
+npm run dev
+```
+
 ## Available Scripts
 
 In the project directory, you can run:

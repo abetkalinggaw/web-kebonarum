@@ -1,5 +1,4 @@
 import "./App.css";
-import { Analytics } from "@vercel/analytics/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import AboutPage from "./pages/AboutPage";
@@ -47,7 +46,6 @@ function App() {
           <Route path="*" element={<LandingPage />} />
           <Route path="/persembahan" element={<PersembahanPage />} />
         </Routes>
-        <Analytics />
       </div>
     </BrowserRouter>
   );

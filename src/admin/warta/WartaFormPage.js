@@ -40,11 +40,6 @@ const WartaFormPage = () => {
 
   const addGoogleDriveFile = () => {
     // Open Google Drive file picker
-    const popup = window.open(
-      "https://www.google.com/drive/",
-      "google-drive-picker",
-      "width=800,height=600",
-    );
     // In production, you would use Google Picker API
     // For now, we'll use a dialog to input file info
     const fileId = prompt("Masukkan Google Drive File ID:");
