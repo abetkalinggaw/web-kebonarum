@@ -342,6 +342,32 @@ const GalleryPage = () => {
                 <span className="gallery-date">{displayDate}</span>
               </p>
             )}
+            {item?.driveFolderId && (
+              <a
+                href={`https://drive.google.com/drive/folders/${item.driveFolderId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gallery-drive-button"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M3 9h18v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V9z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M3 9l2.5-5c.3-.6.9-1 1.5-1h9c.6 0 1.2.4 1.5 1l2.5 5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                Akses Google Drive
+              </a>
+            )}
             {displayDescription && (
               <p className="gallery-description">{displayDescription}</p>
             )}
@@ -388,7 +414,7 @@ const GalleryPage = () => {
         <div className="gallery-modal" onClick={closeModal}>
           <div className="gallery-modal-content">
             <button className="gallery-modal-close" onClick={closeModal}>
-              ✕
+              
             </button>
             <img src={selectedImage} alt="" />
           </div>
