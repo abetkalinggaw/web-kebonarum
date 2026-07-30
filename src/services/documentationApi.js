@@ -90,11 +90,15 @@ export const getDocumentationImagesById = async (
   return {
     images: Array.isArray(data.images) ? data.images : [],
     nextPageToken: data.nextPageToken || "",
+    thumbnailOnlyFiles: Boolean(data.thumbnailOnlyFiles),
     prefetchedNextPage:
       data.prefetchedNextPage && Array.isArray(data.prefetchedNextPage.images)
         ? {
             images: data.prefetchedNextPage.images,
             nextPageToken: data.prefetchedNextPage.nextPageToken || "",
+            thumbnailOnlyFiles: Boolean(
+              data.prefetchedNextPage.thumbnailOnlyFiles,
+            ),
           }
         : null,
   };

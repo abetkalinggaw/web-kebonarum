@@ -38,15 +38,6 @@ const DEFAULT_DOCUMENTATION_IMAGE =
     </svg>
   `);
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-};
-
 const DocumentationCard = ({ item, imageUrl, onClick }) => {
   const resolvedImageUrl =
     imageUrl || item?.images?.[0] || DEFAULT_DOCUMENTATION_IMAGE;
@@ -66,7 +57,6 @@ const DocumentationCard = ({ item, imageUrl, onClick }) => {
       </div>
       <div className="documentation-card-content">
         <h3 className="documentation-card-title">{item.title}</h3>
-        <p className="documentation-card-date">{formatDate(item.date)}</p>
       </div>
     </article>
   );
@@ -82,7 +72,6 @@ const DocumentationSkeleton = ({ count = 8 }) => (
         <div className="documentation-card-image documentation-skeleton-block" />
         <div className="documentation-card-content">
           <div className="documentation-skeleton-line documentation-skeleton-title" />
-          <div className="documentation-skeleton-line documentation-skeleton-date" />
         </div>
       </article>
     ))}
@@ -93,7 +82,6 @@ const DocumentationPage = () => {
   const navigate = useNavigate();
   const [documentationItems, setDocumentationItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("latest");
   const [isLoadingItems, setIsLoadingItems] = useState(false);
   const [isLoadingMoreItems, setIsLoadingMoreItems] = useState(false);
   const [nextPageToken, setNextPageToken] = useState("");
@@ -156,19 +144,10 @@ const DocumentationPage = () => {
       );
     }
 
-    return [...nextItems].sort((a, b) => {
-      if (sortBy === "latest") {
-        return new Date(b.date) - new Date(a.date);
-      }
-      if (sortBy === "oldest") {
-        return new Date(a.date) - new Date(b.date);
-      }
-      if (sortBy === "title") {
-        return a.title.localeCompare(b.title);
-      }
-      return 0;
-    });
-  }, [documentationItems, searchQuery, sortBy]);
+    return [...nextItems].sort((a, b) =>
+      b.title.localeCompare(a.title, "id", { sensitivity: "base" }),
+    );
+  }, [documentationItems, searchQuery]);
 
   const loadMoreItems = useCallback(async () => {
     if (!hasMoreItems || isLoadingItems || isLoadingMoreRef.current) {
@@ -316,22 +295,6 @@ const DocumentationPage = () => {
                   strokeLinejoin="round"
                 />
               </svg>
-            </div>
-
-            <div className="documentation-controls-actions">
-              <div className="documentation-sort">
-                <label htmlFor="sort-select">Sort By:</label>
-                <select
-                  id="sort-select"
-                  className="documentation-sort-select"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="latest">Latest</option>
-                  <option value="oldest">Oldest</option>
-                  <option value="title">Title</option>
-                </select>
-              </div>
             </div>
           </div>
         </section>

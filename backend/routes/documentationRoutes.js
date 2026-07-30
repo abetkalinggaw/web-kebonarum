@@ -6,6 +6,7 @@ const {
   resolveFolderId,
   fetchDriveFileById,
   fetchDriveFolderCoverUrl,
+  fetchDriveFirstChildFolderCoverUrl,
   fetchDriveFolderCoversMap,
   fetchDriveFolderImagePage,
   fetchDriveChildFolderPage,
@@ -76,11 +77,32 @@ router.get("/", async (req, res) => {
       }
     }
 
-    const items = foldersToItems(currentPage.folders, coverMap);
+    let childCoverMap = {};
+    if (allFolderIds.length) {
+      const childCoverResults = await Promise.allSettled(
+        allFolders.map(async (folder) => ({
+          folderId: folder.id,
+          url: await fetchDriveFirstChildFolderCoverUrl(folder.id),
+        })),
+      );
+
+      for (const result of childCoverResults) {
+        if (result.status === "fulfilled" && result.value.url) {
+          childCoverMap[result.value.folderId] = result.value.url;
+        }
+      }
+    }
+
+    const preferredCoverMap = {
+      ...coverMap,
+      ...childCoverMap,
+    };
+
+    const items = foldersToItems(currentPage.folders, preferredCoverMap);
 
     const prefetchedNextPage = nextPage
       ? {
-          items: foldersToItems(nextPage.folders, coverMap),
+          items: foldersToItems(nextPage.folders, preferredCoverMap),
           nextPageToken: nextPage.nextPageToken,
         }
       : null;
@@ -132,9 +154,38 @@ router.get("/:id", async (req, res) => {
       coverUrl = "";
     }
 
-    return res.json(
-      mapFolderToDocumentationItem({ folder, imageUrl: coverUrl }),
-    );
+    let childFolders = [];
+    try {
+      const childFolderPage = await fetchDriveChildFolderPage({
+        folderId,
+        pageSize: 50,
+      });
+
+      if (childFolderPage.folders.length > 0) {
+        const childFolderIds = childFolderPage.folders.map(
+          (folder) => folder.id,
+        );
+        let childCoverMap = {};
+
+        try {
+          childCoverMap = await fetchDriveFolderCoversMap(childFolderIds);
+        } catch (error) {
+          logDriveError({
+            context: "documentation.get.childFolders.covers",
+            error,
+          });
+        }
+
+        childFolders = foldersToItems(childFolderPage.folders, childCoverMap);
+      }
+    } catch (error) {
+      logDriveError({ context: "documentation.get.childFolders", error });
+    }
+
+    return res.json({
+      ...mapFolderToDocumentationItem({ folder, imageUrl: coverUrl }),
+      childFolders,
+    });
   } catch (error) {
     if (error?.status === 404 || error?.message?.includes("status 404")) {
       return res

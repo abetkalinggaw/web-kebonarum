@@ -56,77 +56,60 @@
   display: flex;
   gap: 1.5rem;
   align-items: center;
-  justify-content: flex-start;
-}
-
-.documentation-controls-actions {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  justify-content: center;
 }
 
 /* Search */
 .documentation-search {
   position: relative;
-  flex: 1;
-  max-width: 400px;
+  width: min(100%, 520px);
 }
 
 .documentation-search-input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  border: 1px solid var(--color-border-default);
-  border-radius: 8px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 56px;
+  padding: 0.9rem 1.1rem 0.9rem 3rem;
+  border: 1.5px solid rgba(58, 63, 60, 0.16);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+  font-size: 0.98rem;
+  color: var(--color-text-900);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.documentation-search-input::placeholder {
+  color: var(--color-text-500);
+  opacity: 0.9;
+}
+
+.documentation-search-input:hover {
+  border-color: rgba(58, 63, 60, 0.28);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
 }
 
 .documentation-search-input:focus {
   outline: none;
   border-color: var(--color-brand-900);
-  box-shadow: 0 0 0 3px rgba(58, 63, 60, 0.1);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 4px rgba(58, 63, 60, 0.08),
+    0 8px 20px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
 }
 
 .documentation-search-icon {
   position: absolute;
-  left: 0.75rem;
+  left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--color-text-500);
+  color: var(--color-brand-900);
+  opacity: 0.7;
   pointer-events: none;
-}
-
-/* Filter and Sort Dropdowns */
-.documentation-filter,
-.documentation-sort {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  color: var(--color-text-700);
-}
-
-.documentation-filter-select,
-.documentation-sort-select {
-  padding: 0.5rem 2rem 0.5rem 0.75rem;
-  border: 1px solid var(--color-border-default);
-  border-radius: 6px;
-  font-size: 0.95rem;
-  background: var(--color-white);
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.documentation-filter-select:focus,
-.documentation-sort-select:focus {
-  outline: none;
-  border-color: var(--color-brand-900);
-  box-shadow: 0 0 0 3px rgba(58, 63, 60, 0.1);
 }
 
 /* Documentation Section */
@@ -182,7 +165,7 @@
 }
 
 .documentation-card-content {
-  padding: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -199,15 +182,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.documentation-card-date {
-  font-size: 0.85rem;
-  color: var(--color-text-500);
-  margin-top: 1rem;
-  border-top: 1px solid var(--color-border-subtle);
-  padding-top: 1rem;
-  text-align: right;
 }
 
 .documentation-card-skeleton {
@@ -237,11 +211,6 @@
   margin-bottom: 0.9rem;
 }
 
-.documentation-skeleton-date {
-  width: 45%;
-  margin-top: 0.6rem;
-}
-
 @keyframes documentation-skeleton-shimmer {
   from {
     background-position: 200% 0;
@@ -267,25 +236,16 @@
   }
 
   .documentation-controls-inner {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
-
-  .documentation-controls-actions {
-    margin-left: 0;
-    flex-direction: column;
-    align-items: stretch;
+    justify-content: center;
     gap: 1rem;
   }
 
   .documentation-search {
-    max-width: 100%;
+    width: 100%;
   }
 
-  .documentation-filter,
-  .documentation-sort {
-    justify-content: space-between;
+  .documentation-search-input {
+    min-height: 52px;
   }
 
   .documentation-grid {

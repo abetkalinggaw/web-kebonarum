@@ -14,6 +14,41 @@ const GALLERY_IMAGE_LOAD_DELAY_MS = 80;
 const GALLERY_IMAGE_REQUEST_DELAY_MS = 140;
 const LOAD_MORE_REQUEST_DELAY_MS = 180;
 
+const extractDriveFileId = (url = "") => {
+  if (!url) {
+    return "";
+  }
+
+  const directPathMatch = url.match(/\/d\/([^=/?&#]+)/);
+  if (directPathMatch?.[1]) {
+    return directPathMatch[1];
+  }
+
+  const queryMatch = url.match(/[?&]id=([^&]+)/);
+  if (queryMatch?.[1]) {
+    return queryMatch[1];
+  }
+
+  return "";
+};
+
+const buildImageCandidates = (url = "") => {
+  const fileId = extractDriveFileId(url);
+  const candidates = [];
+
+  if (url) {
+    candidates.push(url);
+  }
+
+  if (fileId) {
+    candidates.push(`https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`);
+    candidates.push(`https://drive.google.com/uc?export=view&id=${fileId}`);
+    candidates.push(`https://lh3.googleusercontent.com/d/${fileId}=w1600`);
+  }
+
+  return [...new Set(candidates.filter(Boolean))];
+};
+
 const mergeUniqueImages = (existingImages, incomingImages) => {
   const seen = new Set(existingImages);
   const merged = [...existingImages];
@@ -26,15 +61,6 @@ const mergeUniqueImages = (existingImages, incomingImages) => {
   });
 
   return merged;
-};
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
 };
 
 const GallerySkeleton = ({ count = 8 }) => (
@@ -55,6 +81,13 @@ const LazyGalleryImage = ({ src, alt, onClick, delay = 0 }) => {
   const imageRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const imageCandidates = useMemo(() => buildImageCandidates(src), [src]);
+  const activeImageSrc = imageCandidates[sourceIndex] || "";
+
+  useEffect(() => {
+    setSourceIndex(0);
+  }, [src]);
 
   useEffect(() => {
     const element = imageRef.current;
@@ -103,13 +136,96 @@ const LazyGalleryImage = ({ src, alt, onClick, delay = 0 }) => {
 
   return (
     <div ref={imageRef} className="gallery-item" onClick={onClick}>
-      {shouldLoad ? (
-        <img src={src} alt={alt} loading="lazy" decoding="async" />
+      {shouldLoad && activeImageSrc ? (
+        <img
+          src={activeImageSrc}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          onError={() => {
+            setSourceIndex((previousIndex) =>
+              previousIndex + 1 < imageCandidates.length
+                ? previousIndex + 1
+                : imageCandidates.length,
+            );
+          }}
+        />
       ) : (
         <div className="gallery-item-placeholder" aria-hidden="true" />
       )}
       <div className="gallery-item-overlay"></div>
     </div>
+  );
+};
+
+const GalleryFolderCard = ({ folder, onClick }) => {
+  const resolvedImageUrl = folder?.imageUrl || folder?.images?.[0] || "";
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const imageCandidates = useMemo(
+    () => buildImageCandidates(resolvedImageUrl),
+    [resolvedImageUrl],
+  );
+  const activeImageSrc = imageCandidates[sourceIndex] || "";
+
+  useEffect(() => {
+    setSourceIndex(0);
+  }, [resolvedImageUrl]);
+
+  return (
+    <article className="gallery-folder-card" onClick={() => onClick(folder)}>
+      <div className="gallery-folder-card-image">
+        {activeImageSrc ? (
+          <img
+            src={activeImageSrc}
+            alt={folder.title}
+            loading="lazy"
+            decoding="async"
+            onError={() => {
+              setSourceIndex((previousIndex) =>
+                previousIndex + 1 < imageCandidates.length
+                  ? previousIndex + 1
+                  : imageCandidates.length,
+              );
+            }}
+          />
+        ) : (
+          <div className="gallery-folder-card-placeholder" aria-hidden="true" />
+        )}
+      </div>
+      <div className="gallery-folder-card-content">
+        <h3 className="gallery-folder-card-title">{folder.title}</h3>
+      </div>
+    </article>
+  );
+};
+
+const ModalGalleryImage = ({ src, alt }) => {
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const imageCandidates = useMemo(() => buildImageCandidates(src), [src]);
+  const activeImageSrc = imageCandidates[sourceIndex] || "";
+
+  useEffect(() => {
+    setSourceIndex(0);
+  }, [src]);
+
+  if (!activeImageSrc) {
+    return (
+      <div className="gallery-modal-image-placeholder" aria-hidden="true" />
+    );
+  }
+
+  return (
+    <img
+      src={activeImageSrc}
+      alt={alt}
+      onError={() => {
+        setSourceIndex((previousIndex) =>
+          previousIndex + 1 < imageCandidates.length
+            ? previousIndex + 1
+            : imageCandidates.length,
+        );
+      }}
+    />
   );
 };
 
@@ -360,6 +476,16 @@ const GalleryPage = () => {
     };
   }, [hasMoreImages, isLoadingItem, loadMoreImages]);
 
+  const childFolders = useMemo(() => {
+    const folders = Array.isArray(item?.childFolders) ? item.childFolders : [];
+
+    return [...folders].sort((leftFolder, rightFolder) =>
+      (leftFolder?.title || "").localeCompare(rightFolder?.title || "", "id", {
+        sensitivity: "base",
+      }),
+    );
+  }, [item?.childFolders]);
+
   if (!item && !isLoadingItem) {
     return (
       <>
@@ -388,8 +514,23 @@ const GalleryPage = () => {
   };
 
   const displayTitle = item?.title || "";
-  const displayDate = item?.date ? formatDate(item.date) : "";
   const displayDescription = item?.description || "";
+  const titlePath = Array.isArray(location.state?.titlePath)
+    ? location.state.titlePath
+    : location.state?.parentTitle
+      ? [location.state.parentTitle]
+      : [];
+  const heroTitle = [...titlePath, displayTitle].filter(Boolean).join(" / ");
+  const shouldShowImageSkeleton =
+    isLoadingDriveImages &&
+    galleryImages.length === 0 &&
+    childFolders.length === 0;
+
+  const handleFolderClick = (folder) => {
+    navigate(`/media/documentation/gallery/${folder.id}`, {
+      state: { item: folder, titlePath: [...titlePath, displayTitle] },
+    });
+  };
 
   return (
     <>
@@ -413,13 +554,8 @@ const GalleryPage = () => {
             <h1 className="gallery-title">
               Dokumentasi
               <br />
-              {displayTitle}
+              {heroTitle}
             </h1>
-            {displayDate && (
-              <p className="gallery-meta">
-                <span className="gallery-date">{displayDate}</span>
-              </p>
-            )}
             {item?.driveFolderId && (
               <a
                 href={`https://drive.google.com/drive/folders/${item.driveFolderId}`}
@@ -454,8 +590,29 @@ const GalleryPage = () => {
 
         <section className="gallery-section">
           <div className="gallery-section-inner">
+            {childFolders.length > 0 && (
+              <div className="gallery-subfolder-section">
+                <div className="gallery-subfolder-header">
+                  <h2 className="gallery-subfolder-title">
+                    Folder di dalam folder ini
+                  </h2>
+                  <p className="gallery-subfolder-description">
+                    Buka folder lain yang tersimpan di dalam dokumentasi ini.
+                  </p>
+                </div>
+                <div className="gallery-subfolder-grid">
+                  {childFolders.map((folder) => (
+                    <GalleryFolderCard
+                      key={folder.id}
+                      folder={folder}
+                      onClick={handleFolderClick}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="gallery-grid">
-              {isLoadingDriveImages && galleryImages.length === 0 ? (
+              {shouldShowImageSkeleton ? (
                 <GallerySkeleton count={10} />
               ) : galleryImages.length > 0 ? (
                 <>
@@ -472,7 +629,7 @@ const GalleryPage = () => {
                 </>
               ) : driveImageError ? (
                 <p className="gallery-no-images">{driveImageError}</p>
-              ) : (
+              ) : childFolders.length > 0 ? null : (
                 <GallerySkeleton count={6} />
               )}
             </div>
@@ -494,7 +651,7 @@ const GalleryPage = () => {
               className="gallery-modal-close"
               onClick={closeModal}
             ></button>
-            <img src={selectedImage} alt="" />
+            <ModalGalleryImage src={selectedImage} alt="" />
           </div>
         </div>
       )}

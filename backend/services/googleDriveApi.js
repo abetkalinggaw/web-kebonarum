@@ -141,6 +141,21 @@ const fetchDriveFolderCoverUrl = async (folderId) => {
   return firstImage?.id ? createDriveThumbnailUrl(firstImage.id) : null;
 };
 
+const fetchDriveFirstChildFolderCoverUrl = async (folderId) => {
+  const childFolderPage = await fetchDriveChildFolderPage({
+    folderId,
+    pageSize: 1,
+  });
+
+  const firstChildFolder = childFolderPage.folders.find((folder) => folder?.id);
+
+  if (!firstChildFolder?.id) {
+    return null;
+  }
+
+  return fetchDriveFolderCoverUrl(firstChildFolder.id);
+};
+
 /**
  * Fetches cover images for multiple folders.
  *
@@ -286,6 +301,7 @@ module.exports = {
   resolveFolderId,
   fetchDriveFileById,
   fetchDriveFolderCoverUrl,
+  fetchDriveFirstChildFolderCoverUrl,
   fetchDriveFolderCoversMap,
   fetchDriveFolderImagePage,
   fetchDriveChildFolderPage,
