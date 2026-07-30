@@ -5,7 +5,6 @@ import majelis2 from "../../assets/majelis/majelis2.jpg";
 import majelis3 from "../../assets/majelis/majelis3.jpg";
 import majelis4 from "../../assets/majelis/majelis4.jpg";
 import majelis5 from "../../assets/majelis/majelis5.jpg";
-import majelis6 from "../../assets/majelis/majelis6.jpg";
 
 const MajelisGKJ = () => {
   const navigate = useNavigate();
