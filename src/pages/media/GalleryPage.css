@@ -211,6 +211,34 @@
   animation: gallery-skeleton-shimmer 1.2s infinite linear;
 }
 
+.gallery-video-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.gallery-video-indicator svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+  margin-left: 3px;
+}
+
+.gallery-item.is-video:hover .gallery-video-indicator {
+  transform: translate(-50%, -50%) scale(1.1);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
 .gallery-item:hover img {
   transform: scale(1.05);
 }
@@ -303,6 +331,23 @@
   max-height: 90vh;
   object-fit: contain;
   border-radius: 8px;
+}
+
+.gallery-modal-video-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-modal-video-wrapper iframe {
+  width: 90vw;
+  height: 80vh;
+  max-width: 1200px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .gallery-modal-image-placeholder {

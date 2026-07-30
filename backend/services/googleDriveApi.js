@@ -10,7 +10,7 @@ const createDriveThumbnailUrl = (fileId) =>
   `https://lh3.googleusercontent.com/d/${fileId}=w1600`;
 
 const buildFolderImageQuery = (folderId) =>
-  `'${folderId}' in parents and mimeType contains 'image/' and trashed=false`;
+  `'${folderId}' in parents and (mimeType contains 'image/' or mimeType contains 'video/') and trashed=false`;
 
 const buildChildFolderQuery = (folderId) =>
   `'${folderId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`;
@@ -176,7 +176,7 @@ const fetchDriveFolderCoversMap = async (folderIds) => {
       const chunk = folderIds.slice(i, i + CHUNK_SIZE);
       const query = `(${chunk
         .map((id) => `'${id}' in parents`)
-        .join(" or ")}) and mimeType contains 'image/' and trashed=false`;
+        .join(" or ")}) and (mimeType contains 'image/' or mimeType contains 'video/') and trashed=false`;
 
       const data = await fetchDriveFiles({
         query,
@@ -257,7 +257,12 @@ const fetchDriveFolderImagePage = async ({
   const imageFiles = files.filter((file) => file?.id);
 
   return {
-    images: imageFiles.map((file) => createDriveThumbnailUrl(file.id)),
+    images: imageFiles.map((file) => ({
+      url: createDriveThumbnailUrl(file.id),
+      mimeType: file.mimeType,
+      id: file.id,
+      name: file.name
+    })),
     nextPageToken: data.nextPageToken || "",
   };
 };

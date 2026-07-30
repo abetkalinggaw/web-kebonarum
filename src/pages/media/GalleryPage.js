@@ -50,13 +50,15 @@ const buildImageCandidates = (url = "") => {
 };
 
 const mergeUniqueImages = (existingImages, incomingImages) => {
-  const seen = new Set(existingImages);
+  const getUrl = (img) => typeof img === "string" ? img : img?.url;
+  const seen = new Set(existingImages.map(getUrl));
   const merged = [...existingImages];
 
-  incomingImages.forEach((imageUrl) => {
-    if (!seen.has(imageUrl)) {
-      seen.add(imageUrl);
-      merged.push(imageUrl);
+  incomingImages.forEach((image) => {
+    const url = getUrl(image);
+    if (!seen.has(url)) {
+      seen.add(url);
+      merged.push(image);
     }
   });
 
@@ -77,7 +79,7 @@ const GallerySkeleton = ({ count = 8 }) => (
   </>
 );
 
-const LazyGalleryImage = ({ src, alt, onClick, delay = 0 }) => {
+const LazyGalleryImage = ({ src, isVideo, alt, onClick, delay = 0 }) => {
   const imageRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
@@ -135,21 +137,30 @@ const LazyGalleryImage = ({ src, alt, onClick, delay = 0 }) => {
   }, [delay, isInView]);
 
   return (
-    <div ref={imageRef} className="gallery-item" onClick={onClick}>
+    <div ref={imageRef} className={`gallery-item ${isVideo ? "is-video" : ""}`} onClick={onClick}>
       {shouldLoad && activeImageSrc ? (
-        <img
-          src={activeImageSrc}
-          alt={alt}
-          loading="lazy"
-          decoding="async"
-          onError={() => {
-            setSourceIndex((previousIndex) =>
-              previousIndex + 1 < imageCandidates.length
-                ? previousIndex + 1
-                : imageCandidates.length,
-            );
-          }}
-        />
+        <>
+          <img
+            src={activeImageSrc}
+            alt={alt}
+            loading="lazy"
+            decoding="async"
+            onError={() => {
+              setSourceIndex((previousIndex) =>
+                previousIndex + 1 < imageCandidates.length
+                  ? previousIndex + 1
+                  : imageCandidates.length,
+              );
+            }}
+          />
+          {isVideo && (
+            <div className="gallery-video-indicator">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          )}
+        </>
       ) : (
         <div className="gallery-item-placeholder" aria-hidden="true" />
       )}
@@ -199,7 +210,9 @@ const GalleryFolderCard = ({ folder, onClick }) => {
   );
 };
 
-const ModalGalleryImage = ({ src, alt }) => {
+const ModalGalleryImage = ({ image, alt }) => {
+  const isVideo = typeof image !== "string" && image?.mimeType?.includes("video");
+  const src = typeof image === "string" ? image : image?.url;
   const [sourceIndex, setSourceIndex] = useState(0);
   const imageCandidates = useMemo(() => buildImageCandidates(src), [src]);
   const activeImageSrc = imageCandidates[sourceIndex] || "";
@@ -207,6 +220,18 @@ const ModalGalleryImage = ({ src, alt }) => {
   useEffect(() => {
     setSourceIndex(0);
   }, [src]);
+
+  if (isVideo && image?.id) {
+    return (
+      <div className="gallery-modal-video-wrapper">
+        <iframe
+          src={`https://drive.google.com/file/d/${image.id}/preview`}
+          allow="autoplay; fullscreen"
+          title={alt || "Video preview"}
+        />
+      </div>
+    );
+  }
 
   if (!activeImageSrc) {
     return (
@@ -521,10 +546,6 @@ const GalleryPage = () => {
       ? [location.state.parentTitle]
       : [];
   const heroTitle = [...titlePath, displayTitle].filter(Boolean).join(" / ");
-  const shouldShowImageSkeleton =
-    isLoadingDriveImages &&
-    galleryImages.length === 0 &&
-    childFolders.length === 0;
 
   const handleFolderClick = (folder) => {
     navigate(`/media/documentation/gallery/${folder.id}`, {
@@ -612,26 +633,33 @@ const GalleryPage = () => {
               </div>
             )}
             <div className="gallery-grid">
-              {shouldShowImageSkeleton ? (
+              {isLoadingDriveImages || isLoadingItem ? (
                 <GallerySkeleton count={10} />
               ) : galleryImages.length > 0 ? (
                 <>
-                  {galleryImages.map((image, index) => (
-                    <LazyGalleryImage
-                      key={image}
-                      src={image}
-                      alt=""
-                      onClick={() => handleImageClick(image)}
-                      delay={Math.min(index * GALLERY_IMAGE_LOAD_DELAY_MS, 640)}
-                    />
-                  ))}
+                  {galleryImages.map((image, index) => {
+                    const isObj = typeof image !== "string";
+                    const src = isObj ? image.url : image;
+                    const key = isObj ? image.id : image;
+                    const isVideo = isObj && image?.mimeType?.includes("video");
+                    return (
+                      <LazyGalleryImage
+                        key={key}
+                        src={src}
+                        isVideo={isVideo}
+                        alt=""
+                        onClick={() => handleImageClick(image)}
+                        delay={Math.min(index * GALLERY_IMAGE_LOAD_DELAY_MS, 640)}
+                      />
+                    );
+                  })}
                   {isLoadingMoreImages && <GallerySkeleton count={4} />}
                 </>
               ) : driveImageError ? (
                 <p className="gallery-no-images">{driveImageError}</p>
-              ) : childFolders.length > 0 ? null : (
-                <GallerySkeleton count={6} />
-              )}
+              ) : childFolders.length === 0 ? (
+                <p className="gallery-no-images">Belum ada foto dalam album ini.</p>
+              ) : null}
             </div>
             {hasMoreImages && (
               <div
@@ -651,7 +679,7 @@ const GalleryPage = () => {
               className="gallery-modal-close"
               onClick={closeModal}
             ></button>
-            <ModalGalleryImage src={selectedImage} alt="" />
+            <ModalGalleryImage image={selectedImage} alt="" />
           </div>
         </div>
       )}
