@@ -10,6 +10,9 @@ import {
 } from "../../services/documentationApi";
 
 const IMAGE_PAGE_SIZE = 12;
+const GALLERY_IMAGE_LOAD_DELAY_MS = 80;
+const GALLERY_IMAGE_REQUEST_DELAY_MS = 140;
+const LOAD_MORE_REQUEST_DELAY_MS = 180;
 
 const mergeUniqueImages = (existingImages, incomingImages) => {
   const seen = new Set(existingImages);
@@ -48,6 +51,68 @@ const GallerySkeleton = ({ count = 8 }) => (
   </>
 );
 
+const LazyGalleryImage = ({ src, alt, onClick, delay = 0 }) => {
+  const imageRef = useRef(null);
+  const [isInView, setIsInView] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const element = imageRef.current;
+
+    if (!element) {
+      return undefined;
+    }
+
+    let isCancelled = false;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting && !isCancelled) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        root: null,
+        rootMargin: "240px",
+        threshold: 0.01,
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      isCancelled = true;
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isInView) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setShouldLoad(true);
+    }, delay);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [delay, isInView]);
+
+  return (
+    <div ref={imageRef} className="gallery-item" onClick={onClick}>
+      {shouldLoad ? (
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
+      ) : (
+        <div className="gallery-item-placeholder" aria-hidden="true" />
+      )}
+      <div className="gallery-item-overlay"></div>
+    </div>
+  );
+};
+
 const GalleryPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -68,6 +133,7 @@ const GalleryPage = () => {
   const [isLoadingMoreImages, setIsLoadingMoreImages] = useState(false);
   const loadMoreRef = useRef(null);
   const isLoadingMoreRef = useRef(false);
+  const loadMoreRequestTimerRef = useRef(null);
 
   useEffect(() => {
     let isCancelled = false;
@@ -111,70 +177,72 @@ const GalleryPage = () => {
 
   useEffect(() => {
     let isCancelled = false;
-
-    const loadDriveImages = async () => {
-      if (!item) {
-        setDriveImages([]);
-        setNextPageToken("");
-        setPrefetchedPage(null);
-        setHasMoreImages(false);
-        setDriveImageError("");
-        return;
-      }
-
-      if (!item.driveFolderId) {
-        setDriveImages([]);
-        setNextPageToken("");
-        setPrefetchedPage(null);
-        setHasMoreImages(false);
-        setDriveImageError("");
-        return;
-      }
-
-      setIsLoadingDriveImages(true);
-      setDriveImageError("");
-      setDriveImages([]);
-      setNextPageToken("");
-      setPrefetchedPage(null);
-      setHasMoreImages(false);
-
-      try {
-        const firstPage = await getDocumentationImagesById(item.id, {
-          pageSize: IMAGE_PAGE_SIZE,
-        });
-
-        if (isCancelled) {
-          return;
-        }
-
-        setDriveImages(firstPage.images);
-        setNextPageToken(firstPage.nextPageToken || "");
-        setPrefetchedPage(firstPage.prefetchedNextPage || null);
-        setHasMoreImages(
-          Boolean(firstPage.nextPageToken) ||
-            Boolean(firstPage.prefetchedNextPage?.images?.length),
-        );
-      } catch (error) {
-        if (!isCancelled) {
+    const requestTimerId = window.setTimeout(() => {
+      const loadDriveImages = async () => {
+        if (!item) {
           setDriveImages([]);
           setNextPageToken("");
           setPrefetchedPage(null);
           setHasMoreImages(false);
-          setDriveImageError(
-            "Gagal memuat foto dari backend Google Drive API.",
-          );
+          setDriveImageError("");
+          return;
         }
-      } finally {
-        if (!isCancelled) {
-          setIsLoadingDriveImages(false);
-        }
-      }
-    };
 
-    loadDriveImages();
+        if (!item.driveFolderId) {
+          setDriveImages([]);
+          setNextPageToken("");
+          setPrefetchedPage(null);
+          setHasMoreImages(false);
+          setDriveImageError("");
+          return;
+        }
+
+        setIsLoadingDriveImages(true);
+        setDriveImageError("");
+        setDriveImages([]);
+        setNextPageToken("");
+        setPrefetchedPage(null);
+        setHasMoreImages(false);
+
+        try {
+          const firstPage = await getDocumentationImagesById(item.id, {
+            pageSize: IMAGE_PAGE_SIZE,
+          });
+
+          if (isCancelled) {
+            return;
+          }
+
+          setDriveImages(firstPage.images);
+          setNextPageToken(firstPage.nextPageToken || "");
+          setPrefetchedPage(firstPage.prefetchedNextPage || null);
+          setHasMoreImages(
+            Boolean(firstPage.nextPageToken) ||
+              Boolean(firstPage.prefetchedNextPage?.images?.length),
+          );
+        } catch (error) {
+          if (!isCancelled) {
+            setDriveImages([]);
+            setNextPageToken("");
+            setPrefetchedPage(null);
+            setHasMoreImages(false);
+            setDriveImageError(
+              "Gagal memuat foto dari backend Google Drive API.",
+            );
+          }
+        } finally {
+          if (!isCancelled) {
+            setIsLoadingDriveImages(false);
+          }
+        }
+      };
+
+      loadDriveImages();
+    }, GALLERY_IMAGE_REQUEST_DELAY_MS);
 
     return () => {
       isCancelled = true;
+      window.clearTimeout(requestTimerId);
     };
   }, [item]);
 
@@ -265,7 +333,13 @@ const GalleryPage = () => {
       (entries) => {
         const firstEntry = entries[0];
         if (firstEntry?.isIntersecting) {
-          loadMoreImages();
+          if (loadMoreRequestTimerRef.current) {
+            window.clearTimeout(loadMoreRequestTimerRef.current);
+          }
+
+          loadMoreRequestTimerRef.current = window.setTimeout(() => {
+            loadMoreImages();
+          }, LOAD_MORE_REQUEST_DELAY_MS);
         }
       },
       {
@@ -278,6 +352,10 @@ const GalleryPage = () => {
     observer.observe(loadMoreRef.current);
 
     return () => {
+      if (loadMoreRequestTimerRef.current) {
+        window.clearTimeout(loadMoreRequestTimerRef.current);
+      }
+
       observer.disconnect();
     };
   }, [hasMoreImages, isLoadingItem, loadMoreImages]);
@@ -365,7 +443,7 @@ const GalleryPage = () => {
                     strokeLinejoin="round"
                   />
                 </svg>
-                Akses Google Drive
+                Link Google Drive
               </a>
             )}
             {displayDescription && (
@@ -382,14 +460,13 @@ const GalleryPage = () => {
               ) : galleryImages.length > 0 ? (
                 <>
                   {galleryImages.map((image, index) => (
-                    <div
-                      key={index}
-                      className="gallery-item"
+                    <LazyGalleryImage
+                      key={image}
+                      src={image}
+                      alt=""
                       onClick={() => handleImageClick(image)}
-                    >
-                      <img src={image} alt="" loading="lazy" decoding="async" />
-                      <div className="gallery-item-overlay"></div>
-                    </div>
+                      delay={Math.min(index * GALLERY_IMAGE_LOAD_DELAY_MS, 640)}
+                    />
                   ))}
                   {isLoadingMoreImages && <GallerySkeleton count={4} />}
                 </>
@@ -413,9 +490,10 @@ const GalleryPage = () => {
       {selectedImage && (
         <div className="gallery-modal" onClick={closeModal}>
           <div className="gallery-modal-content">
-            <button className="gallery-modal-close" onClick={closeModal}>
-              
-            </button>
+            <button
+              className="gallery-modal-close"
+              onClick={closeModal}
+            ></button>
             <img src={selectedImage} alt="" />
           </div>
         </div>

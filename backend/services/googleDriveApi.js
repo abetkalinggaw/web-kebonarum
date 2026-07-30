@@ -27,6 +27,14 @@ const logDriveError = ({ context, error, status = null, details = null }) => {
   );
 };
 
+const getDriveErrorReason = (details) =>
+  details?.error?.errors?.[0]?.reason || "unknown_reason";
+
+const isExpectedDrivePermissionError = (error, details) => {
+  const reason = getDriveErrorReason(details || error?.details);
+  return error?.status === 403 && reason === "insufficientFilePermissions";
+};
+
 const readJsonSafely = async (response) => {
   try {
     return await response.json();
@@ -66,12 +74,14 @@ const fetchDriveApiJson = async ({ url, context }) => {
   requestError.status = response.status;
   requestError.details = errorDetails;
 
-  logDriveError({
-    context,
-    error: requestError,
-    status: response.status,
-    details: errorDetails,
-  });
+  if (!isExpectedDrivePermissionError(requestError, errorDetails)) {
+    logDriveError({
+      context,
+      error: requestError,
+      status: response.status,
+      details: errorDetails,
+    });
+  }
 
   throw requestError;
 };
@@ -193,7 +203,9 @@ const fetchDriveFolderCoversMap = async (folderIds) => {
 
     return coverMap;
   } catch (error) {
-    logDriveError({ context: "fetchDriveFolderCoversMap.batch", error });
+    if (!isExpectedDrivePermissionError(error)) {
+      logDriveError({ context: "fetchDriveFolderCoversMap.batch", error });
+    }
 
     // Full fallback: individual fetches for all folders
     const results = await Promise.allSettled(
@@ -221,6 +233,7 @@ const fetchDriveFolderImagePage = async ({
   const data = await fetchDriveFiles({
     query: buildFolderImageQuery(folderId),
     pageSize,
+    orderBy: "createdTime",
     fields: "nextPageToken,files(id,mimeType,name,createdTime)",
     pageToken,
   });
