@@ -1,0 +1,137 @@
+.statistik-landing-section {
+  padding: 6rem 2rem;
+  background-color: var(--color-brand-800);
+  background-image:
+    linear-gradient(
+      135deg,
+      rgba(17, 23, 20, 0.8) 0%,
+      rgba(52, 78, 65, 0.6) 100%
+    ),
+    url("../../assets/gkj-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  z-index: 1;
+}
+
+.statistik-landing-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.statistik-landing-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.statistik-landing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.statistik-landing-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.statistik-landing-grid.animate-in .statistik-landing-card {
+  animation: slideUpFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.statistik-landing-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.stat-landing-value {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--color-white);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.stat-landing-label {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-landing-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.stat-landing-trend.positive {
+  color: #a3c2b0;
+  background: rgba(163, 194, 176, 0.1);
+}
+
+.stat-landing-trend.neutral {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+  .statistik-landing-section {
+    padding: 4rem 1.5rem;
+  }
+  .statistik-landing-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .stat-landing-value {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .statistik-landing-section {
+    padding: 3.5rem 1rem;
+  }
+  .statistik-landing-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .statistik-landing-card {
+    padding: 2rem 1.5rem;
+  }
+}

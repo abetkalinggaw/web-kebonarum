@@ -135,6 +135,12 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+main {
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-surface-soft);
+}
+
 /* HEADINGS — CLASH DISPLAY */
 
 h1 {

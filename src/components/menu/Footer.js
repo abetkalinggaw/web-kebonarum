@@ -28,7 +28,7 @@ const Footer = () => {
       <div style={{ height: footerHeight, pointerEvents: 'none', visibility: 'hidden' }} aria-hidden="true"></div>
       
       {/* Fixed footer behind the main content */}
-      <footer ref={footerRef} className="footer" style={{ position: 'fixed', bottom: 0, left: 0, width: '100%', zIndex: -1 }}>
+      <footer ref={footerRef} className="footer" style={{ position: 'fixed', bottom: 0, left: 0, width: '100%', zIndex: 0 }}>
       <div className="footer-container">
         <div className="footer-brand">
           <img src={logo} alt="Kebonarum Logo" className="footer-logo" />

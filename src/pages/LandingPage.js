@@ -1,6 +1,7 @@
 import "./LandingPage.css";
 import Navbar from "../components/menu/Navbar";
 import EventCarousel from "../components/landing_page/EventCarousel";
+import StatistikSection from "../components/landing_page/StatistikSection";
 import PendetaCarousel from "../components/landing_page/PendetaCarousel";
 import Separator from "../components/landing_page/Separator";
 import KebonarumInfo from "../components/landing_page/KebonarumInfo";
@@ -14,7 +15,8 @@ const LandingPage = () => {
   return (
     <>
       <Navbar />
-      <div className="landing-page">
+      <main style={{ position: 'relative', zIndex: 1, backgroundColor: '#fbfcfb' }}>
+        <div className="landing-page">
         <video className="video-background" autoPlay muted loop playsInline>
           <source src={backgroundVideo} type="video/mp4" />
           Browser Anda tidak mendukung tag video.
@@ -60,10 +62,12 @@ const LandingPage = () => {
         </div>
       </div>
       <Separator />
-      <EventCarousel />
       <KebonarumInfo />
       <VisiMisi />
       <PendetaCarousel />
+      <StatistikSection />
+      <EventCarousel />
+      </main>
       <Footer />
     </>
   );
