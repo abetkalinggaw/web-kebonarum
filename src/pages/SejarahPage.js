@@ -396,9 +396,9 @@ const SejarahPage = () => {
             </button>
           </div>
         </section>
-
-        <Footer />
       </main>
+
+      <Footer isStatic={true} />
     </>
   );
 };

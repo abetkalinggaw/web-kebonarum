@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import "./Footer.css";
 import logo from "../../assets/logo.png";
 
-const Footer = () => {
+const Footer = ({ isStatic = false }) => {
   const footerRef = useRef(null);
   const [footerHeight, setFooterHeight] = useState(0);
 
   useEffect(() => {
+    if (isStatic) return; // No need to calculate height if static
     const updateHeight = () => {
       if (footerRef.current) {
         setFooterHeight(footerRef.current.offsetHeight);
@@ -20,15 +21,15 @@ const Footer = () => {
     setTimeout(updateHeight, 1500);
     
     return () => window.removeEventListener('resize', updateHeight);
-  }, []);
+  }, [isStatic]);
 
   return (
     <>
       {/* Invisible spacer to push the document height so we can scroll past the main content */}
-      <div style={{ height: footerHeight, pointerEvents: 'none', visibility: 'hidden' }} aria-hidden="true"></div>
+      {!isStatic && <div style={{ height: footerHeight, pointerEvents: 'none', visibility: 'hidden' }} aria-hidden="true"></div>}
       
-      {/* Fixed footer behind the main content */}
-      <footer ref={footerRef} className="footer" style={{ position: 'fixed', bottom: 0, left: 0, width: '100%', zIndex: 0 }}>
+      {/* Fixed footer behind the main content (or relative if isStatic is true) */}
+      <footer ref={footerRef} className="footer" style={{ position: isStatic ? 'relative' : 'fixed', bottom: 0, left: 0, width: '100%', zIndex: 0 }}>
       <div className="footer-container">
         <div className="footer-brand">
           <img src={logo} alt="Kebonarum Logo" className="footer-logo" />
