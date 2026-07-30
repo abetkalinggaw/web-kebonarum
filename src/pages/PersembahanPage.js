@@ -1,49 +1,60 @@
 import "./PersembahanPage.css";
 import Navbar from "../components/menu/Navbar";
 import Footer from "../components/menu/Footer";
-import React from "react";
+import React, { useState } from "react";
 
 const PersembahanPage = () => {
+  const [selectedQr, setSelectedQr] = useState(null);
   const persembahanList = [
     {
       id: 1,
-      name: "No. Rekening Gereja Sumbeejo",
-      accountNumber: "ABC 12345678",
-      accountHolder: "A.N Sugeng Tumbler",
-      qrNote: "Anda juga dapat scan barcode Qris disamping",
-      qrCode: "https://via.placeholder.com/128",
+      name: "Gereja Induk Sumberejo",
+      bank: "Bank BRI",
+      accountNumber: "0123-01-000456-50-8",
+      accountHolder: "GKJ Kebonarum",
+      icon: "fas fa-church",
+      qrNote: "Atau scan kode QRIS berikut:",
+      qrCode: "https://via.placeholder.com/150?text=QRIS+Sumberejo",
     },
     {
       id: 2,
-      name: "No. Rekening Gereja Ngrundul",
-      accountNumber: "ABC 12345678",
-      accountHolder: "A.N Sugeng Tumbler",
-      qrNote: "Anda juga dapat scan barcode Qris disamping",
-      qrCode: "https://via.placeholder.com/128",
+      name: "Pepanthan Ngrundul",
+      bank: "Bank Mandiri",
+      accountNumber: "138-00-1234567-8",
+      accountHolder: "GKJ Kebonarum Pep. Ngrundul",
+      icon: "fas fa-place-of-worship",
+      qrNote: "Atau scan kode QRIS berikut:",
+      qrCode: "https://via.placeholder.com/150?text=QRIS+Ngrundul",
     },
     {
       id: 3,
-      name: "No. Rekening Gereja Krosok",
-      accountNumber: "ABC 12345678",
-      accountHolder: "A.N Sugeng Tumbler",
-      qrNote: "Anda juga dapat scan barcode Qris disamping",
-      qrCode: "https://via.placeholder.com/128",
+      name: "Pepanthan Krosok",
+      bank: "Bank BCA",
+      accountNumber: "8765432109",
+      accountHolder: "GKJ Kebonarum Pep. Krosok",
+      icon: "fas fa-place-of-worship",
+      qrNote: "Atau scan kode QRIS berikut:",
+      qrCode: "https://via.placeholder.com/150?text=QRIS+Krosok",
     },
     {
       id: 4,
-      name: "No. Rekening Gereja Prayan",
-      accountNumber: "ABC 12345678",
-      accountHolder: "A.N Sugeng Tumbler",
-      qrNote: "Anda juga dapat scan barcode Qris disamping",
-      qrCode: "https://via.placeholder.com/128",
+      name: "Pepanthan Prayan",
+      bank: "Bank BNI",
+      accountNumber: "0987654321",
+      accountHolder: "GKJ Kebonarum Pep. Prayan",
+      icon: "fas fa-place-of-worship",
+      qrNote: "Atau scan kode QRIS berikut:",
+      qrCode: "https://via.placeholder.com/150?text=QRIS+Prayan",
     },
     {
       id: 5,
-      name: "No. Rekening Gereja Pluneng",
-      accountNumber: "ABC 12345678",
-      accountHolder: "A.N Sugeng Tumbler",
-      qrNote: "Anda juga dapat scan barcode Qris disamping",
-      qrCode: "https://via.placeholder.com/128",
+      name: "Pepanthan Pluneng",
+      bank: "Bank Jateng",
+      accountNumber: "3-012-34567-8",
+      accountHolder: "GKJ Kebonarum Pep. Pluneng",
+      icon: "fas fa-place-of-worship",
+      qrNote: "Atau scan kode QRIS berikut:",
+      qrCode: "https://via.placeholder.com/150?text=QRIS+Pluneng",
     },
   ];
 
@@ -55,13 +66,12 @@ const PersembahanPage = () => {
         <section className="persembahan-hero">
           <div className="persembahan-hero-content">
             <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
-            <h1 className="persembahan-title">
-              Persembahan GKJ Kebonarum
-            </h1>
+            <h1 className="persembahan-title">Persembahan Kasih</h1>
             <p className="persembahan-lead">
-              Persembahan adalah wujud syukur kita kepada Tuhan dan dukungan
-              untuk melanjutkan misi pelayanan gereja. Setiap persembahan, besar
-              atau kecil, adalah berkat yang bermakna.
+              "Hendaklah masing-masing memberikan menurut kerelaan hatinya,
+              jangan dengan sedih hati atau karena paksaan, sebab Allah
+              mengasihi orang yang memberi dengan sukacita." <br />
+              (2 Korintus 9:7)
             </p>
           </div>
         </section>
@@ -69,23 +79,56 @@ const PersembahanPage = () => {
         {/* Persembahan List Section */}
         <section className="persembahan-list-section">
           <div className="persembahan-list-container">
-            {persembahanList.map((item) => (
-              <div key={item.id} className="persembahan-item">
-                <div className="persembahan-item-content">
-                  <h3 className="persembahan-item-name">{item.name}</h3>
-                  <p className="persembahan-item-account">
-                    {item.accountNumber} - {item.accountHolder}
-                  </p>
-                  <p className="persembahan-item-note">{item.qrNote}</p>
+            <div className="persembahan-grid">
+              {persembahanList.map((item) => (
+                <div key={item.id} className="persembahan-card">
+                  <div className="persembahan-card-header">
+                    <h3 className="persembahan-name">{item.name}</h3>
+                  </div>
+
+                  <div className="persembahan-card-body">
+                    <div className="bank-info">
+                      <span className="bank-name">{item.bank}</span>
+                      <div className="account-number">{item.accountNumber}</div>
+                      <div className="account-holder">
+                        a.n. {item.accountHolder}
+                      </div>
+                    </div>
+
+                    <div className="qr-section">
+                      <p className="qr-note">{item.qrNote}</p>
+                      <div 
+                        className="qr-image-wrapper"
+                        onClick={() => setSelectedQr(item.qrCode)}
+                        title="Klik untuk memperbesar QRIS"
+                      >
+                        <img src={item.qrCode} alt={`QRIS ${item.name}`} />
+                        <div className="qr-overlay-icon">
+                          <i className="fas fa-search-plus"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="persembahan-item-qr">
-                  <img src={item.qrCode} alt="QR Code" />
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
       </main>
+
+      {/* QR Code Modal */}
+      {selectedQr && (
+        <div className="qr-modal-overlay" onClick={() => setSelectedQr(null)}>
+          <div className="qr-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="qr-modal-close" onClick={() => setSelectedQr(null)}>
+              <i className="fas fa-times"></i>
+            </button>
+            <img src={selectedQr} alt="QRIS Besar" className="qr-modal-img" />
+            <p className="qr-modal-hint">Scan QRIS ini menggunakan aplikasi pembayaran Anda</p>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );
