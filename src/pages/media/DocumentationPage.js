@@ -257,11 +257,9 @@ const DocumentationPage = () => {
       <main className="documentation-page">
         <section className="documentation-hero">
           <div className="documentation-hero-content">
-            <p className="documentation-kicker">GKJ Kebonarum Klaten</p>
+            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
             <h1 className="documentation-title">
-              Dokumentasi
-              <br />
-              GKJ Kebonarum
+              Dokumentasi GKJ Kebonarum
             </h1>
             <p className="documentation-lead">
               Jelajahi dokumentasi kegiatan dan pelayanan GKJ Kebonarum,

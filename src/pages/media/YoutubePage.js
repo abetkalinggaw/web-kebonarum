@@ -250,11 +250,9 @@ const YoutubePage = () => {
       <main className="youtube-page">
         <section className="youtube-hero">
           <div className="youtube-hero-content">
-            <p className="youtube-kicker">GKJ Kebonarum Klaten</p>
+            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
             <h1 className="youtube-title">
-              YouTube
-              <br />
-              GKJ Kebonarum
+              YouTube GKJ Kebonarum
             </h1>
             <p className="youtube-lead">
               Saksikan berbagai video ibadah, acara, dan kegiatan GKJ Kebonarum

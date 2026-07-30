@@ -54,11 +54,9 @@ const PersembahanPage = () => {
         {/* Hero Section */}
         <section className="persembahan-hero">
           <div className="persembahan-hero-content">
-            <p className="persembahan-kicker">GKJ Kebonarum Klaten</p>
+            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
             <h1 className="persembahan-title">
-              Persembahan
-              <br />
-              GKJ Kebonarum
+              Persembahan GKJ Kebonarum
             </h1>
             <p className="persembahan-lead">
               Persembahan adalah wujud syukur kita kepada Tuhan dan dukungan

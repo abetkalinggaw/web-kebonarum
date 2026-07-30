@@ -116,11 +116,9 @@ const FormulirPage = () => {
       <main className="formulir-page">
         <section className="formulir-hero">
           <div className="formulir-hero-content">
-            <p className="formulir-kicker">GKJ Kebonarum Klaten</p>
+            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
             <h1 className="formulir-title">
               Pusat Unduhan Formulir
-              <br />
-              GKJ Kebonarum
             </h1>
             <p className="formulir-lead">
               Unduh formulir dan dokumen penting yang diperlukan untuk berbagai

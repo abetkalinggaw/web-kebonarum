@@ -115,11 +115,9 @@ const WartaListPage = () => {
       <main className="warta-list-page">
         <section className="warta-hero">
           <div className="warta-hero-content">
-            <p className="warta-kicker">GKJ Kebonarum Klaten</p>
+            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
             <h1 className="warta-title">
-              Warta Gereja
-              <br />
-              GKJ Kebonarum
+              Warta Gereja GKJ Kebonarum
             </h1>
             <p className="warta-lead">
               Kumpulan warta jemaat GKJ Kebonarum. Temukan pengumuman, jadwal

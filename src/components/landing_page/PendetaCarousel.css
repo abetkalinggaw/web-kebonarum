@@ -1,170 +1,129 @@
 .pendeta-section {
   width: 100%;
-  padding: 4rem 0;
-  background: var(--color-surface-muted);
+  padding: 6rem 0;
+  background: #f4f7f4;
+  position: relative;
 }
 
 .pendeta-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
 }
 
-.pendeta-title {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 3rem;
-  letter-spacing: 1px;
-  color: var(--color-brand-900);
-}
-
-.pendeta-carousel-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
+.pendeta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-}
-
-.pendeta-carousel-track {
-  flex: 1;
-  overflow: hidden;
-  touch-action: pan-y;
-  user-select: none;
-}
-
-.pendeta-carousel-slides {
-  display: flex;
-  gap: 1rem;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  padding-bottom: 20px;
-}
-
-.pendeta-carousel-item {
-  min-width: calc(50% - 0.75rem);
+  margin-top: 1.5rem;
 }
 
 .pendeta-card {
   width: 100%;
-  height: 600px;
+  background: #ffffff;
   border-radius: 20px;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: flex-end;
   overflow: hidden;
-  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.pendeta-info {
+.pendeta-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.pendeta-image-box {
   width: 100%;
-  height: 180px;
-  margin: 20px 20px;
-  padding: 1.25rem 1.5rem;
-  background: var(--color-brand-overlay);
-  color: var(--color-white);
-  border-radius: 20px;
+  height: 380px;
+  background-size: cover;
+  background-position: center top;
+  position: relative;
+  transition: transform 0.5s ease;
+}
+
+.pendeta-card:hover .pendeta-image-box {
+  transform: scale(1.02);
+}
+
+.pendeta-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+.pendeta-info-card {
+  padding: 1.75rem 2rem;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pendeta-role-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-brand-800);
+  background: rgba(52, 78, 65, 0.08);
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  margin-bottom: 0.75rem;
 }
 
 .pendeta-name {
-  margin: 0 0 0.4rem 0;
-  font-size: 1.5rem;
-  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-text-900);
+  letter-spacing: -0.01em;
 }
 
 .pendeta-subtitle {
   margin: 0;
-  font-size: 1rem;
-  opacity: 0.9;
+  font-size: 0.925rem;
+  color: var(--color-text-600);
+  line-height: 1.6;
 }
 
-.pendeta-carousel-button {
-  background: var(--color-neutral-300);
-  color: var(--color-brand-900);
-  border: none;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  margin: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-
-.pendeta-carousel-button:hover {
-  background: var(--color-brand-900);
-  color: var(--color-white);
-}
-
-@media (max-width: 1200px) {
-  .pendeta-container {
-    padding: 0 var(--container-pad-tablet);
-  }
-
-  .pendeta-title {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .pendeta-section {
-    padding: 3rem 0;
+    padding: 4.5rem 0;
   }
 
-  .pendeta-container {
-    padding: 0 var(--container-pad-mobile);
+  .pendeta-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .pendeta-title {
-    font-size: 1.7rem;
-    margin-bottom: 2rem;
-  }
-
-  .pendeta-carousel-wrapper {
-    gap: 1rem;
-  }
-
-  .pendeta-carousel-item {
-    min-width: 100%;
-  }
-
-  .pendeta-card {
-    height: 700px;
-  }
-
-  .pendeta-carousel-button {
-    width: 40px;
-    height: 40px;
-    display: none;
-  }
-
-  .pendeta-info {
-    padding: 1rem 1.25rem;
-  }
-
-  .pendeta-name {
-    font-size: 1.1rem;
-  }
-
-  .pendeta-subtitle {
-    font-size: 0.95rem;
+  .pendeta-image-box {
+    height: 320px;
   }
 }
 
-@media (max-width: 480px) {
-  .pendeta-card {
-    height: 500px;
+@media (max-width: 640px) {
+  .pendeta-section {
+    padding: 3.5rem 0;
   }
 
-  .pendeta-carousel-button {
-    width: 36px;
-    height: 36px;
+  .pendeta-grid {
+    grid-template-columns: 1fr;
   }
 
-  .pendeta-carousel-slides {
-    padding: 0 0.5rem;
+  .pendeta-image-box {
+    height: 340px;
+  }
+
+  .pendeta-info-card {
+    padding: 1.25rem 1.5rem;
   }
 }

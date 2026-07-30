@@ -46,11 +46,9 @@ const AboutPage = () => {
           <div className="about-hero-overlay"></div>
 
           <div className="about-hero-content">
-            <p className="about-kicker">GKJ Kebonarum Klaten</p>
+            <span className="section-tag light">PROFIL GEREJA</span>
             <h1 className="about-title">
-              Tentang
-              <br />
-              GKJ Kebonarum
+              Tentang GKJ Kebonarum
             </h1>
             <p className="about-lead">
               GKJ Kebonarum adalah gereja yang melayani jemaat dan masyarakat
@@ -58,11 +56,12 @@ const AboutPage = () => {
             </p>
             <div className="custom-button-container">
               <button
-                className="custom-button"
+                className="minimal-glass-btn"
                 onClick={() => setIsVideoOpen(true)}
                 type="button"
               >
-                VIDEO PROFIL GKJ KEBONARUM
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                Video Profil GKJ Kebonarum
               </button>
             </div>
           </div>

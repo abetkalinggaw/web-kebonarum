@@ -1,172 +1,103 @@
 .visi-misi-section {
   width: 100%;
-  min-height: 500px;
+  padding: 6rem 0;
+  background: #ffffff;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 0;
 }
 
 .visi-misi-wrapper {
-  width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
 }
 
-.visi-misi-section-title {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--color-brand-900);
-  margin-bottom: 2rem;
+.visi-misi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 1rem;
 }
 
-.visi-misi-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 var(--container-pad-desktop);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.visi-misi-container::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 20%;
-  transform: translateX(-50%);
-  width: 5px;
-  height: 60%;
-  background-color: var(--color-brand-900);
-  border-radius: 2px;
-  z-index: 0;
-}
-
-.visi-container,
-.misi-container {
-  flex: 1;
-  height: 300px;
-  padding: 2rem 2rem;
+.visi-misi-card {
+  background: #f8faf8;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.visi-misi-title {
-  font-size: 2.5rem;
-  font-weight: bold;
+.visi-misi-card:hover {
+  transform: translateY(-4px);
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+  border-color: rgba(52, 78, 65, 0.2);
+}
+
+.card-badge {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-brand-800);
+  background: rgba(52, 78, 65, 0.08);
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
   margin-bottom: 1.5rem;
-  text-align: center;
-  color: var(--color-brand-900);
 }
 
-.visi-misi-content {
-  font-size: 1.5rem;
-  line-height: 1.8;
-  text-align: center;
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-text-900);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.card-content {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--color-text-600);
+  margin: 0;
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .visi-misi-section {
-    min-height: 550px;
+    padding: 4.5rem 0;
   }
 
-  .visi-misi-section-title {
-    font-size: 2rem;
+  .visi-misi-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  .visi-misi-container {
-    height: 380px;
-    gap: 2rem;
+  .visi-misi-card {
+    padding: 2.25rem 1.75rem;
+    border-radius: 16px;
   }
 
-  .visi-container,
-  .misi-container {
-    padding: 2.5rem 1.5rem;
+  .card-title {
+    font-size: 1.4rem;
   }
 
-  .visi-misi-title {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .visi-misi-section {
-    min-height: auto;
-    padding: 3rem 0;
-  }
-
-  .visi-misi-wrapper {
-    padding: 0 var(--container-pad-mobile);
-  }
-
-  .visi-misi-section-title {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .visi-misi-container {
-    height: auto;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 0 var(--container-pad-mobile);
-  }
-
-  .visi-container,
-  .misi-container {
-    padding: 2rem 1.5rem;
-    border-radius: 50px;
-  }
-
-  .visi-misi-title {
-    font-size: 2rem;
-  }
-
-  .visi-misi-content {
-    font-size: 0.95rem;
-    text-align: center;
-  }
-
-  .visi-misi-container::before {
-    display: none;
+  .card-content {
+    font-size: 0.98rem;
   }
 }
 
 @media (max-width: 480px) {
   .visi-misi-section {
-    min-height: auto;
-    padding: 2rem 0;
+    padding: 3.5rem 0;
   }
 
-  .visi-misi-section-title {
-    font-size: 1.6rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .visi-misi-container {
-    height: auto;
-    padding: 0 var(--container-pad-mobile);
-    gap: 1.5rem;
-  }
-
-  .visi-container,
-  .misi-container {
-    padding: 1.5rem 1rem;
-    border-radius: 40px;
-  }
-
-  .visi-misi-title {
-    font-size: 1.7rem;
-    margin-bottom: 1rem;
-  }
-
-  .visi-misi-content {
-    font-size: 0.9rem;
+  .visi-misi-card {
+    padding: 1.75rem 1.25rem;
   }
 }
 
-/* Separator between Visi and Misi (vertical on desktop, hidden on mobile) */

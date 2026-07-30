@@ -20,11 +20,9 @@ const InstagramPage = () => {
       <main className="instagram-page">
         <section className="instagram-hero">
           <div className="instagram-hero-content">
-            <p className="instagram-kicker">GKJ Kebonarum Klaten</p>
+            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
             <h1 className="instagram-title">
-              Instagram
-              <br />
-              GKJ Kebonarum
+              Instagram GKJ Kebonarum
             </h1>
             <p className="instagram-lead">
               Ikuti update terbaru pelayanan, kegiatan jemaat, dan momen

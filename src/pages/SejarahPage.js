@@ -298,16 +298,12 @@ const SejarahPage = () => {
           style={{ backgroundImage: `url(${sejarahHeroBg})` }}
         >
           <div className="sejarah-hero-content">
-            <p className="sejarah-hero-kicker">GKJ Kebonarum · Klaten</p>
+            <span className="section-tag light">SEJARAH GEREJA</span>
             <h1 className="sejarah-hero-title">
-              Perjalanan
-              <br />
-              Iman Kami
+              Perjalanan Iman Kami
             </h1>
             <p className="sejarah-hero-sub">
-              Lima dekade penuh berkat, pertumbuhan, dan ketahanan.
-              <br />
-              Sebuah kisah tentang iman yang tak tergoyahkan.
+              Lima dekade penuh berkat, pertumbuhan, dan ketahanan dalam kasih Kristus.
             </p>
             <div className="sejarah-hero-years">
               <span className="sejarah-hero-year-tag">1970</span>

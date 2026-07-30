@@ -23,6 +23,7 @@ const LandingPage = () => {
         <div className="video-overlay"></div>
 
         <div className="landing-content">
+          <div className="welcome-badge">GKJ KEBONARUM KLATEN</div>
           <picture className="welcome-title">
             <source media="(max-width: 768px)" srcSet={sugenRawuhSmall} />
             <img
@@ -31,6 +32,31 @@ const LandingPage = () => {
               className="welcome-image"
             />
           </picture>
+          <div
+            className="hero-scroll-indicator"
+            onClick={() =>
+              window.scrollTo({
+                top: window.innerHeight - 80,
+                behavior: "smooth",
+              })
+            }
+          >
+            <span className="scroll-text">Gulir ke bawah</span>
+            <div className="scroll-arrow">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 5v14M19 12l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
       <Separator />

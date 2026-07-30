@@ -1,51 +1,80 @@
 .majelis-list-page {
-  background: linear-gradient(
-    180deg,
-    var(--color-white) 0%,
-    var(--color-surface-muted) 100%
-  );
+  background: #fbfcfb;
   color: var(--color-text-900);
 }
 
 .majelis-list-hero {
+  position: relative;
   min-height: 60vh;
   display: flex;
   align-items: center;
-  background:
-    linear-gradient(140deg, rgba(58, 63, 60, 0.85), rgba(31, 36, 34, 0.9)),
-    url("../assets/gkj-bg.png");
+  justify-content: center;
+  overflow: hidden;
+  background: url("../assets/gkj-bg.png");
   background-size: cover;
   background-position: center;
-  background-attachment: scroll;
   color: var(--color-white);
-  padding: 6rem 0 4rem;
+  padding: 8rem 0 4.5rem;
+}
+
+.majelis-list-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 23, 20, 0.5) 0%,
+    rgba(17, 23, 20, 0.72) 55%,
+    rgba(17, 23, 20, 0.88) 100%
+  );
+  z-index: 1;
 }
 
 .majelis-list-hero-content {
-  max-width: 1200px;
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .back-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: var(--color-white);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  padding: 0.4rem 1.25rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
+  backdrop-filter: blur(8px);
 }
 
 .back-button:hover {
   background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateX(-4px);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateX(-3px);
 }
 
 .back-button svg {
@@ -57,27 +86,26 @@
 }
 
 .majelis-list-kicker {
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0.5rem;
 }
 
 .majelis-list-title {
-  font-size: 3rem;
-  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 600;
+  margin: 0.5rem 0 1rem;
+  letter-spacing: -0.02em;
 }
 
 .majelis-list-lead {
-  font-size: 1.2rem;
-  line-height: 1.7;
+  font-size: 1.1rem;
+  line-height: 1.75;
   margin: 0;
-  max-width: 1000px;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .majelis-list-section {
-  padding: 5rem 0;
+  padding: 5rem 0 6rem;
 }
 
 .majelis-list-inner {
@@ -95,31 +123,54 @@
 }
 
 .majelis-section-title {
-  text-align: left;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-brand-900);
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-brand-800);
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
   letter-spacing: 0.5px;
-  margin-bottom: 2.5rem;
 }
 
 .majelis-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.5rem;
 }
 
 .majelis-card {
-  text-align: center;
+  background: #f9fbf9;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.majelis-card:hover {
+  transform: translateY(-4px);
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+  border-color: rgba(52, 78, 65, 0.2);
 }
 
 .majelis-card-image {
   width: 100%;
-  height: 250px;
+  height: 220px;
   background-size: cover;
-  background-position: center;
-  border-radius: 12px;
-  margin-bottom: 1rem;
+  background-position: center top;
+  transition: transform 0.5s ease;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.majelis-card:hover .majelis-card-image {
+  transform: scale(1.03);
 }
 
 .majelis-card-image img {
@@ -127,25 +178,29 @@
 }
 
 .majelis-card-content {
-  padding: 0 0.5rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .majelis-card-name {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.25rem;
   font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-brand-900);
+  font-weight: 600;
+  color: var(--color-text-900);
 }
 
 .majelis-card-role {
   margin: 0;
-  font-size: 0.9rem;
-  color: var(--color-text-500);
+  font-size: 0.85rem;
+  color: var(--color-text-600);
   font-weight: 500;
 }
 
 @media (max-width: 1024px) {
   .majelis-list-hero {
+    min-height: 55vh;
     padding: 4.5rem 0 3rem;
   }
 
@@ -174,8 +229,8 @@
 
 @media (max-width: 768px) {
   .majelis-list-hero {
-    min-height: 45vh;
-    padding: 3.5rem 0 2.5rem;
+    min-height: 50vh;
+    padding: 5rem 0 2.5rem;
   }
 
   .majelis-list-hero-content {

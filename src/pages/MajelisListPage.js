@@ -284,15 +284,14 @@ const MajelisListPage = () => {
               </svg>
               Kembali
             </button>
-            <p className="majelis-list-kicker">GKJ Kebonarum</p>
+            <p className="majelis-list-kicker">
+              <span className="section-tag light">KEPEMIMPINAN GEREJA</span>
+            </p>
             <h1 className="majelis-list-title">
-              Majelis Jemaat
-              <br />
-              GKJ Kebonarum
+              Majelis Jemaat GKJ Kebonarum
             </h1>
             <p className="majelis-list-lead">
-              Majelis Jemaat GKJ Kebonarum yang terdiri dari para Penatua dan
-              Diaken yang berdedikasi melayani dan memimpin jemaat dalam kasih.
+              Majelis Jemaat GKJ Kebonarum yang terdiri dari para Penatua dan Diaken yang berdedikasi melayani dan memimpin jemaat dalam kasih.
             </p>
           </div>
         </section>

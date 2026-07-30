@@ -93,13 +93,16 @@ const EventCarousel = () => {
   return (
     <section className="events-section">
       <div className="events-container">
-        <h2 className="section-title">EVENTS</h2>
+        <div className="section-header-minimal">
+          <span className="section-tag">AGENDA & KEGIATAN</span>
+          <h2 className="section-title-minimal">Kegiatan Gereja</h2>
+        </div>
 
         <div className="carousel-wrapper">
-          <button className="carousel-button prev" onClick={prevSlide}>
+          <button className="carousel-button prev" onClick={prevSlide} aria-label="Previous event">
             <svg
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -134,54 +137,19 @@ const EventCarousel = () => {
                         alt={event.title}
                         className="event-image"
                       />
+                      <div className="event-date-badge">
+                        <span>{event.date}</span>
+                      </div>
                     </div>
 
                     <div className="event-details">
                       <h3 className="event-title">{event.title}</h3>
 
                       <div className="event-info">
-                        <div className="event-date">
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              x="3"
-                              y="4"
-                              width="18"
-                              height="18"
-                              rx="2"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            />
-                            <path
-                              d="M16 2V6"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                            />
-                            <path
-                              d="M8 2V6"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                            />
-                            <path
-                              d="M3 10H21"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            />
-                          </svg>
-                          <span>{event.date}</span>
-                        </div>
-
                         <div className="event-time">
                           <svg
-                            width="18"
-                            height="18"
+                            width="16"
+                            height="16"
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -191,12 +159,12 @@ const EventCarousel = () => {
                               cy="12"
                               r="9"
                               stroke="currentColor"
-                              strokeWidth="2"
+                              strokeWidth="1.75"
                             />
                             <path
                               d="M12 7V12L16 14"
                               stroke="currentColor"
-                              strokeWidth="2"
+                              strokeWidth="1.75"
                               strokeLinecap="round"
                             />
                           </svg>
@@ -210,10 +178,10 @@ const EventCarousel = () => {
             </div>
           </div>
 
-          <button className="carousel-button next" onClick={nextSlide}>
+          <button className="carousel-button next" onClick={nextSlide} aria-label="Next event">
             <svg
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -229,8 +197,22 @@ const EventCarousel = () => {
           </button>
         </div>
 
+        <div className="carousel-dots">
+          {Array.from({ length: events.length - itemsPerView + 1 }).map((_, idx) => (
+            <button
+              key={idx}
+              className={`carousel-dot ${currentIndex === idx ? "active" : ""}`}
+              onClick={() => setCurrentIndex(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
         <div className="custom-button-container">
-          <button className="custom-button">View All Events</button>
+          <button className="minimal-outline-btn">
+            Lihat Semua Agenda
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </div>
     </section>

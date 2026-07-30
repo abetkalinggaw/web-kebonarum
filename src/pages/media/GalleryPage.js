@@ -550,7 +550,7 @@ const GalleryPage = () => {
               </svg>
               Kembali
             </button>
-            <p className="gallery-kicker">GKJ Kebonarum Klaten</p>
+            <p className="gallery-kicker"><span className="section-tag light">GKJ KEBONARUM KLATEN</span></p>
             <h1 className="gallery-title">
               Dokumentasi
               <br />

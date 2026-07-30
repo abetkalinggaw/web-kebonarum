@@ -37,14 +37,11 @@ const PendetaGKJ = () => {
   return (
     <section className="pendeta-gkj-kebonarum">
       <div className="pendeta-gkj-container">
-        <div className="pendeta-gkj-header">
-          <h2 className="pendeta-gkj-title">PENDETA GKJ KEBONARUM</h2>
-          <p className="pendeta-gkj-description">
-            Pendeta GKJ Kebonarum adalah pemimpin rohani yang bertanggung jawab
-            untuk membimbing jemaat dalam kehidupan iman, pelayanan, dan
-            pertumbuhan rohani. Mereka memainkan peran penting dalam memimpin
-            ibadah, memberikan pengajaran Alkitab, dan memberikan dukungan
-            pastoral kepada anggota jemaat.
+        <div className="section-header-minimal">
+          <span className="section-tag">PELAYAN FIRMAN</span>
+          <h2 className="section-title-minimal">Pendeta GKJ Kebonarum</h2>
+          <p className="section-subtitle-minimal">
+            Pemimpin rohani yang membimbing jemaat dalam kehidupan iman, pengajaran Alkitab, dan dukungan pastoral.
           </p>
         </div>
 
@@ -55,10 +52,12 @@ const PendetaGKJ = () => {
                 className="pendeta-gkj-image"
                 style={{ backgroundImage: `url(${item.image})` }}
               >
-                <div className="pendeta-gkj-info">
-                  <h3 className="pendeta-gkj-name">{item.name}</h3>
-                  <p className="pendeta-gkj-subtitle">{item.subtitle}</p>
-                </div>
+                <div className="pendeta-gkj-overlay"></div>
+              </div>
+              <div className="pendeta-gkj-info">
+                <span className="pendeta-role-badge">Pendeta Jemaat</span>
+                <h3 className="pendeta-gkj-name">{item.name}</h3>
+                <p className="pendeta-gkj-subtitle">{item.subtitle}</p>
               </div>
             </div>
           ))}

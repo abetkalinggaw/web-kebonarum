@@ -96,16 +96,12 @@ const GerejaListPage = () => {
       <main className="gereja-list-page">
         <section className="gereja-list-hero">
           <div className="gereja-list-hero-content">
-            <p className="gereja-list-kicker">GKJ Kebonarum Klaten</p>
+            <span className="section-tag light">WILAYAH PELAYANAN</span>
             <h1 className="gereja-list-title">
-              Daftar Gereja
-              <br />
-              GKJ Kebonarum
+              Gereja GKJ Kebonarum
             </h1>
             <p className="gereja-list-lead">
-              GKJ Kebonarum memiliki beberapa gereja yang tersebar di wilayah
-              Klaten, melayani jemaat dengan kasih dan pengajaran firman yang
-              setia.
+              Gereja-gereja wilayah GKJ Kebonarum yang tersebar di Kabupaten Klaten, siap melayani ibadah dan persekutuan jemaat.
             </p>
           </div>
         </section>

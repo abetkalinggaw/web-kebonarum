@@ -1,60 +1,87 @@
 .gereja-list-page {
   color: var(--color-text-900);
+  background: #fbfcfb;
 }
 
 .gereja-list-hero {
+  position: relative;
   min-height: 60vh;
   display: flex;
   align-items: center;
-  background:
-    linear-gradient(140deg, rgba(58, 63, 60, 0.85), rgba(31, 36, 34, 0.9)),
-    url("../assets/gkj-bg.png");
+  justify-content: center;
+  overflow: hidden;
+  background: url("../assets/gkj-bg.png");
   background-size: cover;
   background-position: center;
-  background-attachment: scroll;
   color: var(--color-white);
-  padding: 6rem 0 4rem;
+  padding: 8rem 0 4.5rem;
+}
+
+.gereja-list-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 23, 20, 0.5) 0%,
+    rgba(17, 23, 20, 0.72) 55%,
+    rgba(17, 23, 20, 0.88) 100%
+  );
+  z-index: 1;
 }
 
 .gereja-list-hero-content {
-  max-width: 1200px;
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.gereja-list-kicker {
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.75);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .gereja-list-title {
-  font-size: 3rem;
-  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 600;
+  margin: 0.5rem 0 1rem;
+  letter-spacing: -0.02em;
 }
 
 .gereja-list-lead {
-  font-size: 1.2rem;
-  line-height: 1.7;
+  font-size: 1.1rem;
+  line-height: 1.75;
   margin: 0;
-  max-width: 1000px;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .gereja-list-section {
-  padding: 4rem 0 5rem;
+  padding: 5rem 0 6rem;
 }
 
 .gereja-list-inner {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
 }
 
 .gereja-list-grid {
   display: grid;
-  gap: 3rem;
+  gap: 2.5rem;
 }
 
 .gereja-item {
@@ -62,14 +89,18 @@
   grid-template-columns: 1fr 1.2fr;
   gap: 2rem;
   align-items: center;
+
   overflow: hidden;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .gereja-item-image {
   width: 100%;
-  height: 450px;
+  height: 380px;
   overflow: hidden;
-  background: var(--color-surface-soft);
+  background: #eef2ef;
 }
 
 .gereja-item-image img {
@@ -77,25 +108,31 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s ease;
+}
+
+.gereja-item:hover .gereja-item-image img {
+  transform: scale(1.03);
 }
 
 .gereja-item-content {
-  padding: 1.4rem;
+  padding: 2.25rem 2.5rem;
 }
 
 .gereja-item-title {
-  margin: 0 0 1.5rem;
-  font-size: 2.6rem;
-  font-weight: 700;
+  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 600;
   color: var(--color-text-900);
-  letter-spacing: 0.5px;
+  letter-spacing: -0.01em;
 }
 
 .gereja-item-address {
   margin: 0 0 1.5rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--color-text-600);
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .gereja-item-schedule {
@@ -155,6 +192,7 @@
 
 @media (max-width: 1024px) {
   .gereja-list-hero {
+    min-height: 55vh;
     padding: 4rem 0 2.5rem;
   }
 
@@ -197,7 +235,7 @@
 @media (max-width: 768px) {
   .gereja-list-hero {
     min-height: 50vh;
-    padding: 3rem 0 2rem;
+    padding: 5rem 0 2rem;
   }
 
   .gereja-list-hero-content {

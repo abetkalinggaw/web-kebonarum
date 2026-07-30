@@ -45,12 +45,6 @@ const MajelisGKJ = () => {
       role: "Penatua",
       image: majelis5,
     },
-    {
-      id: 6,
-      name: "Nama Lengkap",
-      role: "Penatua",
-      image: majelis6,
-    },
   ];
 
   const majelisDiakenData = [
@@ -84,35 +78,29 @@ const MajelisGKJ = () => {
       role: "Diaken",
       image: majelis5,
     },
-    {
-      id: 6,
-      name: "Nama Lengkap",
-      role: "Diaken",
-      image: majelis6,
-    },
   ];
 
   return (
     <section className="majelis-gkj-kebonarum">
       <div className="majelis-gkj-container">
-        <div className="majelis-gkj-header">
-          <h2 className="majelis-gkj-title">MAJELIS GKJ KEBONARUM</h2>
-          <p className="majelis-gkj-description">
-            Majelis GKJ Kebonarum adalah badan yang terdiri dari para penatua
-            dan diaken yang bertugas memimpin, mengatur, dan mengawasi pelayanan
-            gereja. Mereka bekerja sama dengan pendeta untuk memastikan bahwa
-            gereja berjalan dengan baik dan sesuai dengan ajaran Alkitab.
+        <div className="section-header-minimal">
+          <span className="section-tag">KEPEMIMPINAN GEREJA</span>
+          <h2 className="section-title-minimal">Majelis GKJ Kebonarum</h2>
+          <p className="section-subtitle-minimal">
+            Badan penatua dan diaken yang memimpin, mengatur, dan mengawasi
+            pelayanan gereja bersama pendeta.
           </p>
         </div>
 
         <div className="majelis-gkj-section">
-          <h3 className="majelis-gkj-subtitle">Penatua</h3>
-          <p className="majelis-gkj-sub-description">
-            Penatua adalah anggota majelis yang dipilih untuk memimpin dan
-            mengawasi pelayanan gereja. Mereka bertanggung jawab untuk
-            memberikan bimbingan rohani, mengatur kegiatan gereja, dan
-            memastikan bahwa gereja berjalan sesuai dengan ajaran Alkitab.
-          </p>
+          <div className="majelis-sub-header">
+            <span className="card-badge">PENATUA</span>
+            <h3 className="majelis-gkj-subtitle">Penatua</h3>
+            <p className="majelis-gkj-sub-description">
+              Anggota majelis yang memimpin bimbingan rohani dan mengawasi
+              pelayanan gereja sesuai ajaran Alkitab.
+            </p>
+          </div>
           <div className="majelis-gkj-grid">
             {majelisPenatuaData.map((item) => (
               <div key={item.id} className="majelis-gkj-card">
@@ -122,7 +110,7 @@ const MajelisGKJ = () => {
                 />
                 <div className="majelis-gkj-info">
                   <h3 className="majelis-gkj-name">{item.name}</h3>
-                  <p className="majelis-gkj-role">{item.role}</p>
+                  <span className="majelis-role-tag">{item.role}</span>
                 </div>
               </div>
             ))}
@@ -130,14 +118,14 @@ const MajelisGKJ = () => {
         </div>
 
         <div className="majelis-gkj-section">
-          <h3 className="majelis-gkj-subtitle">Diaken</h3>
-          <p className="majelis-gkj-sub-description">
-            Diaken adalah anggota majelis yang dipilih untuk melayani kebutuhan
-            praktis gereja, seperti membantu dalam pelayanan sosial, mengatur
-            keuangan gereja, dan memberikan dukungan kepada anggota jemaat yang
-            membutuhkan. Mereka bekerja sama dengan penatua untuk memastikan
-            bahwa gereja berjalan dengan baik dan sesuai dengan ajaran Alkitab.
-          </p>
+          <div className="majelis-sub-header">
+            <span className="card-badge">DIAKEN</span>
+            <h3 className="majelis-gkj-subtitle">Diaken</h3>
+            <p className="majelis-gkj-sub-description">
+              Anggota majelis yang melayani kebutuhan praktis, pelayanan sosial,
+              dan perhatian diakonia jemaat.
+            </p>
+          </div>
           <div className="majelis-gkj-grid">
             {majelisDiakenData.map((item) => (
               <div key={item.id} className="majelis-gkj-card">
@@ -147,7 +135,7 @@ const MajelisGKJ = () => {
                 />
                 <div className="majelis-gkj-info">
                   <h3 className="majelis-gkj-name">{item.name}</h3>
-                  <p className="majelis-gkj-role">{item.role}</p>
+                  <span className="majelis-role-tag">{item.role}</span>
                 </div>
               </div>
             ))}
@@ -155,8 +143,18 @@ const MajelisGKJ = () => {
         </div>
       </div>
       <div className="custom-button-container">
-        <button className="custom-button" onClick={handleClick}>
+        <button className="minimal-outline-btn" onClick={handleClick}>
           Lihat Semua Majelis
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
         </button>
       </div>
     </section>

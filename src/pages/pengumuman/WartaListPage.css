@@ -3,22 +3,45 @@
 }
 
 .warta-hero {
+  position: relative;
   min-height: 60vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(140deg, rgba(58, 63, 60, 0.85), rgba(31, 36, 34, 0.9)),
-    url("../../assets/gkj-bg.png");
+  justify-content: center;
+  overflow: hidden;
+  background: url("../../assets/gkj-bg.png");
   background-size: cover;
   background-position: center;
-  background-attachment: scroll;
   color: var(--color-white);
-  padding: 6rem 0 4rem;
+  padding: 8rem 0 4.5rem;
+}
+
+.warta-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 23, 20, 0.5) 0%,
+    rgba(17, 23, 20, 0.72) 55%,
+    rgba(17, 23, 20, 0.88) 100%
+  );
+  z-index: 1;
 }
 
 .warta-hero-content {
-  max-width: 1200px;
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
+  text-align: center;
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .warta-kicker {
