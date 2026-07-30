@@ -7,6 +7,7 @@ const { PORT, FRONTEND_ORIGIN } = require("./config/appConfig");
 const healthRoutes = require("./routes/healthRoutes");
 const youtubeRoutes = require("./routes/youtubeRoutes");
 const documentationRoutes = require("./routes/documentationRoutes");
+const statistikRoutes = require("./routes/statistikRoutes");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/api", healthRoutes);
 app.use("/api/youtube", youtubeRoutes);
 app.use("/api/documentation", documentationRoutes);
+app.use("/api/statistik", statistikRoutes);
 
 app.listen(PORT, () => {
   console.log(`Backend API running on port ${PORT}`);

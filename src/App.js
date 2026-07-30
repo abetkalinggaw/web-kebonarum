@@ -13,6 +13,7 @@ import WartaReadPage from "./pages/pengumuman/WartaReadPage";
 import FormulirPage from "./pages/FormulirPage";
 import SejarahPage from "./pages/SejarahPage";
 import PersembahanPage from "./pages/PersembahanPage";
+import StatistikPage from "./pages/StatistikPage";
 import WartaFormPage from "./admin/warta/WartaFormPage";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           />
 
           <Route path="/sejarah" element={<SejarahPage />} />
+          <Route path="/statistik" element={<StatistikPage />} />
           <Route path="/pengumuman/warta-gereja" element={<WartaListPage />} />
           <Route
             path="/admin/warta-gereja/formulir/:id?"
