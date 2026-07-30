@@ -150,7 +150,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: auto;
 }
 
@@ -314,15 +314,11 @@
   .formulir-footer {
     flex-direction: column;
     gap: 1rem;
-    align-items: stretch;
-  }
-
-  .formulir-size {
-    font-size: 0.8rem;
+    align-items: flex-end;
   }
 
   .formulir-download-btn {
-    width: 100%;
+    width: auto;
     justify-content: center;
   }
 }
