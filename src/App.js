@@ -15,6 +15,7 @@ import SejarahPage from "./pages/SejarahPage";
 import PersembahanPage from "./pages/PersembahanPage";
 import StatistikPage from "./pages/StatistikPage";
 import WartaFormPage from "./admin/warta/WartaFormPage";
+import AgendaPage from "./pages/pengumuman/AgendaPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
 
           <Route path="/sejarah" element={<SejarahPage />} />
           <Route path="/statistik" element={<StatistikPage />} />
+          <Route path="/pengumuman/events" element={<AgendaPage />} />
           <Route path="/pengumuman/warta-gereja" element={<WartaListPage />} />
           <Route
             path="/admin/warta-gereja/formulir/:id?"
