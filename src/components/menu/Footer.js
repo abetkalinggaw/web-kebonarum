@@ -95,7 +95,7 @@ const Footer = ({ isStatic = false }) => {
             <div className="footer-map-wrapper">
               <iframe
                 title="Peta Lokasi GKJ Kebonarum"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.717646536968!2d110.5732151!3d-7.7174621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a44f50684f801%3A0xc39bc6ff11e86016!2sGereja%20Kristen%20Jawa%20(GKJ)%20Kebonarum!5e0!3m2!1sen!2sid!4v1680000000000!5m2!1sen!2sid"
+                src="https://www.google.com/maps?q=Gereja+Kristen+Jawa+(GKJ)+Kebonarum,+Sumberejo,+Klaten&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
