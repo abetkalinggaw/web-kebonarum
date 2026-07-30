@@ -229,8 +229,8 @@ const EventCarousel = () => {
           </button>
         </div>
 
-        <div className="view-all-button-container">
-          <button className="view-all-button">View All Events</button>
+        <div className="custom-button-container">
+          <button className="custom-button">View All Events</button>
         </div>
       </div>
     </section>

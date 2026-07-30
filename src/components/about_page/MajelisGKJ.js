@@ -154,8 +154,8 @@ const MajelisGKJ = () => {
           </div>
         </div>
       </div>
-      <div className="view-all-button-container">
-        <button className="view-all-button" onClick={handleClick}>
+      <div className="custom-button-container">
+        <button className="custom-button" onClick={handleClick}>
           Lihat Semua Majelis
         </button>
       </div>

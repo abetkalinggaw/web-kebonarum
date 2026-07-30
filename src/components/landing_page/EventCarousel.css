@@ -138,13 +138,13 @@
   order: -1;
 }
 
-.view-all-button-container {
+.custom-button-container {
   display: flex;
   justify-content: center;
   margin-top: 3rem;
 }
 
-.view-all-button {
+.custom-button {
   background: var(--color-neutral-300);
   color: var(--color-brand-900);
   border: none;
@@ -159,7 +159,7 @@
   overflow: hidden;
 }
 
-.view-all-button::before {
+.custom-button::before {
   content: "";
   position: absolute;
   top: 0;
@@ -170,13 +170,13 @@
   transition: left 0.5s ease;
 }
 
-.view-all-button:hover {
+.custom-button:hover {
   color: var(--color-white);
   background: var(--color-brand-900);
   transform: scale(1.02);
 }
 
-.view-all-button:hover::before {
+.custom-button:hover::before {
   left: 100%;
 }
 
@@ -206,7 +206,7 @@
     padding: 1.5rem;
   }
 
-  .view-all-button {
+  .custom-button {
     padding: 0.9rem 2.5rem;
     font-size: 1rem;
   }
@@ -255,11 +255,11 @@
     font-size: 1.25rem;
   }
 
-  .view-all-button-container {
+  .custom-button-container {
     margin-top: auto;
   }
 
-  .view-all-button {
+  .custom-button {
     padding: 0.8rem 2rem;
     font-size: 0.95rem;
     border-radius: 40px;
@@ -313,11 +313,11 @@
     font-size: 0.85rem;
   }
 
-  .view-all-button-container {
+  .custom-button-container {
     margin-top: auto;
   }
 
-  .view-all-button {
+  .custom-button {
     padding: 0.7rem 1.8rem;
     font-size: 0.9rem;
     border-radius: 35px;

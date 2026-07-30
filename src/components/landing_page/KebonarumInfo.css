@@ -54,7 +54,7 @@
   letter-spacing: 0.3px;
 }
 
-.view-all-button-container {
+.custom-button-container {
   display: flex;
   justify-content: center;
 }

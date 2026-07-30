@@ -24,7 +24,7 @@ const KebonarumInfo = () => {
           </p>
 
           <div className="view-all-button-container">
-            <button className="view-all-button" onClick={handleClick}>
+            <button className="custom-button" onClick={handleClick}>
               Selengkapnya
             </button>
           </div>
