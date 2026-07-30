@@ -40,7 +40,7 @@ const AboutPage = () => {
         <section className="about-hero">
           <video className="about-hero-video" autoPlay muted loop playsInline>
             <source src={backgroundVideo} type="video/mp4" />
-            Your browser does not support the video tag.
+            Browser Anda tidak mendukung tag video.
           </video>
 
           <div className="about-hero-overlay"></div>

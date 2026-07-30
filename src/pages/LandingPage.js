@@ -17,7 +17,7 @@ const LandingPage = () => {
       <div className="landing-page">
         <video className="video-background" autoPlay muted loop playsInline>
           <source src={backgroundVideo} type="video/mp4" />
-          Your browser does not support the video tag.
+          Browser Anda tidak mendukung tag video.
         </video>
 
         <div className="video-overlay"></div>

@@ -13,7 +13,7 @@ const GerejaListPage = () => {
       id: 1,
       name: "SUMBEREJO",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Klaten Regency, Central Java 57426",
+        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: [
         "06.00 WIB - Bahasa Indonesia",
         "08.00 WIB - Bahasa Jawa",
@@ -32,7 +32,7 @@ const GerejaListPage = () => {
       id: 2,
       name: "KROSOK",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Klaten Regency, Central Java 57426",
+        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: ["07.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {
@@ -47,7 +47,7 @@ const GerejaListPage = () => {
       id: 3,
       name: "PLUNENG",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Klaten Regency, Central Java 57426",
+        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: ["07.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {
@@ -62,7 +62,7 @@ const GerejaListPage = () => {
       id: 4,
       name: "NGRUNDUL",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Klaten Regency, Central Java 57426",
+        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: ["07.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {
@@ -77,7 +77,7 @@ const GerejaListPage = () => {
       id: 5,
       name: "PRAYAN",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Klaten Regency, Central Java 57426",
+        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: ["07.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {

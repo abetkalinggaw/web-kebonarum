@@ -81,7 +81,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <p className="footer-copyright">
-          &copy; 2026 GKJ Kebonarum. All rights reserved.
+          &copy; 2026 GKJ Kebonarum. Hak cipta dilindungi.
         </p>
       </div>
     </footer>

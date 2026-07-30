@@ -53,10 +53,10 @@ const dropdownData = {
   media: [
     { label: "YouTube", path: "/media/youtube" },
     { label: "Instagram", path: "/media/instagram" },
-    { label: "Documentation", path: "/media/documentation" },
+    { label: "Dokumentasi", path: "/media/documentation" },
   ],
   pengumuman: [
-    { label: "Events", path: "/pengumuman/events" },
+    { label: "Agenda", path: "/pengumuman/events" },
     { label: "Warta Gereja", path: "/pengumuman/warta-gereja" },
   ],
   komisi: [
@@ -284,7 +284,7 @@ const Navbar = () => {
           <ul className="navbar-menu-list">
             <li>
               <a href="/about" onClick={(e) => handleNavigation("/about", e)}>
-                About
+                Tentang
               </a>
             </li>
             <li>
