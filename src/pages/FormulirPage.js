@@ -12,21 +12,53 @@ const FormulirPage = () => {
       formulirs: [
         {
           id: 1,
-          name: "Formulir Permohonan Pembaptisan",
+          name: "Formulir Laporan Kelahiran",
           description:
             "Formulir untuk permohonan pembaptisan di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
           fileSize: "245 KB",
           fileType: "PDF",
-          downloadUrl: "#",
+          downloadUrl:
+            "https://docs.google.com/document/d/1ZaVf-uRmkAK-DWvYXSyly6bLTc1KJ7Pk/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
         {
           id: 2,
-          name: "Formulir Pernikahan Kristen",
+          name: "Formulir Permohonan Pembaptisan Anak",
           description:
-            "Formulir pendaftaran pernikahan di GKJ Kebonarum untuk pasangan yang akan menikah.",
+            "Formulir untuk permohonan pembaptisan di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+          fileSize: "245 KB",
+          fileType: "PDF",
+          downloadUrl:
+            "https://docs.google.com/document/d/1dySZVgSXhS89E5R0OCYrRBMuh2lZ0pn-/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
+        },
+        {
+          id: 3,
+          name: "Formulir Permohonan Pembaptisan Dewasa",
+          description:
+            "Formulir untuk permohonan pembaptisan dewasa di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
           fileSize: "328 KB",
           fileType: "PDF",
-          downloadUrl: "#",
+          downloadUrl:
+            "https://docs.google.com/document/d/1zwdKhYZqPQGLacllU_TeQJFI-WYtN7C1/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
+        },
+        {
+          id: 4,
+          name: "Formulir Permohonan SIDI",
+          description:
+            "Formulir untuk permohonan sidi di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+          fileSize: "328 KB",
+          fileType: "PDF",
+          downloadUrl:
+            "https://docs.google.com/document/d/1AxaOJ1piUS3u_wWQinAPpO_d6Llxa4tA/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
+        },
+        {
+          id: 5,
+          name: "Formulir Permohonan Pindah Warga",
+          description:
+            "Formulir untuk permohonan pindah warga di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+          fileSize: "328 KB",
+          fileType: "PDF",
+          downloadUrl:
+            "https://docs.google.com/document/d/1y1cHT4pBe5PiV7aTXdXG99hALmU5Op9Q/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
       ],
     },
@@ -37,31 +69,34 @@ const FormulirPage = () => {
         "Formulir terkait dengan pernikahan, pertunangan, dan administrasi keluarga lainnya",
       formulirs: [
         {
-          id: 3,
-          name: "Formulir Anggota Jemaat Baru",
+          id: 6,
+          name: "Formulir Permohonan Pertunangan",
           description:
             "Formulir pendaftaran untuk jemaat baru yang ingin bergabung dengan GKJ Kebonarum.",
           fileSize: "156 KB",
           fileType: "PDF",
-          downloadUrl: "#",
+          downloadUrl:
+            "https://docs.google.com/document/d/1snvTLbetGnvkauGLEC7FkrOL-K9xzBc3/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
         {
-          id: 4,
-          name: "Formulir Permohonan Doa Bersama",
+          id: 7,
+          name: "Formulir Laporan Pertunangan",
           description:
             "Formulir untuk meminta doa bersama dari gereja untuk kebutuhan khusus anda.",
           fileSize: "187 KB",
           fileType: "PDF",
-          downloadUrl: "#",
+          downloadUrl:
+            "https://docs.google.com/document/d/1wMQun2ocq4Q0dXiszY94eneb_XSp3VR6/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
         {
-          id: 5,
-          name: "Formulir Surat Keterangan Jemaat",
+          id: 8,
+          name: "Formulir Pengajuan Pernikahan",
           description:
             "Formulir permintaan surat keterangan sebagai anggota jemaat GKJ Kebonarum.",
           fileSize: "134 KB",
           fileType: "PDF",
-          downloadUrl: "#",
+          downloadUrl:
+            "https://docs.google.com/document/d/1CjlwyyTGfQC2b3ata3fEUkIrbiTPSwlg/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true#",
         },
       ],
     },
@@ -72,21 +107,25 @@ const FormulirPage = () => {
         "Formulir untuk keperluan sakramen seperti komuni, penguatan iman, dan lainnya",
       formulirs: [
         {
-          id: 6,
-          name: "Formulir Pendaftaran Sekolah Minggu",
+          id: 8,
+          name: "Formulir Permohonan Pertobatan",
           description:
-            "Formulir pendaftaran untuk anak-anak yang ingin mengikuti sekolah minggu GKJ Kebonarum.",
+            "Formulir untuk permohonan pertobatan di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
           fileSize: "198 KB",
           fileType: "PDF",
-          downloadUrl: "#",
+          downloadUrl:
+            "https://docs.google.com/document/d/14k4I-QH59FrbAeEtUidRXJqM1HjC0Fth/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
       ],
     },
   ];
 
   const handleDownload = (formulir) => {
-    console.log(`Downloading: ${formulir.name}`);
-    // Add actual download logic here
+    if (!formulir.downloadUrl || formulir.downloadUrl === "#") {
+      return;
+    }
+
+    window.open(formulir.downloadUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
