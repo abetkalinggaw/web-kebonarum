@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import logo from "../../assets/logo.png";
 
@@ -167,6 +168,8 @@ const Navbar = () => {
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
   const isScrolled = useRef(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const getBasePath = () => {
     const publicUrl = process.env.PUBLIC_URL || "";
@@ -262,13 +265,13 @@ const Navbar = () => {
     setOpenDropdown(null);
     window.scrollTo(0, 0);
     const targetPath = resolveAppPath(path);
-    const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+    const currentPath = location.pathname.replace(/\/+$/, "") || "/";
     const normalizedTargetPath = targetPath.replace(/\/+$/, "") || "/";
     if (currentPath === normalizedTargetPath) {
-      window.location.reload();
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    window.location.assign(targetPath);
+    navigate(targetPath);
   };
 
   return (
@@ -283,7 +286,10 @@ const Navbar = () => {
         <div className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
           <ul className="navbar-menu-list">
             <li>
-              <a href="/about" onClick={(e) => handleNavigation("/about", e)}>
+              <a
+                href="/tentang"
+                onClick={(e) => handleNavigation("/tentang", e)}
+              >
                 Tentang
               </a>
             </li>

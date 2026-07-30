@@ -41,7 +41,8 @@ const PendetaGKJ = () => {
           <span className="section-tag">PELAYAN FIRMAN</span>
           <h2 className="section-title-minimal">Pendeta GKJ Kebonarum</h2>
           <p className="section-subtitle-minimal">
-            Pemimpin rohani yang membimbing jemaat dalam kehidupan iman, pengajaran Alkitab, dan dukungan pastoral.
+            Pemimpin rohani yang membimbing jemaat dalam kehidupan iman,
+            pengajaran Alkitab, dan dukungan pastoral.
           </p>
         </div>
 
