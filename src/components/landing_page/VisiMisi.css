@@ -1,93 +1,181 @@
+/* ============================================================
+   VISI & MISI SECTION — GKJ Kebonarum
+   2-Column Grid Layout (Left: Visi & Misi Cards, Right: Header)
+   ============================================================ */
+
 .visi-misi-section {
   width: 100%;
-  padding: 6rem 0;
-  background: #ffffff;
+  padding: 6.5rem 0;
+  background: var(--color-putih-warm);
   position: relative;
 }
 
-.visi-misi-wrapper {
-  max-width: 1200px;
+/* Warm subtle top divider line */
+.visi-misi-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(196, 136, 74, 0.2) 50%,
+    transparent 100%
+  );
+}
+
+.visi-misi-container {
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
 }
 
-.visi-misi-grid {
+.visi-misi-layout {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  margin-top: 1rem;
+  grid-template-columns: 1fr 380px;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Left Column: Cards Stack */
+.visi-misi-cards-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100%;
 }
 
 .visi-misi-card {
-  background: #f8faf8;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 20px;
-  padding: 3rem 2.5rem;
+  background: var(--color-putih-soft);
+  border: 1px solid rgba(28, 22, 18, 0.07);
+  border-radius: var(--radius-lg);
+  padding: 2.75rem 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s ease,
+    border-color 0.45s ease,
+    background 0.45s ease;
+}
+
+/* Kunyit accent corner line */
+.visi-misi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  background: linear-gradient(
+    180deg,
+    var(--color-kunyit) 0%,
+    var(--color-soga) 100%
+  );
+  border-radius: 0 0 2px 0;
+  transition: height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.visi-misi-card:hover::before {
+  height: 65%;
 }
 
 .visi-misi-card:hover {
-  transform: translateY(-4px);
-  background: #ffffff;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
-  border-color: rgba(52, 78, 65, 0.2);
+  transform: translateY(-5px);
+  background: var(--color-putih);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(196, 136, 74, 0.3);
 }
 
 .card-badge {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: var(--color-brand-800);
-  background: rgba(52, 78, 65, 0.08);
-  padding: 0.35rem 0.85rem;
-  border-radius: 100px;
-  margin-bottom: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-daun);
+  background: rgba(61, 82, 71, 0.08);
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(61, 82, 71, 0.15);
 }
 
 .card-title {
-  font-family: var(--font-heading);
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--color-text-900);
-  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.5vw, 2rem);
+  font-weight: 500;
+  color: var(--color-wenge);
+  margin-bottom: 0.85rem;
   letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
 .card-content {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: var(--color-text-600);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 900px) {
+/* Right Column: Header Side */
+.visi-misi-header-side {
+  position: sticky;
+  top: 6.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.visi-misi-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--color-wenge);
+  margin: 0.25rem 0 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.visi-misi-lead {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
   .visi-misi-section {
-    padding: 4.5rem 0;
+    padding: 5rem 0;
   }
 
-  .visi-misi-grid {
+  .visi-misi-layout {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2.5rem;
+  }
+
+  /* On mobile/tablet stack, move header to top */
+  .visi-misi-header-side {
+    position: static;
+    grid-row: 1;
+  }
+
+  .visi-misi-cards-side {
+    grid-row: 2;
   }
 
   .visi-misi-card {
-    padding: 2.25rem 1.75rem;
-    border-radius: 16px;
-  }
-
-  .card-title {
-    font-size: 1.4rem;
-  }
-
-  .card-content {
-    font-size: 0.98rem;
+    padding: 2.25rem 2rem;
   }
 }
 
@@ -97,7 +185,6 @@
   }
 
   .visi-misi-card {
-    padding: 1.75rem 1.25rem;
+    padding: 1.75rem 1.5rem;
   }
 }
-

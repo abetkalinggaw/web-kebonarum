@@ -1,10 +1,11 @@
-import "./PersembahanPage.css";
+import React, { useState } from "react";
 import Navbar from "../../components/menu/Navbar";
 import Footer from "../../components/menu/Footer";
-import React, { useState } from "react";
+import "./PersembahanPage.css";
+import qrisCodeSvg from "../../assets/qris-code.svg";
 
 const PersembahanPage = () => {
-  const [selectedQr, setSelectedQr] = useState(null);
+  const [selectedQrItem, setSelectedQrItem] = useState(null);
   const persembahanList = [
     {
       id: 1,
@@ -14,7 +15,7 @@ const PersembahanPage = () => {
       accountHolder: "GKJ Kebonarum",
       icon: "fas fa-church",
       qrNote: "Atau scan kode QRIS berikut:",
-      qrCode: "https://via.placeholder.com/150?text=QRIS+Sumberejo",
+      qrCode: qrisCodeSvg,
     },
     {
       id: 2,
@@ -24,7 +25,7 @@ const PersembahanPage = () => {
       accountHolder: "GKJ Kebonarum Pep. Ngrundul",
       icon: "fas fa-place-of-worship",
       qrNote: "Atau scan kode QRIS berikut:",
-      qrCode: "https://via.placeholder.com/150?text=QRIS+Ngrundul",
+      qrCode: qrisCodeSvg,
     },
     {
       id: 3,
@@ -34,7 +35,7 @@ const PersembahanPage = () => {
       accountHolder: "GKJ Kebonarum Pep. Krosok",
       icon: "fas fa-place-of-worship",
       qrNote: "Atau scan kode QRIS berikut:",
-      qrCode: "https://via.placeholder.com/150?text=QRIS+Krosok",
+      qrCode: qrisCodeSvg,
     },
     {
       id: 4,
@@ -44,7 +45,7 @@ const PersembahanPage = () => {
       accountHolder: "GKJ Kebonarum Pep. Prayan",
       icon: "fas fa-place-of-worship",
       qrNote: "Atau scan kode QRIS berikut:",
-      qrCode: "https://via.placeholder.com/150?text=QRIS+Prayan",
+      qrCode: qrisCodeSvg,
     },
     {
       id: 5,
@@ -54,7 +55,7 @@ const PersembahanPage = () => {
       accountHolder: "GKJ Kebonarum Pep. Pluneng",
       icon: "fas fa-place-of-worship",
       qrNote: "Atau scan kode QRIS berikut:",
-      qrCode: "https://via.placeholder.com/150?text=QRIS+Pluneng",
+      qrCode: qrisCodeSvg,
     },
   ];
 
@@ -97,14 +98,19 @@ const PersembahanPage = () => {
 
                     <div className="qr-section">
                       <p className="qr-note">{item.qrNote}</p>
-                      <div 
+                      <div
                         className="qr-image-wrapper"
-                        onClick={() => setSelectedQr(item.qrCode)}
+                        onClick={() => setSelectedQrItem(item)}
                         title="Klik untuk memperbesar QRIS"
                       >
                         <img src={item.qrCode} alt={`QRIS ${item.name}`} />
                         <div className="qr-overlay-icon">
-                          <i className="fas fa-search-plus"></i>
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            <line x1="11" y1="8" x2="11" y2="14"></line>
+                            <line x1="8" y1="11" x2="14" y2="11"></line>
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -117,14 +123,33 @@ const PersembahanPage = () => {
       </main>
 
       {/* QR Code Modal */}
-      {selectedQr && (
-        <div className="qr-modal-overlay" onClick={() => setSelectedQr(null)}>
+      {selectedQrItem && (
+        <div className="qr-modal-overlay" onClick={() => setSelectedQrItem(null)}>
           <div className="qr-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="qr-modal-close" onClick={() => setSelectedQr(null)}>
-              <i className="fas fa-times"></i>
+            <button
+              className="qr-modal-close"
+              onClick={() => setSelectedQrItem(null)}
+              aria-label="Tutup Modal"
+              title="Tutup"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
             </button>
-            <img src={selectedQr} alt="QRIS Besar" className="qr-modal-img" />
-            <p className="qr-modal-hint">Scan QRIS ini menggunakan aplikasi pembayaran Anda</p>
+
+            <div className="qr-modal-header">
+              <span className="qr-modal-badge">{selectedQrItem.bank}</span>
+              <h3 className="qr-modal-title">{selectedQrItem.name}</h3>
+            </div>
+
+            <div className="qr-modal-image-wrapper">
+              <img src={selectedQrItem.qrCode} alt={`QRIS ${selectedQrItem.name}`} className="qr-modal-img" />
+            </div>
+
+            <p className="qr-modal-hint">
+              Scan QRIS ini menggunakan aplikasi M-Banking atau e-Wallet (Gopay, OVO, DANA, ShopeePay, LinkAja)
+            </p>
           </div>
         </div>
       )}

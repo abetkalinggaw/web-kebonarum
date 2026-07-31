@@ -1,5 +1,5 @@
 .landing-page {
-  background-color: #111714;
+  background-color: var(--color-wenge, #1C1612);
   position: relative;
   width: 100%;
   height: 100vh;
@@ -20,9 +20,11 @@
   z-index: 1;
   border: none;
   object-fit: cover;
-  filter: brightness(0.85);
+  /* Slightly warmer, less green — lets the wengè tone dominate */
+  filter: brightness(0.75) saturate(0.85);
 }
 
+/* Multi-stop overlay — vignettes from warm-dark wengè */
 .video-overlay {
   position: absolute;
   top: 0;
@@ -31,9 +33,9 @@
   height: 100%;
   background: linear-gradient(
     180deg,
-    rgba(17, 23, 20, 0.45) 0%,
-    rgba(17, 23, 20, 0.65) 50%,
-    rgba(17, 23, 20, 0.85) 100%
+    rgba(28, 22, 18, 0.35) 0%,
+    rgba(28, 22, 18, 0.55) 45%,
+    rgba(28, 22, 18, 0.82) 100%
   );
   z-index: 2;
 }
@@ -42,36 +44,38 @@
   position: relative;
   z-index: 3;
   text-align: center;
-  color: white;
+  color: var(--color-gading, #F2EBE0);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0 1.5rem;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(24px);
 }
 
 body.app-ready .landing-content {
-  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  /* slight delay to follow the slower curtain lift */
-  animation-delay: 0.6s;
+  animation: heroFadeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.5s;
 }
 
+/* Church name badge — using mono font for a subtle typographic tension */
 .welcome-badge {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.25em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #c0d4c8;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-kunyit, #C4884A);
+  background: rgba(196, 136, 74, 0.1);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0.4rem 1.2rem;
-  border-radius: 100px;
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius-pill, 100px);
   margin-bottom: 1.5rem;
 }
 
@@ -83,14 +87,16 @@ body.app-ready .landing-content {
 }
 
 .welcome-image {
-  max-width: 85vw;
-  width: 1000px;
+  max-width: 82vw;
+  width: 960px;
   height: auto;
   display: block;
-  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.4));
-  transition: transform 0.5s ease;
+  /* Warm-ivory tint on the image via filter */
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.45)) brightness(1.05) sepia(0.08);
+  transition: transform 0.6s ease;
 }
 
+/* Scroll indicator */
 .hero-scroll-indicator {
   position: absolute;
   bottom: -8rem;
@@ -99,50 +105,42 @@ body.app-ready .landing-content {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  opacity: 0.8;
+  opacity: 0.65;
   transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+    opacity var(--duration-base, 300ms) ease,
+    transform var(--duration-base, 300ms) ease;
 }
 
 .hero-scroll-indicator:hover {
   opacity: 1;
-  transform: translateY(3px);
+  transform: translateY(4px);
 }
 
 .scroll-text {
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  color: rgba(242, 235, 224, 0.6);
 }
 
 .scroll-arrow {
-  animation: bounce 2s infinite;
-  color: rgba(255, 255, 255, 0.8);
+  animation: bounce 2.4s infinite;
+  color: var(--color-kunyit, #C4884A);
+  opacity: 0.8;
 }
 
 @keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(6px);
-  }
-  60% {
-    transform: translateY(3px);
-  }
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40%  { transform: translateY(7px); }
+  60%  { transform: translateY(3px); }
 }
 
-@keyframes fadeIn {
+@keyframes heroFadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
@@ -150,7 +148,7 @@ body.app-ready .landing-content {
   }
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
   .landing-page {
     height: 100vh;
@@ -158,8 +156,8 @@ body.app-ready .landing-content {
   }
 
   .welcome-badge {
-    font-size: 0.7rem;
-    padding: 0.35rem 1rem;
+    font-size: 0.6rem;
+    padding: 0.35rem 0.9rem;
     margin-bottom: 1.2rem;
   }
 

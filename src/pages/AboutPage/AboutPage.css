@@ -1,5 +1,6 @@
 .about-page {
-  color: var(--color-text-900);
+  color: var(--color-text-primary);
+  background-color: var(--color-putih-warm);
 }
 
 .about-hero {
@@ -10,7 +11,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: #111714;
+  background-color: var(--color-wenge);
 }
 
 .about-hero-video {
@@ -20,7 +21,7 @@
   height: 100%;
   object-fit: cover;
   z-index: 1;
-  filter: brightness(0.85);
+  filter: brightness(0.75) saturate(0.85);
 }
 
 .about-hero-overlay {
@@ -30,9 +31,9 @@
   height: 100%;
   background: linear-gradient(
     180deg,
-    rgba(17, 23, 20, 0.5) 0%,
-    rgba(17, 23, 20, 0.75) 60%,
-    rgba(17, 23, 20, 0.9) 100%
+    rgba(28, 22, 18, 0.4) 0%,
+    rgba(28, 22, 18, 0.65) 60%,
+    rgba(28, 22, 18, 0.88) 100%
   );
   z-index: 2;
 }
@@ -44,7 +45,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 6rem var(--container-pad-desktop) 4rem;
-  color: var(--color-white);
+  color: var(--color-gading);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,96 +53,159 @@
 }
 
 .about-title {
-  font-family: var(--font-heading);
-  font-size: clamp(2.4rem, 4vw, 3.6rem);
-  line-height: 1.15;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  line-height: 1.12;
   margin: 0.5rem 0 1rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-gading);
 }
 
 .about-lead {
+  font-family: var(--font-body);
   font-size: 1.1rem;
   line-height: 1.75;
   margin: 0 auto 2rem;
   max-width: 660px;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(242, 235, 224, 0.8);
 }
 
 .about-hero-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2.25rem;
-  border-radius: 50px;
-  background: var(--color-neutral-300);
-  color: var(--color-brand-900);
-  font-size: 1.05rem;
+  padding: 0.85rem 2.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-kunyit);
+  color: var(--color-wenge);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: all 0.5s ease;
-}
-
-.about-hero-button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #ffffff33, transparent);
-  transition: left 0.5s ease;
+  transition: all 0.35s ease;
+  border: 1px solid var(--color-kunyit);
 }
 
 .about-hero-button:hover,
 .about-hero-button:focus-visible {
-  color: var(--color-white);
-  background: var(--color-brand-900);
-  transform: scale(1.02);
-}
-
-.about-hero-button:hover::before,
-.about-hero-button:focus-visible::before {
-  left: 100%;
+  color: var(--color-wenge);
+  background: var(--color-kunyit-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(196, 136, 74, 0.3);
 }
 
 .about-video-modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(28, 22, 18, 0.88);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  animation: videoModalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes videoModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .about-video-modal {
   position: relative;
-  width: min(1300px, 100%);
-  background: #000;
-  border-radius: 20px;
-  padding: 1rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  width: min(960px, 92vw);
+  background: var(--color-wenge);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(196, 136, 74, 0.3);
+  border: 1px solid rgba(196, 136, 74, 0.35);
+  animation: videoModalScaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@keyframes videoModalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.about-video-modal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.25rem 0.5rem 0.5rem;
+  border-bottom: 1px solid rgba(242, 235, 224, 0.08);
+}
+
+.modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.modal-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-kunyit);
+  background: rgba(196, 136, 74, 0.16);
+  border: 1px solid rgba(196, 136, 74, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill);
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-gading);
+  margin: 0;
 }
 
 .about-video-modal-close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 2;
-  border: none;
-  background: rgba(255, 255, 255, 0.9);
-  color: #111;
+  border: 1px solid rgba(196, 136, 74, 0.35);
+  background: rgba(196, 136, 74, 0.15);
+  color: var(--color-kunyit);
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.about-video-modal-close:hover {
+  background: var(--color-kunyit);
+  color: var(--color-wenge);
+  border-color: var(--color-kunyit);
+  transform: scale(1.08);
+  box-shadow: 0 4px 14px rgba(196, 136, 74, 0.3);
 }
 
 .about-video-modal-frame {
@@ -149,7 +213,9 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  background: #000;
 }
 
 .about-video-modal-frame iframe {
@@ -160,24 +226,22 @@
 
 .about-section {
   padding: 4rem 0;
+  background: var(--color-putih-warm);
 }
 
 .about-video-title {
   text-align: center;
   margin-top: 20px;
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 500;
   margin-bottom: 2.5rem;
-  color: var(--color-brand-900);
+  color: var(--color-wenge);
 }
 
 .about-video {
   padding: 2rem 0 4.5rem;
-  background: linear-gradient(
-    180deg,
-    rgba(247, 247, 247, 0.95),
-    var(--color-white) 60%
-  );
+  background: var(--color-putih-warm);
 }
 
 .about-video-inner {
@@ -191,113 +255,31 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   height: auto;
-  border-radius: 20px;
-  border: none;
-  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.18);
-  background: #0f0f0f;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(28, 22, 18, 0.08);
+  box-shadow: var(--shadow-lg);
+  background: var(--color-wenge);
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@media (max-width: 1024px) {
-  .about-hero {
-    min-height: 85vh;
-  }
-
-  .about-title {
-    font-size: 3rem;
-  }
-
-  .about-video-title {
-    font-size: 2.2rem;
-  }
-}
-
 @media (max-width: 768px) {
-  .about-section {
-    padding: 2.5rem 0;
-  }
-
   .about-hero {
-    min-height: 768px;
+    min-height: 70vh;
   }
-
   .about-hero-content {
-    padding: 0 var(--container-pad-tablet);
+    padding: 4.5rem var(--container-pad-mobile) 3rem;
   }
-
-  .about-kicker {
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-  }
-
-  .about-title {
-    font-size: 2.4rem;
-  }
-
-  .about-lead {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
   .about-video-title {
-    font-size: 1.9rem;
-    margin-bottom: 2rem;
-  }
-
-  .about-video {
-    padding: 1.5rem 0 3rem;
-  }
-
-  .about-video-inner {
-    padding: 0 var(--container-pad-mobile);
-  }
-}
-
-@media (max-width: 480px) {
-  .about-hero {
-    min-height: 680px;
-  }
-
-  .about-hero-content {
-    padding: 0 var(--container-pad-mobile);
-  }
-
-  .about-kicker {
-    font-size: 0.75rem;
-  }
-
-  .about-title {
     font-size: 2rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .about-lead {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  .about-video-title {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    margin-top: 1rem;
-  }
-
-  .about-video {
-    padding: 1rem 0 2rem;
-  }
-
-  .about-video-inner {
-    padding: 0 var(--container-pad-mobile);
   }
 }

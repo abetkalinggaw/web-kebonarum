@@ -1,6 +1,7 @@
 /* Page Wrapper */
 .documentation-page {
-  color: var(--color-text-900);
+  color: var(--color-text-primary);
+  background-color: var(--color-putih-warm);
 }
 
 /* Hero Section */
@@ -14,7 +15,8 @@
   background: url("../../../assets/gkj-bg.png");
   background-size: cover;
   background-position: center;
-  color: var(--color-white);
+  background-color: var(--color-wenge);
+  color: var(--color-gading);
   padding: 8rem 0 4.5rem;
 }
 
@@ -24,9 +26,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(17, 23, 20, 0.5) 0%,
-    rgba(17, 23, 20, 0.72) 55%,
-    rgba(17, 23, 20, 0.88) 100%
+    rgba(28, 22, 18, 0.45) 0%,
+    rgba(28, 22, 18, 0.72) 55%,
+    rgba(28, 22, 18, 0.9) 100%
   );
   z-index: 1;
 }
@@ -38,6 +40,7 @@
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
   animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
 }
 
 @keyframes fadeIn {
@@ -46,23 +49,30 @@
 }
 
 .documentation-kicker {
+  font-family: var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  font-size: 0.8rem;
   margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-kunyit);
 }
 
 .documentation-title {
-  font-size: 3rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  font-weight: 500;
   margin: 0 0 1rem;
+  color: var(--color-gading);
+  line-height: 1.15;
 }
 
 .documentation-lead {
+  font-family: var(--font-body);
   font-size: 1.15rem;
   line-height: 1.7;
   margin: 0 0 1rem;
   max-width: 1000px;
+  color: rgba(242, 235, 224, 0.85);
 }
 
 /* Controls Section */

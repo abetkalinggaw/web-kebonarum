@@ -154,11 +154,11 @@ const StatistikPage = () => {
                         style={{
                           height: showCharts ? `${item.percentage}%` : "0%",
                           backgroundColor: isLast
-                            ? "var(--color-brand-700)"
+                            ? "var(--color-kunyit)"
                             : undefined,
                           boxShadow:
                             isLast && showCharts
-                              ? "0 10px 20px -5px rgba(52, 78, 65, 0.3)"
+                              ? "0 10px 20px -5px rgba(196, 136, 74, 0.35)"
                               : undefined,
                         }}
                       >
@@ -166,7 +166,7 @@ const StatistikPage = () => {
                           className="year-label"
                           style={{
                             color: isLast
-                              ? "var(--color-brand-900)"
+                              ? "var(--color-kunyit)"
                               : undefined,
                             fontWeight: isLast ? 700 : undefined,
                             opacity: showCharts ? 1 : 0,

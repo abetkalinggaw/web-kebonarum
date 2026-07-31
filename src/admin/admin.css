@@ -1,32 +1,32 @@
 /* Admin Design System — Matches GKJ Kebonarum Website */
 
 :root {
-  /* Brand colors — same as website */
-  --admin-brand-900: #3a3f3c;
-  --admin-brand-800: #344e41;
-  --admin-brand-700: #4a6b58;
-  --admin-brand-200: #c8ddd0;
-  --admin-brand-100: #e8f0ea;
-  --admin-brand-50:  #f2f7f4;
+  /* Brand colors — mapped to Javanese palette tokens */
+  --admin-brand-900: var(--color-wenge, #1C1612);
+  --admin-brand-800: var(--color-daun, #3D5247);
+  --admin-brand-700: #4E6559;
+  --admin-brand-200: #EDE3D5;
+  --admin-brand-100: rgba(196, 136, 74, 0.12);
+  --admin-brand-50:  var(--color-putih-soft, #F7F2EC);
 
   /* Surfaces */
-  --admin-bg:        #f5f7f5;
+  --admin-bg:        var(--color-putih-warm, #FDFAF6);
   --admin-surface:   #ffffff;
-  --admin-surface-2: #f0f4f1;
+  --admin-surface-2: var(--color-putih-soft, #F7F2EC);
 
   /* Borders */
-  --admin-border:    #e2e8e4;
-  --admin-border-strong: #c8d4cb;
+  --admin-border:    rgba(28, 22, 18, 0.1);
+  --admin-border-strong: rgba(28, 22, 18, 0.2);
 
   /* Text */
-  --admin-text-primary:   #111111;
-  --admin-text-secondary: #555555;
-  --admin-text-muted:     #888888;
+  --admin-text-primary:   var(--color-wenge, #1C1612);
+  --admin-text-secondary: #5A4A3A;
+  --admin-text-muted:     #8A7A6A;
 
-  /* Accent = brand green */
-  --admin-accent:       #344e41;
-  --admin-accent-light: rgba(52, 78, 65, 0.08);
-  --admin-accent-hover: #2b4035;
+  /* Accent = kunyit gold */
+  --admin-accent:       var(--color-kunyit, #C4884A);
+  --admin-accent-light: rgba(196, 136, 74, 0.12);
+  --admin-accent-hover: #D9A06A;
 
   /* Semantic */
   --admin-danger:       #dc2626;
@@ -36,9 +36,10 @@
   --admin-success-light: rgba(22, 163, 74, 0.08);
   --admin-warning:      #d97706;
 
-  /* Typography — same as website */
-  --admin-font-heading: 'ClashDisplay', sans-serif;
-  --admin-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Typography — mapped to website typography system */
+  --admin-font-heading: var(--font-display, "Melodrama", serif);
+  --admin-font-body: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  --admin-font-mono: var(--font-mono, "IBM Plex Mono", monospace);
 
   /* Shadows */
   --admin-shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);

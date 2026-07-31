@@ -1,7 +1,12 @@
+/* ============================================================
+   EVENT CAROUSEL — GKJ Kebonarum
+   Grid Card Model with Card Header Images — Consistent Design
+   ============================================================ */
+
 .events-section {
   width: 100%;
   padding: 6rem 0;
-  background: #fbfcfb;
+  background: var(--color-putih-warm);
   position: relative;
 }
 
@@ -16,6 +21,7 @@
   margin-bottom: 3.5rem;
 }
 
+/* Carousel Outer Wrapper */
 .carousel-wrapper {
   position: relative;
   display: flex;
@@ -26,137 +32,261 @@
 .carousel-track {
   flex: 1;
   overflow: hidden;
-  border-radius: 16px;
-  padding: 0.5rem 0.25rem;
+  border-radius: var(--radius-lg);
+  padding: 0.6rem 0.25rem;
 }
 
 .carousel-slides {
   display: flex;
-  gap: 1.5rem;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .carousel-item {
-  min-width: calc(33.333% - 1rem);
-  padding: 0;
-}
-
-.event-card {
-  background: var(--color-white);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 16px;
-  overflow: hidden;
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-  height: 100%;
+  box-sizing: border-box;
+  padding: 0 0.75rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  cursor: pointer;
 }
 
-.event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  border-color: rgba(52, 78, 65, 0.2);
-}
-
-.event-image-container {
-  position: relative;
-  width: 100%;
-  height: 240px;
+/* --- AGENDA GRID CARD MODEL --- */
+.events-section .agenda-grid-card {
+  background: var(--color-putih-soft);
+  border: 1px solid rgba(28, 22, 18, 0.07);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #eef2ef;
-}
-
-.event-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.event-card:hover .event-image {
-  transform: scale(1.04);
-}
-
-.event-date-badge {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--color-brand-800);
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.35rem 0.75rem;
-  border-radius: 100px;
-  letter-spacing: 0.03em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.event-details {
-  padding: 1.5rem 1.75rem;
-  flex: 1;
+  box-shadow: var(--shadow-sm);
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1.25rem;
+  height: 100%;
+  cursor: pointer;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
 }
 
-.event-title {
-  font-size: 1.2rem;
+.events-section .agenda-grid-card:hover {
+  transform: translateY(-6px);
+  background: var(--color-putih);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(196, 136, 74, 0.35);
+}
+
+/* Card Header Image Wrap */
+.events-section .agenda-card-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-gading-warm);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.events-section .agenda-grid-card:hover .agenda-card-image-wrap {
+  transform: scale(1.03);
+}
+
+.events-section .agenda-card-top-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(28, 22, 18, 0.45) 0%,
+    rgba(28, 22, 18, 0.1) 45%,
+    rgba(28, 22, 18, 0.75) 100%
+  );
+  z-index: 1;
+}
+
+.events-section .agenda-card-top {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  right: 0.85rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.events-section .agenda-type-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
   font-weight: 600;
-  color: var(--color-text-900);
-  margin: 0 0 1rem 0;
-  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.28rem 0.75rem;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  backdrop-filter: blur(8px);
+  background: rgba(196, 136, 74, 0.9);
+  color: var(--color-wenge);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.events-section .agenda-type-tag.type-persekutuan {
+  background: rgba(61, 82, 71, 0.92);
+  color: var(--color-gading);
+}
+
+.events-section .agenda-type-tag.type-rapat {
+  background: rgba(139, 69, 19, 0.92);
+  color: var(--color-gading);
+}
+
+.events-section .agenda-type-tag.type-kegiatan {
+  background: rgba(28, 22, 18, 0.85);
+  color: var(--color-gading);
+}
+
+.events-section .agenda-date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--color-gading);
+  background: rgba(28, 22, 18, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(196, 136, 74, 0.3);
+  padding: 0.28rem 0.75rem;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.events-section .agenda-date-pill .date-day {
+  font-weight: 700;
+  color: var(--color-kunyit);
+}
+
+.events-section .agenda-date-pill .date-month-year {
+  color: var(--color-gading);
+  text-transform: uppercase;
+}
+
+/* Card Body Content */
+.events-section .agenda-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.events-section .agenda-card-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--color-wenge);
+  margin: 0;
+  line-height: 1.3;
   transition: color 0.2s ease;
 }
 
-.event-card:hover .event-title {
-  color: var(--color-brand-800);
+.events-section .agenda-grid-card:hover .agenda-card-title {
+  color: var(--color-soga);
 }
 
-.event-info {
+.events-section .agenda-card-meta {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0.2rem 0;
 }
 
-.event-time {
-  display: flex;
+.events-section .meta-item {
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
 }
 
-.event-time svg {
-  color: var(--color-brand-800);
+.events-section .meta-item svg {
+  color: var(--color-kunyit);
   flex-shrink: 0;
 }
 
+.events-section .agenda-card-desc {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card Footer Link */
+.events-section .agenda-card-footer {
+  border-top: 1px solid rgba(28, 22, 18, 0.06);
+  padding-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.events-section .agenda-detail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-kunyit);
+  transition: color 0.2s ease;
+}
+
+.events-section .agenda-grid-card:hover .agenda-detail-btn {
+  color: var(--color-soga);
+}
+
+.events-section .agenda-detail-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.events-section .agenda-grid-card:hover .agenda-detail-btn svg {
+  transform: translateX(4px);
+}
+
+/* Carousel Navigation Buttons */
 .carousel-button {
-  background: var(--color-white);
-  color: var(--color-brand-900);
+  background: var(--color-putih);
+  color: var(--color-wenge);
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(28, 22, 18, 0.1);
   outline: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-  transition: all 0.25s ease;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
 }
 
 .carousel-button:hover {
-  background: var(--color-brand-800);
-  color: var(--color-white);
-  border-color: var(--color-brand-800);
-  transform: scale(1.05);
+  background: var(--color-wenge);
+  color: var(--color-gading);
+  border-color: var(--color-wenge);
+  transform: scale(1.06);
+  box-shadow: var(--shadow-md);
 }
 
 .carousel-dots {
@@ -164,23 +294,23 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 .carousel-dot {
   width: 8px;
   height: 8px;
   border-radius: 100px;
-  background: #d0d7d2;
+  background: var(--color-gading-deep);
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 0;
 }
 
 .carousel-dot.active {
-  width: 24px;
-  background: var(--color-brand-800);
+  width: 26px;
+  background: var(--color-kunyit);
 }
 
 .custom-button-container {
@@ -194,10 +324,11 @@
   align-items: center;
   gap: 0.6rem;
   background: transparent;
-  color: var(--color-brand-800);
-  border: 1px solid rgba(52, 78, 65, 0.3);
+  color: var(--color-wenge);
+  border: 1px solid rgba(196, 136, 74, 0.35);
   padding: 0.75rem 2rem;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -205,11 +336,11 @@
 }
 
 .minimal-outline-btn:hover {
-  background: var(--color-brand-800);
-  color: var(--color-white);
-  border-color: var(--color-brand-800);
+  background: var(--color-wenge);
+  color: var(--color-gading);
+  border-color: var(--color-wenge);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(52, 78, 65, 0.15);
+  box-shadow: var(--shadow-md);
 }
 
 .minimal-outline-btn svg {
@@ -225,14 +356,6 @@
   .events-section {
     padding: 4.5rem 0;
   }
-
-  .carousel-item {
-    min-width: calc(50% - 0.75rem);
-  }
-
-  .event-image-container {
-    height: 220px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -244,24 +367,7 @@
     margin-bottom: 2.5rem;
   }
 
-  .carousel-item {
-    min-width: 100%;
-  }
-
   .carousel-button {
     display: none;
   }
-
-  .event-image-container {
-    height: 210px;
-  }
-
-  .event-details {
-    padding: 1.25rem 1.5rem;
-  }
-
-  .event-title {
-    font-size: 1.1rem;
-  }
 }
-

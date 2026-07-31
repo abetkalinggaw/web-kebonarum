@@ -6,10 +6,10 @@
     { "id": "wilayah_pelayanan", "label": "Wilayah Pelayanan", "value": "5", "trend": "0", "icon": "fas fa-map-marker-alt" }
   ],
   "demographics": [
-    { "id": "anak", "label": "Anak-anak", "value": 15, "color": "#94a3b8" },
-    { "id": "pemuda", "label": "Pemuda", "value": 25, "color": "#64748b" },
-    { "id": "dewasa", "label": "Dewasa", "value": 40, "color": "var(--color-brand-700)" },
-    { "id": "lansia", "label": "Adiyuswa (Lansia)", "value": 20, "color": "#cbd5e1" }
+    { "id": "anak", "label": "Anak-anak", "value": 15, "color": "#C4884A" },
+    { "id": "pemuda", "label": "Pemuda", "value": 25, "color": "#D9A06A" },
+    { "id": "dewasa", "label": "Dewasa", "value": 40, "color": "#8B4513" },
+    { "id": "lansia", "label": "Adiyuswa (Lansia)", "value": 20, "color": "#3D5247" }
   ],
   "growth": [
     { "year": "2022", "percentage": 40 },

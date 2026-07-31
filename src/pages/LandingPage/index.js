@@ -2,7 +2,7 @@ import "./LandingPage.css";
 import Navbar from "../../components/menu/Navbar";
 import EventCarousel from "../../components/landing_page/EventCarousel";
 import StatistikSection from "../../components/landing_page/StatistikSection";
-import PendetaCarousel from "../../components/landing_page/PendetaCarousel";
+import PendetaGKJ from "../../components/landing_page/PendetaGKJ";
 import Separator from "../../components/landing_page/Separator";
 import KebonarumInfo from "../../components/landing_page/KebonarumInfo";
 import VisiMisi from "../../components/landing_page/VisiMisi";
@@ -16,7 +16,7 @@ const LandingPage = () => {
     <>
       <Navbar />
       <main
-        style={{ position: "relative", zIndex: 1, backgroundColor: "#fbfcfb" }}
+        style={{ position: "relative", zIndex: 1, backgroundColor: "var(--color-putih-warm, #FDFAF6)" }}
       >
         <div className="landing-page">
           <video className="video-background" autoPlay muted loop playsInline>
@@ -67,7 +67,7 @@ const LandingPage = () => {
         <EventCarousel />
         <KebonarumInfo />
         <VisiMisi />
-        <PendetaCarousel />
+        <PendetaGKJ />
         <StatistikSection />
       </main>
       <LandingFooterStack />

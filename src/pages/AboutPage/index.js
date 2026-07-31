@@ -83,14 +83,32 @@ const AboutPage = () => {
             className="about-video-modal"
             onClick={(event) => event.stopPropagation()}
           >
-            <button
-              className="about-video-modal-close"
-              onClick={() => setIsVideoOpen(false)}
-              aria-label="Tutup video"
-              type="button"
-            >
-              ×
-            </button>
+            <div className="about-video-modal-bar">
+              <div className="modal-title-group">
+                <span className="modal-badge">PROFIL GEREJA</span>
+                <h3 className="modal-title">Video Profil GKJ Kebonarum</h3>
+              </div>
+              <button
+                className="about-video-modal-close"
+                onClick={() => setIsVideoOpen(false)}
+                aria-label="Tutup video"
+                type="button"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
             <div className="about-video-modal-frame">
               <iframe
                 src={`https://www.youtube.com/embed/${ABOUT_PROFILE_VIDEO_ID}?autoplay=1&rel=0`}

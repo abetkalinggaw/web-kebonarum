@@ -1,14 +1,88 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
 import "./AgendaPage.css";
+import event1 from "../../../assets/events/event1.jpg";
+import event2 from "../../../assets/events/event2.jpg";
+import event3 from "../../../assets/events/event3.jpg";
+import event4 from "../../../assets/events/event4.jpg";
+import event5 from "../../../assets/events/event5.jpg";
+
+const fallbackAgenda = [
+  {
+    id: 1,
+    title: "Ibadah Minggu Raya",
+    date: "2026-03-01",
+    time: "06.00 WIB & 08.00 WIB",
+    location: "Gedung GKJ Kebonarum Utama",
+    type: "Ibadah",
+    description:
+      "Ibadah Minggu Raya jemaat GKJ Kebonarum dengan pelayanan sabda firman dan persekutuan jemaat.",
+    image: event1,
+  },
+  {
+    id: 2,
+    title: "Persekutuan Doa Malam Jemaat",
+    date: "2026-03-04",
+    time: "19.00 WIB",
+    location: "Ruang Serbaguna GKJ Kebonarum",
+    type: "Persekutuan",
+    description:
+      "Persekutuan doa malam bersama seluruh jemaat dan majelis untuk saling menguatkan dalam doa.",
+    image: event2,
+  },
+  {
+    id: 3,
+    title: "Rapat Pleno Majelis Jemaat",
+    date: "2026-03-10",
+    time: "18.30 WIB",
+    location: "Ruang Rapat Majelis",
+    type: "Rapat",
+    description:
+      "Rapat koordinasi dan evaluasi pelayanan bulanan majelis penatua dan diaken GKJ Kebonarum.",
+    image: event3,
+  },
+  {
+    id: 4,
+    title: "Bakti Sosial Diakonia Kasih",
+    date: "2026-03-15",
+    time: "09.00 WIB",
+    location: "Wilayah Sumberejo & Krosok",
+    type: "Kegiatan",
+    description:
+      "Penyaluran bantuan sembako dan perhatian kasih bagi warga sekitar dan jemaat yang membutuhkan.",
+    image: event4,
+  },
+  {
+    id: 5,
+    title: "Persekutuan Pemuda Remaja (PRGKJ)",
+    date: "2026-03-21",
+    time: "16.30 WIB",
+    location: "Gedung Pemuda GKJ Kebonarum",
+    type: "Persekutuan",
+    description:
+      "Ibadah dan persekutuan rutin pemuda-pemudi GKJ Kebonarum dengan puji-pujian dan diskusi Alkitab.",
+    image: event5,
+  },
+];
 
 const AgendaPage = () => {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState("Semua");
-  const [agenda, setAgenda] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [agenda, setAgenda] = useState(fallbackAgenda);
+  const [loading, setLoading] = useState(false);
+
   const types = ["Semua", "Ibadah", "Persekutuan", "Rapat", "Kegiatan"];
+
+  const handleBackClick = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+    navigate("/");
+  };
 
   useEffect(() => {
     const fetchAgenda = async () => {
@@ -16,12 +90,13 @@ const AgendaPage = () => {
         const response = await fetch("http://localhost:5050/api/agenda");
         if (response.ok) {
           const data = await response.json();
-          // Sort by date closest first (optional)
-          data.sort((a, b) => new Date(a.date) - new Date(b.date));
-          setAgenda(data);
+          if (Array.isArray(data) && data.length > 0) {
+            data.sort((a, b) => new Date(a.date) - new Date(b.date));
+            setAgenda(data);
+          }
         }
       } catch (error) {
-        console.error("Error fetching agenda:", error);
+        console.error("Error fetching agenda, using fallback:", error);
       } finally {
         setLoading(false);
       }
@@ -29,83 +104,208 @@ const AgendaPage = () => {
     fetchAgenda();
   }, []);
 
-  const filteredAgenda =
-    filter === "Semua"
-      ? agenda
-      : agenda.filter((event) => event.type === filter);
+  const filteredAgenda = agenda.filter((event) => {
+    const matchesType = filter === "Semua" || event.type === filter;
+    const query = searchQuery.toLowerCase();
+    const matchesSearch =
+      !query ||
+      event.title.toLowerCase().includes(query) ||
+      event.location.toLowerCase().includes(query) ||
+      event.description.toLowerCase().includes(query);
+    return matchesType && matchesSearch;
+  });
 
   return (
     <>
       <Navbar />
       <main className="agenda-page">
+        {/* HERO SECTION */}
         <section className="agenda-hero">
           <div className="agenda-hero-content">
-            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
-            <h1 className="agenda-title">Agenda & Kegiatan</h1>
+            <button className="back-button" onClick={handleBackClick} type="button">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M12.5 15L7.5 10L12.5 5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Kembali
+            </button>
+            <p className="agenda-kicker">
+              <span className="section-tag light">AGENDA & KEGIATAN</span>
+            </p>
+            <h1 className="agenda-title">Agenda & Kegiatan Gereja</h1>
             <p className="agenda-lead">
-              Ikuti terus jadwal ibadah, persekutuan, dan kegiatan gereja agar
-              dapat turut serta dalam pelayanan dan persekutuan bersama.
+              Ikuti terus jadwal ibadah, persekutuan, dan kegiatan pelayanan GKJ Kebonarum agar
+              dapat turut serta dalam persekutuan kasih Kristus.
             </p>
           </div>
         </section>
 
+        {/* CONTENT & TOOLBAR SECTION */}
         <section className="agenda-content">
-          <div className="agenda-filter">
-            {types.map((type) => (
-              <button
-                key={type}
-                className={`filter-btn ${filter === type ? "active" : ""}`}
-                onClick={() => setFilter(type)}
+          <div className="agenda-toolbar">
+            <div className="agenda-filter">
+              {types.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  className={`filter-btn ${filter === type ? "active" : ""}`}
+                  onClick={() => setFilter(type)}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+
+            <div className="agenda-search-box">
+              <svg
+                className="search-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                {type}
-              </button>
-            ))}
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Cari kegiatan atau lokasi..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="agenda-search-input"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  className="clear-search-btn"
+                  onClick={() => setSearchQuery("")}
+                  aria-label="Bersihkan pencarian"
+                >
+                  ×
+                </button>
+              )}
+            </div>
           </div>
 
           {loading ? (
-            <div className="agenda-empty"><p>Loading...</p></div>
+            <div className="agenda-empty">
+              <p>Memuat agenda kegiatan...</p>
+            </div>
           ) : (
-            <div className="agenda-list">
-              {filteredAgenda.map((event, index) => (
-                <div
-                  key={event.id}
-                  className="agenda-card"
-                  style={{ animationDelay: `${index * 0.15}s` }}
-                >
-                  <div className="agenda-card-date">
-                    <div className="date-day">
-                      {new Date(event.date).getDate()}
-                    </div>
-                    <div className="date-month">
-                      {new Date(event.date).toLocaleDateString("id-ID", {
-                        month: "short",
-                      })}
-                    </div>
-                  </div>
+            <div className="agenda-grid">
+              {filteredAgenda.map((event, index) => {
+                const eventDate = new Date(event.date);
+                const day = eventDate.getDate();
+                const month = eventDate.toLocaleDateString("id-ID", {
+                  month: "short",
+                });
+                const year = eventDate.getFullYear();
+                const cardImage = event.image || [event1, event2, event3, event4, event5][index % 5];
 
-                  <div className="agenda-card-info">
-                    <div className="agenda-tags">
-                      <span className="agenda-type-tag">{event.type}</span>
-                    </div>
-                    <h3 className="agenda-card-title">{event.title}</h3>
-                    <div className="agenda-card-meta">
-                      <span className="meta-item">
-                        <i className="far fa-clock"></i> {event.time}
-                      </span>
-                      <span className="meta-item">
-                        <i className="fas fa-map-marker-alt"></i> {event.location}
-                      </span>
-                    </div>
-                    <p className="agenda-card-desc">{event.description}</p>
-                  </div>
-                </div>
-              ))}
+                return (
+                  <article
+                    key={event.id || index}
+                    className="agenda-grid-card"
+                    onClick={() => {
+                      window.scrollTo(0, 0);
+                      navigate(`/pengumuman/events/${event.id || index + 1}`);
+                    }}
+                    style={{ animationDelay: `${index * 0.08}s` }}
+                  >
+                    <div
+                      className="agenda-card-image-wrap"
+                      style={{ backgroundImage: `url(${cardImage})` }}
+                    >
+                      <div className="agenda-card-top-overlay" />
+                      <div className="agenda-card-top">
+                        <span
+                          className={`agenda-type-tag type-${(
+                            event.type || ""
+                          ).toLowerCase()}`}
+                        >
+                          {event.type}
+                        </span>
 
-              {filteredAgenda.length === 0 && (
-                <div className="agenda-empty">
-                  <p>Belum ada kegiatan untuk kategori ini.</p>
-                </div>
-              )}
+                        <div className="agenda-date-pill">
+                          <span className="date-day">
+                            {day < 10 ? `0${day}` : day}
+                          </span>
+                          <span className="date-month-year">
+                            {month} {year}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="agenda-card-body">
+                      <h3 className="agenda-card-title">{event.title}</h3>
+                      <div className="agenda-card-meta">
+                        <span className="meta-item">
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                          </svg>
+                          {event.time}
+                        </span>
+                        <span className="meta-item">
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                          </svg>
+                          {event.location}
+                        </span>
+                      </div>
+                      <p className="agenda-card-desc">{event.description}</p>
+                    </div>
+
+                    <div className="agenda-card-footer">
+                      <span className="agenda-detail-btn">
+                        Informasi Kegiatan
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          width="16"
+                          height="16"
+                        >
+                          <line x1="5" y1="12" x2="19" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                      </span>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           )}
         </section>
@@ -116,3 +316,4 @@ const AgendaPage = () => {
 };
 
 export default AgendaPage;
+

@@ -1,17 +1,35 @@
 .separator-section {
   width: 100%;
-  background: #1d2822;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1.25rem 0;
+  background: var(--color-wenge, #1C1612);
+  border-top: 1px solid rgba(242, 235, 224, 0.06);
+  border-bottom: 1px solid rgba(242, 235, 224, 0.06);
+  padding: 1.1rem 0;
   overflow: hidden;
   position: relative;
+}
+
+/* Subtle kunyit-gold top edge glow — the batik signature in the ticker */
+.separator-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-kunyit, #C4884A) 30%,
+    var(--color-soga, #8B4513) 70%,
+    transparent 100%
+  );
+  opacity: 0.5;
 }
 
 .running-text-container {
   position: relative;
   overflow: hidden;
-  height: 22px;
+  height: 20px;
   display: flex;
   align-items: center;
 }
@@ -19,12 +37,12 @@
 .running-text {
   display: flex;
   white-space: nowrap;
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 400;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  letter-spacing: 0.25em;
+  color: rgba(242, 235, 224, 0.55);
+  letter-spacing: 0.2em;
   animation: scroll-left 120s linear infinite;
   will-change: transform;
 }
@@ -34,39 +52,27 @@
   padding: 0 10px;
 }
 
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* Accent dots between items — styled via JS component */
+.running-text-span {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  color: var(--color-kunyit, #C4884A);
+  font-weight: 500;
+  opacity: 0.6;
 }
 
-/* Responsive Design */
+@keyframes scroll-left {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .separator-section {
-    padding: 1rem 0;
-  }
-
-  .running-text-container {
-    height: 20px;
-  }
-
-  .running-text {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-  }
+  .separator-section { padding: 0.9rem 0; }
+  .running-text-container { height: 18px; }
+  .running-text { font-size: 0.65rem; letter-spacing: 0.16em; }
 }
 
 @media (max-width: 480px) {
-  .separator-section {
-    padding: 0.85rem 0;
-  }
-
-  .running-text {
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-  }
+  .separator-section { padding: 0.75rem 0; }
+  .running-text { font-size: 0.6rem; letter-spacing: 0.12em; }
 }
-

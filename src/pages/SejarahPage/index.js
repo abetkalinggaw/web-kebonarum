@@ -21,8 +21,8 @@ const timelineData = [
       "GKJ Kebonarum resmi berdiri sebagai jemaat gereja yang mandiri. Persekutuan yang berakar dari kelompok-kelompok ibadah kecil di daerah Kebonarum, Klaten, akhirnya berkembang menjadi sebuah jemaat gereja yang terorganisir dengan penuh berkat dan harapan.",
     quote:
       '"Sebab di mana dua atau tiga orang berkumpul dalam nama-Ku, di situ Aku ada di tengah-tengah mereka." — Matius 18:20',
-    bg: "#0f1e16",
-    accent: "#5a9272",
+    bg: "#1C1612",
+    accent: "#C4884A",
     image: SEJARAH_IMAGES[0],
   },
   {
@@ -33,8 +33,8 @@ const timelineData = [
       "Dengan semangat gotong royong seluruh jemaat, dibangun gedung gereja pertama yang menjadi pusat ibadah dan kegiatan rohani. Setiap bata yang diletakkan adalah simbol iman dan persatuan jemaat yang tidak tergoyahkan.",
     quote:
       '"Kalau bukan Tuhan yang membangun rumah, sia-sialah usaha orang yang membangunnya." — Mazmur 127:1',
-    bg: "#112019",
-    accent: "#6aa882",
+    bg: "#231A15",
+    accent: "#D9A06A",
     image: SEJARAH_IMAGES[1],
   },
   {
@@ -45,8 +45,8 @@ const timelineData = [
       "GKJ Kebonarum menyambut pendeta pertamanya yang resmi ditahbiskan untuk melayani jemaat. Hadirnya pemimpin rohani yang tetap semakin memperkokoh fondasi spiritual dan organisasi gereja dalam melangkah maju.",
     quote:
       '"Gembalakanlah kawanan domba Allah yang ada padamu, jangan dengan paksa, tetapi dengan sukarela sesuai dengan kehendak Allah." — 1 Petrus 5:2',
-    bg: "#132218",
-    accent: "#7abd96",
+    bg: "#1E1713",
+    accent: "#A85520",
     image: SEJARAH_IMAGES[2],
   },
   {
@@ -57,8 +57,8 @@ const timelineData = [
       "Tata organisasi gereja diperkuat dengan pembentukan majelis gereja yang lengkap. Para penatua dan diaken dipilih dan dilantik untuk bersama-sama memimpin dan melayani jemaat dengan penuh tanggung jawab kepada Tuhan.",
     quote:
       '"Dan Ia-lah yang memberikan baik rasul-rasul maupun nabi-nabi, baik pemberita-pemberita Injil maupun gembala-gembala dan pengajar-pengajar." — Efesus 4:11',
-    bg: "#15251c",
-    accent: "#88c9a6",
+    bg: "#261E18",
+    accent: "#C4884A",
     image: SEJARAH_IMAGES[3],
   },
   {
@@ -69,8 +69,8 @@ const timelineData = [
       "Dengan penuh syukur, seluruh jemaat merayakan 20 tahun perjalanan GKJ Kebonarum. Sebuah momen refleksi atas segala berkat dan pertumbuhan yang telah dialami, sekaligus meneguhkan komitmen bersama untuk masa depan yang lebih cerah.",
     quote:
       '"Bersyukurlah kepada Tuhan, sebab Ia baik! Bahwasanya untuk selama-lamanya kasih setia-Nya." — Mazmur 107:1',
-    bg: "#162820",
-    accent: "#95d4b0",
+    bg: "#211814",
+    accent: "#D9A06A",
     image: SEJARAH_IMAGES[4],
   },
   {
@@ -81,8 +81,8 @@ const timelineData = [
       "Merespons pertumbuhan jemaat yang terus bertambah, dilakukan renovasi besar-besaran dan perluasan gedung gereja. Fasilitas yang diperbaharui ini mencerminkan visi gereja yang terus berkembang dan menatap masa depan dengan penuh keyakinan.",
     quote:
       '"Rancangan Tuhan tetap selama-lamanya, rancangan hati-Nya turun-temurun." — Mazmur 33:11',
-    bg: "#182a22",
-    accent: "#a0dbb8",
+    bg: "#281F19",
+    accent: "#A85520",
     image: SEJARAH_IMAGES[0],
   },
   {
@@ -92,8 +92,8 @@ const timelineData = [
     description:
       "GKJ Kebonarum memasuki milenium baru dengan penuh harapan dan semangat pembaruan. Program-program inovatif diluncurkan untuk menjawab tantangan zaman dan memenuhi kebutuhan jemaat yang semakin beragam di era global.",
     quote: '"Lihat, Aku membuat semuanya baru!" — Wahyu 21:5',
-    bg: "#162820",
-    accent: "#a8e0be",
+    bg: "#211814",
+    accent: "#C4884A",
     image: SEJARAH_IMAGES[1],
   },
   {
@@ -104,8 +104,8 @@ const timelineData = [
       "Memperluas jangkauan pelayanan ke luar tembok gereja, GKJ Kebonarum meluncurkan berbagai program sosial dan pemberdayaan komunitas. Pelayanan kepada masyarakat sekitar menjadi wujud nyata kasih yang hidup dan nyata.",
     quote:
       '"Dan kamu akan menjadi saksi-Ku di Yerusalem dan di seluruh Yudea dan Samaria dan sampai ke ujung bumi." — Kisah Para Rasul 1:8',
-    bg: "#142518",
-    accent: "#b0e4c4",
+    bg: "#1F1813",
+    accent: "#D9A06A",
     image: SEJARAH_IMAGES[2],
   },
   {
@@ -116,8 +116,8 @@ const timelineData = [
       "Merayakan empat dekade perjalanan iman yang penuh berkat. Perayaan jubileum ini mempererat persatuan jemaat sekaligus menjadi titik awal untuk melangkah ke babak baru dengan visi yang lebih besar dan hati yang lebih bersyukur.",
     quote:
       '"Sesungguhnya Tuhan adalah baik bagi orang yang berharap kepada-Nya, bagi jiwa yang mencari Dia." — Ratapan 3:25',
-    bg: "#122216",
-    accent: "#b8e8ca",
+    bg: "#241C16",
+    accent: "#A85520",
     image: SEJARAH_IMAGES[3],
   },
   {
@@ -127,8 +127,8 @@ const timelineData = [
     description:
       "Mengikuti perkembangan zaman, GKJ Kebonarum mulai memanfaatkan media digital untuk memperluas jangkauan pelayanan. Ibadah daring, media sosial, dan platform digital menjadi sarana baru untuk menyentuh lebih banyak jiwa.",
     quote: '"Pergilah, jadikanlah semua bangsa murid-Ku." — Matius 28:19',
-    bg: "#112018",
-    accent: "#c2ecce",
+    bg: "#211814",
+    accent: "#C4884A",
     image: SEJARAH_IMAGES[4],
   },
   {
@@ -139,8 +139,8 @@ const timelineData = [
       "Menghadapi tantangan pandemi global, GKJ Kebonarum membuktikan ketangguhannya. Dengan kreativitas dan adaptasi penuh kasih, pelayanan terus berjalan meski dalam keterbatasan, memperkuat solidaritas dan iman di antara jemaat.",
     quote:
       '"Janganlah kita jemu berbuat baik, karena apabila sudah datang waktunya, kita akan menuai, jika kita tidak menjadi lemah." — Galatia 6:9',
-    bg: "#0f1e16",
-    accent: "#caf0d4",
+    bg: "#1C1612",
+    accent: "#D9A06A",
     image: SEJARAH_IMAGES[0],
   },
 ];
@@ -244,7 +244,7 @@ const SejarahPage = () => {
         });
       },
       {
-        threshold: 0.45,
+        threshold: 0.2,
         rootMargin: "0px 0px -5% 0px",
       },
     );

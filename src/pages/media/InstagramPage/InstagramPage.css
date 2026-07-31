@@ -1,5 +1,6 @@
 .instagram-page {
-  color: var(--color-text-900);
+  color: var(--color-text-primary);
+  background-color: var(--color-putih-warm);
 }
 
 .instagram-hero {
@@ -12,7 +13,8 @@
   background: url("../../../assets/gkj-bg.png");
   background-size: cover;
   background-position: center;
-  color: var(--color-white);
+  background-color: var(--color-wenge);
+  color: var(--color-gading);
   padding: 8rem 0 4.5rem;
 }
 
@@ -22,9 +24,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(17, 23, 20, 0.5) 0%,
-    rgba(17, 23, 20, 0.72) 55%,
-    rgba(17, 23, 20, 0.88) 100%
+    rgba(28, 22, 18, 0.45) 0%,
+    rgba(28, 22, 18, 0.72) 55%,
+    rgba(28, 22, 18, 0.9) 100%
   );
   z-index: 1;
 }
@@ -36,6 +38,7 @@
   margin: 0 auto;
   padding: 0 var(--container-pad-desktop);
   animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
 }
 
 @keyframes fadeIn {
@@ -44,44 +47,56 @@
 }
 
 .instagram-kicker {
+  font-family: var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  font-size: 0.8rem;
   margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-kunyit);
 }
 
 .instagram-title {
-  font-size: 3rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
   margin: 0 0 1rem;
+  font-weight: 500;
+  color: var(--color-gading);
 }
 
 .instagram-lead {
+  font-family: var(--font-body);
   font-size: 1.15rem;
   line-height: 1.7;
-  margin: 0 0 1rem;
+  margin: 0 auto 1.5rem;
   max-width: 1000px;
+  color: rgba(242, 235, 224, 0.85);
 }
 
 .instagram-account-link {
   display: inline-block;
-  color: var(--color-white);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 999px;
+  color: var(--color-kunyit);
+  background: rgba(196, 136, 74, 0.12);
+  border: 1px solid rgba(196, 136, 74, 0.35);
+  border-radius: var(--radius-pill);
   text-decoration: none;
-  padding: 0.55rem 1rem;
+  padding: 0.55rem 1.4rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
   font-weight: 600;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .instagram-account-link:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--color-kunyit);
+  color: var(--color-wenge);
+  border-color: var(--color-kunyit);
 }
 
 .instagram-section {
   padding: 3.5rem 0;
   max-width: 100%;
   min-height: 1080px;
+  background: var(--color-putih-warm);
 }
 
 .instagram-section-inner {
@@ -91,66 +106,13 @@
 }
 
 .instagram-media {
-  background: var(--color-white);
+  background: var(--color-putih-soft);
   border: none;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
 }
 
 @media (max-width: 1024px) {
   .instagram-title {
-    font-size: 2.4rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .instagram-hero {
-    min-height: 50vh;
-    padding: 4.5rem 0 2.5rem;
-  }
-
-  .instagram-hero-content,
-  .instagram-section-inner {
-    padding: 0 var(--container-pad-tablet);
-  }
-
-  .instagram-title {
-    font-size: 2rem;
-  }
-
-  .instagram-lead {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  .instagram-blockquote-container {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .instagram-media {
-    width: 100% !important;
-  }
-
-}
-
-@media (max-width: 480px) {
-  .instagram-hero-content,
-  .instagram-section-inner {
-    padding: 0 var(--container-pad-mobile);
-  }
-
-  .instagram-title {
-    font-size: 1.7rem;
-  }
-
-  .instagram-blockquote-container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0.75rem;
-  }
-
-  .instagram-media {
-    width: 100% !important;
+    font-size: 2.2rem;
   }
 }

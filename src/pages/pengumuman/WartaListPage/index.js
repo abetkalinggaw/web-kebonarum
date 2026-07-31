@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./WartaListPage.css";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
@@ -91,64 +93,142 @@ function groupByMonth(list) {
 }
 
 const WartaListPage = () => {
-  const groupedWarta = groupByMonth(wartaList);
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const navigateTo = (path) => {
-    const publicUrl = process.env.PUBLIC_URL || "";
-    let basePath = "";
-    if (publicUrl) {
-      try {
-        basePath = new URL(publicUrl, window.location.origin).pathname.replace(
-          /\/+$/,
-          "",
-        );
-      } catch {
-        basePath = publicUrl.replace(/\/+$/, "");
-      }
+  const handleBackClick = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
     }
-    window.location.assign(`${basePath}${path}`);
+    navigate("/");
   };
+
+  const filteredWarta = wartaList.filter(
+    (warta) =>
+      warta.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      warta.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      warta.date.includes(searchQuery)
+  );
+
+  const groupedWarta = groupByMonth(filteredWarta);
 
   return (
     <>
       <Navbar />
       <main className="warta-list-page">
+        {/* HERO SECTION */}
         <section className="warta-hero">
           <div className="warta-hero-content">
-            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
+            <button className="back-button" onClick={handleBackClick} type="button">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M12.5 15L7.5 10L12.5 5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Kembali
+            </button>
+            <p className="warta-kicker">
+              <span className="section-tag light">WARTA JEMAAT</span>
+            </p>
             <h1 className="warta-title">
               Warta Gereja GKJ Kebonarum
             </h1>
             <p className="warta-lead">
-              Kumpulan warta jemaat GKJ Kebonarum. Temukan pengumuman, jadwal
-              kegiatan, dan informasi pelayanan gereja setiap minggunya.
+              Kumpulan warta jemaat GKJ Kebonarum. Temukan pengumuman resmi, jadwal
+              kegiatan, serta warta pelayanan gereja setiap minggunya.
             </p>
           </div>
         </section>
 
+        {/* CONTENT & SEARCH SECTION */}
         <section className="warta-list-section">
           <div className="warta-list-inner">
-            {wartaList.length === 0 ? (
+            {/* Toolbar Search */}
+            <div className="warta-toolbar">
+              <div className="warta-search-box">
+                <svg
+                  className="search-icon"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Cari warta gereja berdasarkan judul atau tanggal..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="warta-search-input"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className="clear-search-btn"
+                    onClick={() => setSearchQuery("")}
+                    aria-label="Bersihkan pencarian"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+              <span className="warta-total-badge">
+                {filteredWarta.length} Warta Tersedia
+              </span>
+            </div>
+
+            {filteredWarta.length === 0 ? (
               <div className="warta-empty">
                 <div className="warta-empty-icon">📋</div>
-                <p>Belum ada warta gereja yang tersedia.</p>
+                <h3>Warta Tidak Ditemukan</h3>
+                <p>
+                  Tidak ada warta gereja yang cocok dengan pencarian &ldquo;{searchQuery}&rdquo;.
+                </p>
+                <button
+                  type="button"
+                  className="reset-filter-btn"
+                  onClick={() => setSearchQuery("")}
+                >
+                  Tampilkan Semua Warta
+                </button>
               </div>
             ) : (
               <div className="warta-months">
                 {groupedWarta.map(({ key, month, year, items }) => (
                   <div key={key} className="warta-month-group">
-                    <h3 className="warta-month-heading">
-                      {MONTHS_FULL_ID[month - 1]} {year}
-                    </h3>
+                    <div className="warta-month-header">
+                      <h2 className="warta-month-heading">
+                        {MONTHS_FULL_ID[month - 1]} {year}
+                      </h2>
+                      <div className="batik-rule">
+                        <span className="batik-rule--icon">❖</span>
+                      </div>
+                    </div>
+
                     <div className="warta-grid">
                       {items.map((warta) => {
                         const { day, month: m } = parseDate(warta.date);
                         return (
-                          <article key={warta.id} className="warta-card">
+                          <article
+                            key={warta.id}
+                            className="warta-card"
+                            onClick={() => navigate(`/pengumuman/warta-gereja/${warta.id}`)}
+                          >
                             <div className="warta-card-body">
                               <div className="warta-card-meta">
                                 <span className="warta-card-date-day">
-                                  {day}
+                                  {day < 10 ? `0${day}` : day}
                                 </span>
                                 <span className="warta-card-date-month">
                                   {MONTHS_ID[m - 1]}
@@ -168,14 +248,7 @@ const WartaListPage = () => {
                               </div>
                             </div>
                             <div className="warta-card-footer">
-                              <button
-                                className="warta-read-btn"
-                                onClick={() =>
-                                  navigateTo(
-                                    `/pengumuman/warta-gereja/${warta.id}`,
-                                  )
-                                }
-                              >
+                              <span className="warta-read-btn">
                                 Baca Warta
                                 <svg
                                   viewBox="0 0 24 24"
@@ -184,11 +257,13 @@ const WartaListPage = () => {
                                   strokeWidth="2"
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
+                                  width="16"
+                                  height="16"
                                 >
                                   <line x1="5" y1="12" x2="19" y2="12" />
                                   <polyline points="12 5 19 12 12 19" />
                                 </svg>
-                              </button>
+                              </span>
                             </div>
                           </article>
                         );
@@ -207,3 +282,4 @@ const WartaListPage = () => {
 };
 
 export default WartaListPage;
+

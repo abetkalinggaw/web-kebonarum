@@ -1,11 +1,12 @@
 .statistik-landing-section {
-  padding: 6rem 2rem;
-  background-color: var(--color-brand-800);
+  padding: var(--section-pad-lg, 7rem) 2.5rem;
+  background-color: var(--color-wenge, #1C1612);
   background-image:
     linear-gradient(
-      135deg,
-      rgba(17, 23, 20, 0.8) 0%,
-      rgba(52, 78, 65, 0.6) 100%
+      180deg,
+      rgba(28, 22, 18, 0.88) 0%,
+      rgba(28, 22, 18, 0.72) 50%,
+      rgba(28, 22, 18, 0.92) 100%
     ),
     url("../../assets/gkj-bg.png");
   background-size: cover;
@@ -15,8 +16,26 @@
   z-index: 1;
 }
 
+/* Kunyit edge glow at top of section */
+.statistik-landing-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-kunyit, #C4884A) 35%,
+    var(--color-soga, #8B4513) 65%,
+    transparent 100%
+  );
+  opacity: 0.45;
+}
+
 .statistik-landing-container {
-  max-width: 1280px;
+  max-width: var(--container-max, 1280px);
   margin: 0 auto;
 }
 
@@ -28,25 +47,50 @@
 .statistik-landing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .statistik-landing-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(242, 235, 224, 0.04);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 4rem 2rem;
+  border: 1px solid rgba(242, 235, 224, 0.08);
+  border-radius: var(--radius-lg, 20px);
+  padding: 3.5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  position: relative;
+  overflow: hidden;
   transition:
     transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease;
   opacity: 0;
   transform: translateY(30px);
+}
+
+/* Kunyit bottom border on hover — batik accent line */
+.statistik-landing-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-kunyit, #C4884A),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.statistik-landing-card:hover::after {
+  opacity: 1;
 }
 
 .statistik-landing-grid.animate-in .statistik-landing-card {
@@ -54,84 +98,71 @@
 }
 
 @keyframes slideUpFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .statistik-landing-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-6px);
+  background: rgba(242, 235, 224, 0.06);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
+  border-color: rgba(196, 136, 74, 0.2);
 }
 
+/* IBM Plex Mono for stat values — data credibility */
 .stat-landing-value {
-  font-family: var(--font-heading);
-  font-size: 3rem;
-  font-weight: 600;
-  color: var(--color-white);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 2.75rem;
+  font-weight: 500;
+  color: var(--color-gading, #F2EBE0);
   margin: 0 0 0.5rem 0;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
 .stat-landing-label {
-  font-size: 1.05rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(242, 235, 224, 0.55);
   margin: 0 0 1rem 0;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.1em;
 }
 
 .stat-landing-trend {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.35rem 0.85rem;
-  border-radius: 100px;
-  background: rgba(255, 255, 255, 0.05);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.75rem;
+  font-weight: 400;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill, 100px);
+  background: rgba(242, 235, 224, 0.04);
 }
 
 .stat-landing-trend.positive {
-  color: #a3c2b0;
-  background: rgba(163, 194, 176, 0.1);
+  color: var(--color-kunyit, #C4884A);
+  background: rgba(196, 136, 74, 0.1);
 }
 
 .stat-landing-trend.neutral {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(242, 235, 224, 0.45);
 }
 
+/* Responsive */
 @media (max-width: 768px) {
-  .statistik-landing-section {
-    padding: 4rem 1.5rem;
-  }
+  .statistik-landing-section { padding: 4.5rem 1.5rem; }
   .statistik-landing-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: 1rem;
   }
-  .stat-landing-value {
-    font-size: 2.2rem;
-  }
+  .stat-landing-value { font-size: 2.1rem; }
 }
 
 @media (max-width: 480px) {
-  .statistik-landing-section {
-    padding: 3.5rem 1rem;
-  }
-  .statistik-landing-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .statistik-landing-card {
-    padding: 2rem 1.5rem;
-  }
+  .statistik-landing-section { padding: 3.5rem 1rem; }
+  .statistik-landing-grid { grid-template-columns: 1fr; }
+  .statistik-landing-card { padding: 2.25rem 1.5rem; }
 }

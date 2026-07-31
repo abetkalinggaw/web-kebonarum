@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./EventCarousel.css";
 import event1 from "../../assets/events/event1.jpg";
 import event2 from "../../assets/events/event2.jpg";
@@ -6,70 +7,113 @@ import event3 from "../../assets/events/event3.jpg";
 import event4 from "../../assets/events/event4.jpg";
 import event5 from "../../assets/events/event5.jpg";
 
+const fallbackEvents = [
+  {
+    id: 1,
+    title: "Ibadah Minggu Raya",
+    date: "2026-03-01",
+    time: "06.00 WIB & 08.00 WIB",
+    location: "Gedung GKJ Kebonarum Utama",
+    type: "Ibadah",
+    description:
+      "Ibadah Minggu Raya jemaat GKJ Kebonarum dengan pelayanan sabda firman dan persekutuan jemaat.",
+    image: event1,
+  },
+  {
+    id: 2,
+    title: "Persekutuan Doa Malam Jemaat",
+    date: "2026-03-04",
+    time: "19.00 WIB",
+    location: "Ruang Serbaguna GKJ Kebonarum",
+    type: "Persekutuan",
+    description:
+      "Persekutuan doa malam bersama seluruh jemaat dan majelis untuk saling menguatkan dalam doa.",
+    image: event2,
+  },
+  {
+    id: 3,
+    title: "Rapat Pleno Majelis Jemaat",
+    date: "2026-03-10",
+    time: "18.30 WIB",
+    location: "Ruang Rapat Majelis",
+    type: "Rapat",
+    description:
+      "Rapat koordinasi dan evaluasi pelayanan bulanan majelis penatua dan diaken GKJ Kebonarum.",
+    image: event3,
+  },
+  {
+    id: 4,
+    title: "Bakti Sosial Diakonia Kasih",
+    date: "2026-03-15",
+    time: "09.00 WIB",
+    location: "Wilayah Sumberejo & Krosok",
+    type: "Kegiatan",
+    description:
+      "Penyaluran bantuan sembako dan perhatian kasih bagi warga sekitar dan jemaat yang membutuhkan.",
+    image: event4,
+  },
+  {
+    id: 5,
+    title: "Persekutuan Pemuda Remaja (PRGKJ)",
+    date: "2026-03-21",
+    time: "16.30 WIB",
+    location: "Gedung Pemuda GKJ Kebonarum",
+    type: "Persekutuan",
+    description:
+      "Ibadah dan persekutuan rutin pemuda-pemudi GKJ Kebonarum dengan puji-pujian dan diskusi Alkitab.",
+    image: event5,
+  },
+];
+
 const EventCarousel = () => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
+  const [itemsPerView, setItemsPerView] = useState(3);
+  const [events, setEvents] = useState(fallbackEvents);
+
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 640);
+      if (window.innerWidth <= 640) {
+        setItemsPerView(1);
+      } else if (window.innerWidth <= 1024) {
+        setItemsPerView(2);
+      } else {
+        setItemsPerView(3);
+      }
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const events = [
-    {
-      id: 1,
-      title: "Malam Perayaan Tahunan",
-      date: "15 Maret 2026",
-      time: "19:00 - 23:00",
-      image: event1,
-    },
-    {
-      id: 2,
-      title: "Pertemuan Jemaat",
-      date: "22 Maret 2026",
-      time: "18:00 - 21:00",
-      image: event2,
-    },
-    {
-      id: 3,
-      title: "Lokakarya & Pelatihan",
-      date: "29 Maret 2026",
-      time: "10:00 - 14:00",
-      image: event3,
-    },
-    {
-      id: 4,
-      title: "Penggalangan Dana",
-      date: "5 April 2026",
-      time: "17:00 - 22:00",
-      image: event4,
-    },
-    {
-      id: 5,
-      title: "Penggalangan Dana",
-      date: "5 April 2026",
-      time: "17:00 - 22:00",
-      image: event5,
-    },
-  ];
+  useEffect(() => {
+    const fetchAgenda = async () => {
+      try {
+        const response = await fetch("http://localhost:5050/api/agenda");
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setEvents(data);
+          }
+        }
+      } catch {
+        // Fallback already set
+      }
+    };
+    fetchAgenda();
+  }, []);
 
-  const itemsPerView = isMobile ? 1 : 3;
+  const maxIndex = Math.max(0, events.length - itemsPerView);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex >= events.length - itemsPerView ? 0 : prevIndex + 1,
-    );
+    setCurrentIndex((prevIndex) => (prevIndex >= maxIndex ? 0 : prevIndex + 1));
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? events.length - itemsPerView : prevIndex - 1,
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? maxIndex : prevIndex - 1));
   };
 
   const handleTouchStart = (e) => {
@@ -78,16 +122,17 @@ const EventCarousel = () => {
 
   const handleTouchEnd = (e) => {
     touchEndX.current = e.changedTouches[0].screenX;
-    handleSwipe();
-  };
-
-  const handleSwipe = () => {
-    if (touchStartX.current - touchEndX.current > 50) {
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > 40) {
       nextSlide();
-    }
-    if (touchEndX.current - touchStartX.current > 50) {
+    } else if (diff < -40) {
       prevSlide();
     }
+  };
+
+  const handleNavigateAll = () => {
+    window.scrollTo(0, 0);
+    navigate("/pengumuman/events");
   };
 
   return (
@@ -96,24 +141,29 @@ const EventCarousel = () => {
         <div className="section-header-minimal">
           <span className="section-tag">AGENDA & KEGIATAN</span>
           <h2 className="section-title-minimal">Kegiatan Gereja</h2>
+          <p className="section-subtitle-minimal">
+            Jadwal ibadah, persekutuan doa, dan kegiatan pelayanan jemaat GKJ Kebonarum mendatang.
+          </p>
         </div>
 
         <div className="carousel-wrapper">
-          <button className="carousel-button prev" onClick={prevSlide} aria-label="Previous event">
+          <button
+            className="carousel-button prev"
+            onClick={prevSlide}
+            aria-label="Previous event"
+            type="button"
+          >
             <svg
               width="20"
               height="20"
               viewBox="0 0 24 24"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <path
-                d="M15 18L9 12L15 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M15 18L9 12L15 6" />
             </svg>
           </button>
 
@@ -128,79 +178,143 @@ const EventCarousel = () => {
                 transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
               }}
             >
-              {events.map((event) => (
-                <div key={event.id} className="carousel-item">
-                  <div className="event-card">
-                    <div className="event-image-container">
-                      <img
-                        src={event.image}
-                        alt={event.title}
-                        className="event-image"
-                      />
-                      <div className="event-date-badge">
-                        <span>{event.date}</span>
-                      </div>
-                    </div>
+              {events.map((event, index) => {
+                const eventDate = new Date(event.date);
+                const day = eventDate.getDate();
+                const month = eventDate.toLocaleDateString("id-ID", {
+                  month: "short",
+                });
+                const year = eventDate.getFullYear();
+                const cardImage = event.image || [event1, event2, event3, event4, event5][index % 5];
 
-                    <div className="event-details">
-                      <h3 className="event-title">{event.title}</h3>
-
-                      <div className="event-info">
-                        <div className="event-time">
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+                return (
+                  <div
+                    key={event.id}
+                    className="carousel-item"
+                    style={{ flex: `0 0 ${100 / itemsPerView}%` }}
+                  >
+                    <article
+                      className="agenda-grid-card"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                        navigate(`/pengumuman/events/${event.id || index + 1}`);
+                      }}
+                    >
+                      <div
+                        className="agenda-card-image-wrap"
+                        style={{ backgroundImage: `url(${cardImage})` }}
+                      >
+                        <div className="agenda-card-top-overlay" />
+                        <div className="agenda-card-top">
+                          <span
+                            className={`agenda-type-tag type-${(
+                              event.type || ""
+                            ).toLowerCase()}`}
                           >
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="9"
-                              stroke="currentColor"
-                              strokeWidth="1.75"
-                            />
-                            <path
-                              d="M12 7V12L16 14"
-                              stroke="currentColor"
-                              strokeWidth="1.75"
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                          <span>{event.time}</span>
+                            {event.type}
+                          </span>
+
+                          <div className="agenda-date-pill">
+                            <span className="date-day">
+                              {day < 10 ? `0${day}` : day}
+                            </span>
+                            <span className="date-month-year">
+                              {month} {year}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+
+                      <div className="agenda-card-body">
+                        <h3 className="agenda-card-title">{event.title}</h3>
+                        <div className="agenda-card-meta">
+                          <span className="meta-item">
+                            <svg
+                              width="15"
+                              height="15"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10" />
+                              <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            {event.time}
+                          </span>
+                          <span className="meta-item">
+                            <svg
+                              width="15"
+                              height="15"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                              <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            {event.location}
+                          </span>
+                        </div>
+                        <p className="agenda-card-desc">{event.description}</p>
+                      </div>
+
+                      <div className="agenda-card-footer">
+                        <span className="agenda-detail-btn">
+                          Informasi Kegiatan
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            width="16"
+                            height="16"
+                          >
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                          </svg>
+                        </span>
+                      </div>
+                    </article>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
-          <button className="carousel-button next" onClick={nextSlide} aria-label="Next event">
+          <button
+            className="carousel-button next"
+            onClick={nextSlide}
+            aria-label="Next event"
+            type="button"
+          >
             <svg
               width="20"
               height="20"
               viewBox="0 0 24 24"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <path
-                d="M9 18L15 12L9 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M9 18L15 12L9 6" />
             </svg>
           </button>
         </div>
 
         <div className="carousel-dots">
-          {Array.from({ length: events.length - itemsPerView + 1 }).map((_, idx) => (
+          {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
             <button
               key={idx}
+              type="button"
               className={`carousel-dot ${currentIndex === idx ? "active" : ""}`}
               onClick={() => setCurrentIndex(idx)}
               aria-label={`Go to slide ${idx + 1}`}
@@ -209,9 +323,22 @@ const EventCarousel = () => {
         </div>
 
         <div className="custom-button-container">
-          <button className="minimal-outline-btn">
+          <button
+            className="minimal-outline-btn"
+            onClick={handleNavigateAll}
+            type="button"
+          >
             Lihat Semua Agenda
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
       </div>
@@ -220,3 +347,4 @@ const EventCarousel = () => {
 };
 
 export default EventCarousel;
+

@@ -1,6 +1,6 @@
 .gereja-list-page {
-  color: var(--color-text-900);
-  background: #fbfcfb;
+  color: var(--color-text-primary);
+  background: var(--color-putih-warm);
 }
 
 .gereja-list-hero {
@@ -13,7 +13,8 @@
   background: url("../../assets/gkj-bg.png");
   background-size: cover;
   background-position: center;
-  color: var(--color-white);
+  background-color: var(--color-wenge);
+  color: var(--color-gading);
   padding: 8rem 0 4.5rem;
 }
 
@@ -23,9 +24,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(17, 23, 20, 0.5) 0%,
-    rgba(17, 23, 20, 0.72) 55%,
-    rgba(17, 23, 20, 0.88) 100%
+    rgba(28, 22, 18, 0.45) 0%,
+    rgba(28, 22, 18, 0.72) 55%,
+    rgba(28, 22, 18, 0.9) 100%
   );
   z-index: 1;
 }
@@ -55,22 +56,25 @@
 }
 
 .gereja-list-title {
-  font-family: var(--font-heading);
-  font-size: clamp(2.2rem, 4vw, 3.5rem);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  font-weight: 500;
   margin: 0.5rem 0 1rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  color: var(--color-gading);
 }
 
 .gereja-list-lead {
-  font-size: 1.1rem;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
   line-height: 1.75;
   margin: 0;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(242, 235, 224, 0.85);
 }
 
 .gereja-list-section {
   padding: 5rem 0 6rem;
+  background: var(--color-putih-warm);
 }
 
 .gereja-list-inner {
@@ -81,7 +85,7 @@
 
 .gereja-list-grid {
   display: grid;
-  gap: 2.5rem;
+  gap: 3rem;
 }
 
 .gereja-item {
@@ -89,18 +93,29 @@
   grid-template-columns: 1fr 1.2fr;
   gap: 2rem;
   align-items: center;
-
+  background: var(--color-putih-soft);
+  border: 1px solid rgba(28, 22, 18, 0.06);
+  border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
   transition:
     transform 0.35s ease,
-    box-shadow 0.35s ease;
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.gereja-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(196, 136, 74, 0.25);
+  background: var(--color-putih);
 }
 
 .gereja-item-image {
   width: 100%;
   height: 380px;
   overflow: hidden;
-  background: #eef2ef;
+  background: var(--color-gading-warm);
 }
 
 .gereja-item-image img {
@@ -121,17 +136,18 @@
 
 .gereja-item-title {
   margin: 0 0 1rem;
-  font-family: var(--font-heading);
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--color-text-900);
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: var(--color-wenge);
   letter-spacing: -0.01em;
 }
 
 .gereja-item-address {
   margin: 0 0 1.5rem;
+  font-family: var(--font-body);
   font-size: 0.95rem;
-  color: var(--color-text-600);
+  color: var(--color-text-secondary);
   line-height: 1.6;
 }
 
@@ -141,18 +157,20 @@
 
 .schedule-label {
   margin: 0 0 0.75rem;
-  font-size: 1.4rem;
-  color: var(--color-brand-900);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-kunyit);
   text-transform: capitalize;
-  text-decoration: underline;
 }
 
 .schedule-list {
   margin: 0;
   padding-left: 0;
   list-style: none;
-  color: var(--color-text-600);
-  font-size: 1rem;
+  font-family: var(--font-body);
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
   line-height: 1.8;
 }
 
@@ -164,18 +182,21 @@
   margin: 0;
   padding-left: 0;
   list-style: none;
-  color: var(--color-text-600);
-  font-size: 1rem;
+  font-family: var(--font-body);
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
   line-height: 1.8;
 }
 
 .contact-list a {
-  color: var(--color-brand-900);
+  color: var(--color-wenge);
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .contact-list a:hover {
-  text-decoration: underline;
+  color: var(--color-kunyit);
 }
 
 .gereja-item--reverse {
@@ -202,213 +223,17 @@
 
   .gereja-item {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .gereja-item--reverse {
-    grid-template-columns: 1fr;
-  }
-
-  .gereja-item-image {
-    height: 350px;
-    order: 0;
-  }
-
-  .gereja-item-content {
-    order: 1;
-    padding: 1.5rem;
   }
 
   .gereja-item--reverse .gereja-item-image {
-    order: 0;
-  }
-
-  .gereja-item--reverse .gereja-item-content {
     order: 1;
   }
 
-  .gereja-item-title {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .gereja-list-hero {
-    min-height: 50vh;
-    padding: 5rem 0 2rem;
-  }
-
-  .gereja-list-hero-content {
-    padding: 0 var(--container-pad-tablet);
-  }
-
-  .gereja-list-title {
-    font-size: 2.1rem;
-    margin-bottom: 1rem;
-  }
-
-  .gereja-list-lead {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  .gereja-list-section {
-    padding: 3rem 0 4rem;
-  }
-
-  .gereja-list-inner {
-    padding: 0 var(--container-pad-tablet);
-  }
-
-  .gereja-list-grid {
-    gap: 2rem;
-  }
-
-  .gereja-item {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    overflow: hidden;
+  .gereja-item--reverse .gereja-item-content {
+    order: 2;
   }
 
   .gereja-item-image {
     height: 280px;
-    overflow: hidden;
-  }
-
-  .gereja-item-content {
-    padding: 1.5rem;
-  }
-
-  .gereja-item-title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .gereja-item-address {
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  .schedule-label {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .schedule-list {
-    font-size: 0.95rem;
-  }
-
-  .contact-list {
-    font-size: 0.95rem;
-    line-height: 1.8;
-  }
-}
-
-@media (max-width: 480px) {
-  .gereja-list-hero {
-    min-height: 45vh;
-    padding: 2rem 0 1.5rem;
-  }
-
-  .gereja-list-hero-content {
-    padding: 0 var(--container-pad-mobile);
-  }
-
-  .gereja-list-kicker {
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    margin-bottom: 0.75rem;
-  }
-
-  .gereja-list-title {
-    font-size: 1.75rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.3;
-  }
-
-  .gereja-list-lead {
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  .gereja-list-section {
-    padding: 2.5rem 0 3rem;
-  }
-
-  .gereja-list-inner {
-    padding: 0 var(--container-pad-mobile);
-  }
-
-  .gereja-list-grid {
-    gap: 1.5rem;
-  }
-
-  .gereja-item {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .gereja-item-image {
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-  }
-
-  .gereja-item-content {
-    padding: 1rem;
-  }
-
-  .gereja-item-title {
-    font-size: 1.6rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.3;
-  }
-
-  .gereja-item-address {
-    font-size: 0.85rem;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-  }
-
-  .gereja-item-schedule {
-    margin-bottom: 1rem;
-  }
-
-  .schedule-label {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .schedule-list {
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-
-  .contact-list {
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-}
-
-@media (max-width: 360px) {
-  .gereja-list-title {
-    font-size: 1.5rem;
-  }
-
-  .gereja-list-lead {
-    font-size: 0.9rem;
-  }
-
-  .gereja-item-title {
-    font-size: 1.2rem;
-  }
-
-  .gereja-item-image {
-    height: 180px;
-  }
-
-  .gereja-item-content {
-    padding: 0.75rem;
   }
 }

@@ -6,7 +6,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--color-surface-soft, #f0f0f0);
+  background-color: var(--color-putih-soft, #F7F2EC);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,6 @@
   border-radius: 0;
   filter: blur(0px);
   opacity: 1;
-  /* Default transition for entering */
   transition: 
     transform 1.2s cubic-bezier(0.76, 0, 0.24, 1), 
     border-radius 1.2s cubic-bezier(0.76, 0, 0.24, 1),
@@ -26,12 +25,10 @@
 }
 
 .preloader-container.idle-hidden {
-  /* Immediately snap to bottom and hide, ready for next enter */
   transform: translateY(100vh);
   opacity: 0;
   pointer-events: none;
   transition: none !important;
-  /* Pre-apply top bend so it looks right when entering */
   border-radius: 100% 100% 0 0 / 20vh 20vh 0 0;
 }
 
@@ -39,17 +36,14 @@
   transform: translateY(0);
   opacity: 1;
   border-radius: 0;
-  /* Uses the default 1.2s transition */
 }
 
 .preloader-container.fade-out {
-  /* Exit to the top */
   transform: translateY(-120%) scaleY(1.1);
   border-radius: 0 0 100% 100% / 0 0 40vh 40vh;
   filter: blur(8px);
   pointer-events: none;
   opacity: 1;
-  /* Slower 2s transition for exit */
   transition: 
     transform 2s cubic-bezier(0.76, 0, 0.24, 1), 
     border-radius 2s cubic-bezier(0.76, 0, 0.24, 1),
@@ -75,11 +69,13 @@
 .preloader-title {
   position: absolute;
   margin: 0;
-  font-family: 'Clash Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* Use new display font for a memorable preloader */
+  font-family: var(--font-display, 'Melodrama', serif);
   font-weight: 500;
+  font-style: italic;
   font-size: 4rem;
-  letter-spacing: 0.05em;
-  color: var(--color-brand-800, #344e41);
+  letter-spacing: 0.02em;
+  color: var(--color-wenge, #1C1612);
   white-space: nowrap;
   
   opacity: 0;
@@ -97,19 +93,44 @@
   transform: translateY(-40px);
 }
 
+/* Percentage — now in IBM Plex Mono for data feel */
 .preloader-percentage-huge {
   position: absolute;
   bottom: 1rem;
   right: 2.5rem;
-  font-family: 'Clash Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
   font-size: 10vw;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1;
-  color: var(--color-brand-900, #3a3f3c);
+  color: var(--color-kunyit, #C4884A);
   opacity: 0;
   animation: fadeIn 1s ease 0.2s forwards;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
+}
+
+/* Batik-inspired decorative line at bottom of preloader */
+.preloader-container::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-kunyit, #C4884A) 40%,
+    var(--color-soga, #8B4513) 60%,
+    transparent 100%
+  );
+  transform-origin: left;
+  animation: progressLine 2.4s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+}
+
+@keyframes progressLine {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 @keyframes fadeIn {

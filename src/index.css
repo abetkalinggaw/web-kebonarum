@@ -1,66 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
-/* Clash Display local fonts (woff) */
-@font-face {
-  font-family: "ClashDisplay";
-  src:
-    url("./assets/fonts/clash-display/ClashDisplay-Extralight.woff2")
-      format("woff2"),
-    url("./assets/fonts/clash-display/ClashDisplay-Extralight.woff")
-      format("woff");
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "ClashDisplay";
-  src:
-    url("./assets/fonts/clash-display/ClashDisplay-Light.woff2") format("woff2"),
-    url("./assets/fonts/clash-display/ClashDisplay-Light.woff") format("woff");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "ClashDisplay";
-  src:
-    url("./assets/fonts/clash-display/ClashDisplay-Regular.woff2")
-      format("woff2"),
-    url("./assets/fonts/clash-display/ClashDisplay-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "ClashDisplay";
-  src:
-    url("./assets/fonts/clash-display/ClashDisplay-Medium.woff2")
-      format("woff2"),
-    url("./assets/fonts/clash-display/ClashDisplay-Medium.woff") format("woff");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "ClashDisplay";
-  src:
-    url("./assets/fonts/clash-display/ClashDisplay-Semibold.woff2")
-      format("woff2"),
-    url("./assets/fonts/clash-display/ClashDisplay-Semibold.woff")
-      format("woff");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "ClashDisplay";
-  src:
-    url("./assets/fonts/clash-display/ClashDisplay-Bold.woff2") format("woff2"),
-    url("./assets/fonts/clash-display/ClashDisplay-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import url("https://api.fontshare.com/v2/css?f[]=melodrama@300,400,500,600,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
 
 * {
   margin: 0;
@@ -68,214 +7,400 @@
   box-sizing: border-box;
 }
 
-/* DESIGN TOKENS */
+/* ============================================================
+   DESIGN TOKENS — GKJ Kebonarum Klaten
+   Palette drawn from Javanese material culture:
+   wengè wood, gading ivory, batik soga dye, kunyit gold
+   ============================================================ */
 
 :root {
-  /* Font Families */
-  --font-heading: "ClashDisplay", sans-serif;
-  --font-body:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* --- Font Families --- */
+  --font-display: "Melodrama", "Georgia", serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+  /* Heading alias — maps to Melodrama for consistent serif display headings across all pages */
+  --font-heading: var(--font-display);
 
-  /* Weights */
+  /* --- Type Weights --- */
+  --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
 
-  /* Line Heights */
-  --lh-tight: 1.1;
-  --lh-heading: 1.2;
-  --lh-body: 1.6;
+  /* --- Line Heights --- */
+  --lh-display: 1.05;
+  --lh-tight: 1.15;
+  --lh-heading: 1.25;
+  --lh-body: 1.65;
+  --lh-loose: 1.8;
 
-  /* Layout */
-  --container-pad-desktop: 2rem;
-  --container-pad-tablet: 1.5rem;
-  --container-pad-mobile: 1rem;
+  /* --- Layout --- */
+  --container-pad-desktop: 2.5rem;
+  --container-pad-tablet: 1.75rem;
+  --container-pad-mobile: 1.25rem;
+  --container-max: 1280px;
+  --section-pad-lg: 7rem;
+  --section-pad-md: 5rem;
+  --section-pad-sm: 3.5rem;
 
-  /* Colors */
-  --color-text-primary: #111111;
-  --color-text-secondary: #555555;
-  --color-text-muted: #777777;
+  /* ============================================================
+     COLOR PALETTE — Javanese Cultural Palette
+     ============================================================ */
+
+  /* Wengè — near-black warm-brown base, like aged teak */
+  --color-wenge: #1C1612;
+  --color-wenge-light: #2A221C;
+  --color-wenge-muted: #3A2F27;
+
+  /* Gading — ivory/cream, batik cloth ground */
+  --color-gading: #F2EBE0;
+  --color-gading-warm: #EDE3D5;
+  --color-gading-deep: #E0D4C4;
+
+  /* Soga — traditional Javanese batik dye, warm terracotta */
+  --color-soga: #8B4513;
+  --color-soga-light: #A85520;
+  --color-soga-pale: rgba(139, 69, 19, 0.12);
+
+  /* Kunyit — turmeric gold, warmth and light */
+  --color-kunyit: #C4884A;
+  --color-kunyit-light: #D9A06A;
+  --color-kunyit-pale: rgba(196, 136, 74, 0.15);
+
+  /* Daun — muted forest green, kept for context but subordinate */
+  --color-daun: #3D5247;
+  --color-daun-light: #4E6559;
+  --color-daun-pale: rgba(61, 82, 71, 0.08);
+
+  /* Putih — clean white surfaces */
+  --color-putih: #FFFFFF;
+  --color-putih-warm: #FDFAF6;
+  --color-putih-soft: #F7F2EC;
+
+  /* Semantic aliases — used in components */
+  --color-bg-base: var(--color-wenge);
+  --color-bg-surface: var(--color-putih-warm);
+  --color-bg-soft: var(--color-putih-soft);
+  --color-bg-dark: var(--color-wenge);
+
+  --color-text-primary: var(--color-wenge);
+  --color-text-secondary: #5A4A3A;
+  --color-text-muted: #8A7A6A;
+  --color-text-on-dark: var(--color-gading);
+  --color-text-on-dark-muted: rgba(242, 235, 224, 0.65);
+
+  --color-accent: var(--color-kunyit);
+  --color-accent-hover: var(--color-kunyit-light);
+  --color-brand: var(--color-daun);
+  --color-brand-hover: var(--color-daun-light);
+
+  --color-border: rgba(28, 22, 18, 0.1);
+  --color-border-on-dark: rgba(242, 235, 224, 0.12);
+  --color-divider: rgba(28, 22, 18, 0.06);
+
+  /* Legacy tokens — preserved so existing components don't break */
   --color-white: #ffffff;
-  --color-text-900: #1a1a1a;
-  --color-text-600: #5a5a5a;
-  --color-text-500: #888888;
-  --color-brand-900: #3a3f3c;
-  --color-brand-800: #344e41;
-  --color-brand-overlay: #344e41db;
-  --color-surface-muted: #f7f7f7;
-  --color-surface-subtle: #f5f7f5;
-  --color-surface-soft: #f0f0f0;
-  --color-neutral-300: #d9d9d9;
-  --color-border-default: #dddddd;
-  --color-border-subtle: #eeeeee;
+  --color-text-900: var(--color-wenge);
+  --color-text-600: #5A4A3A;
+  --color-text-500: #8A7A6A;
+  --color-brand-900: var(--color-wenge-muted);
+  --color-brand-800: var(--color-daun);
+  --color-brand-overlay: rgba(61, 82, 71, 0.85);
+  --color-surface-muted: var(--color-putih-soft);
+  --color-surface-subtle: var(--color-putih-warm);
+  --color-surface-soft: var(--color-putih-soft);
+  --color-neutral-300: #D5C8BA;
+  --color-border-default: rgba(28, 22, 18, 0.1);
+  --color-border-subtle: rgba(28, 22, 18, 0.06);
+
+  /* --- Border Radius --- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 100px;
+
+  /* --- Shadows --- */
+  --shadow-sm: 0 2px 8px rgba(28, 22, 18, 0.06);
+  --shadow-md: 0 6px 20px rgba(28, 22, 18, 0.09);
+  --shadow-lg: 0 16px 40px rgba(28, 22, 18, 0.12);
+  --shadow-xl: 0 28px 60px rgba(28, 22, 18, 0.16);
+
+  /* --- Transitions --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 180ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
 }
 
-/* GLOBAL RESET */
-
-body {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: 16px;
-  font-weight: var(--weight-regular);
-  line-height: var(--lh-body);
-  color: var(--color-text-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* ============================================================
+   GLOBAL RESET & BASE
+   ============================================================ */
 
 html {
   scroll-behavior: smooth;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
+  font-size: 16px;
 }
 
 body {
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: var(--weight-regular);
+  line-height: var(--lh-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 main {
   position: relative;
   z-index: 1;
-  background-color: var(--color-surface-soft);
+  background-color: var(--color-bg-surface);
 }
 
-/* HEADINGS — CLASH DISPLAY */
+img, video {
+  max-width: 100%;
+  display: block;
+}
 
+/* ============================================================
+   TYPE SCALE
+   ============================================================ */
+
+/* Display — Melodrama, used for landmark headings */
 h1 {
-  font-family: var(--font-heading);
-  font-size: clamp(36px, 5vw, 56px);
-  font-weight: var(--weight-bold);
-  line-height: var(--lh-tight);
-  letter-spacing: -0.03em;
-  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  margin: 0 0 1.25rem;
 }
 
 h2 {
-  font-family: var(--font-heading);
-  font-size: clamp(30px, 4vw, 44px);
-  font-weight: var(--weight-bold);
-  line-height: var(--lh-heading);
-  letter-spacing: -0.02em;
-  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  margin: 0 0 1rem;
 }
 
 h3 {
-  font-family: var(--font-heading);
-  font-size: clamp(24px, 3vw, 36px);
+  font-family: var(--font-body);
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
   font-weight: var(--weight-semibold);
   line-height: var(--lh-heading);
-  letter-spacing: -0.02em;
-  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  margin: 0 0 0.85rem;
 }
 
 h4 {
-  font-family: var(--font-heading);
-  font-size: 28px;
+  font-family: var(--font-body);
+  font-size: 1.25rem;
   font-weight: var(--weight-semibold);
-  line-height: 1.3;
-  margin: 0 0 14px;
+  line-height: 1.35;
+  color: var(--color-text-primary);
+  margin: 0 0 0.75rem;
 }
 
 h5 {
-  font-family: var(--font-heading);
-  font-size: 22px;
-  font-weight: var(--weight-medium);
-  line-height: 1.3;
-  margin: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  color: var(--color-text-primary);
+  margin: 0 0 0.6rem;
 }
 
 h6 {
-  font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: var(--weight-medium);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: var(--weight-semibold);
   line-height: 1.4;
-  margin: 0 0 10px;
+  color: var(--color-text-secondary);
+  margin: 0 0 0.5rem;
 }
 
-/* Lead / Large paragraph */
-.text-lg {
-  font-size: 18px;
+p {
+  margin: 0;
   line-height: var(--lh-body);
 }
 
-/* Small text */
+/* Utility text sizes */
+.text-display {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: var(--weight-light);
+  line-height: var(--lh-display);
+  letter-spacing: -0.02em;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: var(--lh-body);
+}
+
 .text-sm {
-  font-size: 14px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.text-xs {
+  font-size: 0.75rem;
   line-height: 1.5;
 }
 
-/* Caption */
-.caption {
-  font-size: 12px;
+/* Caption — IBM Plex Mono for labels, data, stats */
+.caption,
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   font-weight: var(--weight-medium);
   line-height: 1.4;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   color: var(--color-text-muted);
 }
 
 .running-text-span {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-weight: var(--weight-semibold);
 }
 
-/* LINKS */
+/* ============================================================
+   LINKS & INTERACTIVE
+   ============================================================ */
 
 a {
   text-decoration: none;
-  color:var(--color-text-500);
+  color: var(--color-text-secondary);
+  transition: color var(--duration-fast) ease;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--color-text-primary);
+  text-decoration: none;
 }
 
 button {
-  font-family: var(--font-heading);
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
   font-weight: var(--weight-medium);
   line-height: 1.4;
+  cursor: pointer;
 }
 
-/* MINIMALIST UTILITIES */
+/* ============================================================
+   SECTION UTILITIES
+   ============================================================ */
+
+/* Eyebrow / section label — replaces .section-tag */
 .section-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: var(--weight-medium);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-brand-800);
-  background: rgba(52, 78, 65, 0.08);
-  padding: 0.35rem 0.85rem;
-  border-radius: 100px;
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--color-daun);
+  background: var(--color-daun-pale);
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.85rem;
 }
 
 .section-tag.light {
-  color: #a3c2b0;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(242, 235, 224, 0.75);
+  background: rgba(242, 235, 224, 0.08);
+  border: 1px solid rgba(242, 235, 224, 0.14);
 }
 
+.section-tag.accent {
+  color: var(--color-kunyit);
+  background: var(--color-kunyit-pale);
+}
+
+/* Section heading utilities */
 .section-title-minimal {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.5vw, 2.75rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--color-text-900);
-  margin-bottom: 1rem;
-  line-height: 1.2;
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  margin-bottom: 0.85rem;
+  line-height: var(--lh-tight);
 }
 
 .section-subtitle-minimal {
+  font-family: var(--font-body);
   font-size: 1.05rem;
-  color: var(--color-text-600);
-  max-width: 640px;
+  color: var(--color-text-secondary);
+  max-width: 580px;
   margin: 0 auto 2.5rem;
-  line-height: 1.6;
+  line-height: var(--lh-loose);
 }
 
+/* ============================================================
+   BATIK RULE — SIGNATURE ELEMENT
+   A subtle decorative divider evoking Javanese batik geometry.
+   Used via the .batik-rule utility class on hr or div elements.
+   ============================================================ */
+
+.batik-rule {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.batik-rule::before,
+.batik-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-divider);
+}
+
+.batik-rule--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--color-kunyit);
+  opacity: 0.7;
+}
+
+.batik-rule.on-dark::before,
+.batik-rule.on-dark::after {
+  background: rgba(242, 235, 224, 0.12);
+}
+
+.batik-rule.on-dark .batik-rule--icon {
+  color: var(--color-kunyit);
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
