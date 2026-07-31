@@ -1,0 +1,88 @@
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--admin-brand-900);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(52, 78, 65, 0.6) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(74, 107, 88, 0.3) 0%, transparent 50%);
+  padding: 2rem;
+  font-family: var(--admin-font-body);
+}
+
+.admin-login-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+.admin-login-brand {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.admin-login-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 16px;
+  display: block;
+  box-shadow: 0 6px 20px rgba(58, 63, 60, 0.2);
+}
+
+.admin-login-brand h1 {
+  font-family: var(--admin-font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--admin-brand-900);
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+
+.admin-login-brand p {
+  font-size: 0.88rem;
+  color: var(--admin-text-muted);
+  margin: 0;
+}
+
+.admin-login-form .admin-label {
+  color: var(--admin-text-secondary);
+}
+
+.admin-login-form .admin-input {
+  background: var(--admin-bg);
+  border-color: var(--admin-border);
+  color: var(--admin-text-primary);
+}
+
+.admin-login-submit {
+  width: 100%;
+  padding: 13px;
+  font-size: 0.95rem;
+  margin-top: 8px;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.admin-login-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.85rem;
+  color: var(--admin-text-muted);
+}
+
+.admin-login-footer a {
+  color: var(--admin-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.admin-login-footer a:hover {
+  text-decoration: underline;
+}

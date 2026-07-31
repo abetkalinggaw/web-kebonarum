@@ -22,6 +22,19 @@ import StatistikPage from "./pages/StatistikPage";
 import WartaFormPage from "./admin/warta/WartaFormPage";
 import AgendaPage from "./pages/pengumuman/AgendaPage";
 
+// Admin Imports
+import { AuthProvider } from './admin/auth/authContext';
+import ProtectedRoute from './admin/auth/ProtectedRoute';
+import AdminLayout from './admin/components/AdminLayout';
+import AdminLoginPage from './admin/pages/LoginPage';
+import AdminRegisterPage from './admin/pages/RegisterPage';
+import AdminDashboard from './admin/pages/DashboardPage';
+import AgendaAdminPage from './admin/pages/AgendaPage';
+import WartaAdminPage from './admin/pages/WartaPage';
+import StatistikAdminPage from './admin/pages/StatistikPage';
+import MajelisAdminPage from './admin/pages/MajelisPage';
+import PendetaAdminPage from './admin/pages/PendetaPage';
+
 const routeNameOverrides = {
   tentang: "Tentang",
   youtube: "YouTube",
@@ -40,7 +53,6 @@ const getRouteName = (pathname) => {
   const parts = pathname.split("/").filter(Boolean);
   if (parts.length === 0) return "Beranda";
 
-  // If the last part is a number/id (like gallery/:id), use the second to last part
   let targetPart = parts[parts.length - 1];
   if (!isNaN(targetPart) && parts.length > 1) {
     targetPart = parts[parts.length - 2];
@@ -61,36 +73,47 @@ function AppContent() {
   const [displayLocation, setDisplayLocation] = useState(location);
   const [transitionState, setTransitionState] = useState("initial");
   const [targetName, setTargetName] = useState("");
-
-  // Track if this is the very first load to avoid re-triggering entering on first render
   const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isDisplayAdminRoute = displayLocation.pathname.startsWith('/admin');
 
   useEffect(() => {
     if (isFirstLoad) {
       setIsFirstLoad(false);
       return;
     }
+    
     if (location.pathname !== displayLocation.pathname) {
+      if (isAdminRoute || isDisplayAdminRoute) {
+        setDisplayLocation(location);
+        setTransitionState("idle");
+        return;
+      }
+
       setTargetName(getRouteName(location.pathname));
       setTransitionState("entering");
 
-      // Wait for it to cover the screen (1.2s animation)
       const t = setTimeout(() => {
         setDisplayLocation(location);
         setTransitionState("exiting");
       }, 1200);
       return () => clearTimeout(t);
     }
-  }, [location, displayLocation.pathname, isFirstLoad]);
+  }, [location, displayLocation.pathname, isFirstLoad, isAdminRoute, isDisplayAdminRoute]);
+
+  const showPreloader = !isAdminRoute && !isDisplayAdminRoute;
 
   return (
     <>
-      <Preloader
-        transitionState={transitionState}
-        targetName={targetName}
-        onInitialDone={() => setTransitionState("initial-exiting")}
-        onExitDone={() => setTransitionState("idle")}
-      />
+      {showPreloader && (
+        <Preloader
+          transitionState={transitionState}
+          targetName={targetName}
+          onInitialDone={() => setTransitionState("initial-exiting")}
+          onExitDone={() => setTransitionState("idle")}
+        />
+      )}
       <Routes location={displayLocation}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/tentang" element={<AboutPage />} />
@@ -99,25 +122,30 @@ function AppContent() {
         <Route path="/media/youtube" element={<YoutubePage />} />
         <Route path="/media/instagram" element={<InstagramPage />} />
         <Route path="/media/documentation" element={<DocumentationPage />} />
-        <Route
-          path="/media/documentation/gallery/:id"
-          element={<GalleryPage />}
-        />
+        <Route path="/media/documentation/gallery/:id" element={<GalleryPage />} />
         <Route path="/sejarah" element={<SejarahPage />} />
         <Route path="/statistik" element={<StatistikPage />} />
         <Route path="/pengumuman/events" element={<AgendaPage />} />
         <Route path="/pengumuman/warta-gereja" element={<WartaListPage />} />
-        <Route
-          path="/admin/warta-gereja/formulir/:id?"
-          element={<WartaFormPage />}
-        />
-        <Route
-          path="/pengumuman/warta-gereja/:id"
-          element={<WartaReadPage />}
-        />
+        <Route path="/pengumuman/warta-gereja/:id" element={<WartaReadPage />} />
         <Route path="/formulir" element={<FormulirPage />} />
-        <Route path="*" element={<LandingPage />} />
         <Route path="/persembahan" element={<PersembahanPage />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin/warta-gereja/formulir/:id?" element={<WartaFormPage />} />
+        
+        <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="register" element={<AdminRegisterPage />} />
+          <Route path="agenda" element={<AgendaAdminPage />} />
+          <Route path="warta" element={<WartaAdminPage />} />
+          <Route path="statistik" element={<StatistikAdminPage />} />
+          <Route path="majelis" element={<MajelisAdminPage />} />
+          <Route path="pendeta" element={<PendetaAdminPage />} />
+        </Route>
+
+        <Route path="*" element={<LandingPage />} />
       </Routes>
     </>
   );
@@ -151,9 +179,11 @@ function App() {
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <div className="App">
-        <AppContent />
-      </div>
+      <AuthProvider>
+        <div className="App">
+          <AppContent />
+        </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
