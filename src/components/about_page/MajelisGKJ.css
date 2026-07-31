@@ -121,13 +121,13 @@
   gap: 1.25rem;
 }
 
-/* Majelis Card — Unified with MajelisListPage */
+/* Majelis Card — Unified with Website Design System */
 .majelis-gkj-card {
   background: var(--color-putih-soft);
-  border: 1px solid rgba(28, 22, 18, 0.07);
+  border: 1px solid rgba(196, 136, 74, 0.22);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 6px 20px rgba(28, 22, 18, 0.05);
   display: flex;
   flex-direction: column;
   transition:
@@ -140,8 +140,8 @@
 .majelis-gkj-card:hover {
   transform: translateY(-6px);
   background: var(--color-putih);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(196, 136, 74, 0.35);
+  box-shadow: 0 16px 36px rgba(196, 136, 74, 0.16);
+  border-color: rgba(196, 136, 74, 0.55);
 }
 
 .majelis-gkj-image {
@@ -152,11 +152,11 @@
   background-position: center top;
   background-color: var(--color-gading-warm);
   overflow: hidden;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .majelis-gkj-card:hover .majelis-gkj-image {
-  transform: scale(1.04);
+  transform: scale(1.05);
 }
 
 .majelis-gkj-overlay {
@@ -164,15 +164,15 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(28, 22, 18, 0) 50%,
-    rgba(28, 22, 18, 0.5) 100%
+    rgba(28, 22, 18, 0) 40%,
+    rgba(28, 22, 18, 0.6) 100%
   );
-  opacity: 0.6;
+  opacity: 0.7;
   transition: opacity 0.35s ease;
 }
 
 .majelis-gkj-card:hover .majelis-gkj-overlay {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 /* Role Tags on Image */
@@ -189,18 +189,21 @@
   padding: 0.28rem 0.75rem;
   border-radius: var(--radius-pill);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .majelis-gkj-kebonarum .role-tag--penatua {
   background: rgba(196, 136, 74, 0.92);
-  color: var(--color-wenge);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(196, 136, 74, 0.3);
 }
 
 .majelis-gkj-kebonarum .role-tag--diaken {
   background: rgba(61, 82, 71, 0.92);
-  color: var(--color-gading);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(61, 82, 71, 0.3);
 }
 
 /* Card Body Content */
@@ -213,13 +216,13 @@
 }
 
 .majelis-gkj-name {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-family: var(--font-display, "Playfair Display", Georgia, serif);
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--color-wenge);
   margin: 0;
   line-height: 1.35;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
 }
 
 .majelis-gkj-card:hover .majelis-gkj-name {

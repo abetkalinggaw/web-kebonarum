@@ -91,31 +91,36 @@
 .gereja-item {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
-  gap: 2rem;
-  align-items: center;
+  gap: 0;
+  align-items: stretch;
   background: var(--color-putih-soft);
-  border: 1px solid rgba(28, 22, 18, 0.06);
+  border: 1px solid rgba(196, 136, 74, 0.25);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 24px rgba(28, 22, 18, 0.05);
   transition:
-    transform 0.35s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.35s ease,
-    border-color 0.35s ease;
+    border-color 0.35s ease,
+    background 0.35s ease;
 }
 
 .gereja-item:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(196, 136, 74, 0.25);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(196, 136, 74, 0.16);
+  border-color: rgba(196, 136, 74, 0.55);
   background: var(--color-putih);
 }
 
 .gereja-item-image {
+  position: relative;
   width: 100%;
-  height: 380px;
+  height: 100%;
+  min-height: 420px;
+  margin: 0;
+  border-radius: 0;
   overflow: hidden;
-  background: var(--color-gading-warm);
+  background: var(--color-wenge);
 }
 
 .gereja-item-image img {
@@ -123,24 +128,100 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
 }
 
 .gereja-item:hover .gereja-item-image img {
-  transform: scale(1.03);
+  transform: scale(1.06);
+  filter: brightness(1.03) contrast(1.02);
+}
+
+.gereja-item-tag {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 3;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-pill);
+  background: rgba(24, 19, 15, 0.82);
+  color: #e5b075;
+  border: 1px solid rgba(196, 136, 74, 0.45);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.25s ease;
+}
+
+.gereja-item:hover .gereja-item-tag {
+  background: rgba(196, 136, 74, 0.92);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.gereja-item-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    rgba(28, 22, 18, 0.15) 0%,
+    rgba(28, 22, 18, 0) 45%,
+    rgba(247, 244, 238, 0.65) 82%,
+    var(--color-putih-soft) 100%
+  ), linear-gradient(
+    180deg,
+    rgba(28, 22, 18, 0.35) 0%,
+    rgba(28, 22, 18, 0) 40%,
+    rgba(28, 22, 18, 0.45) 100%
+  );
+  opacity: 0.95;
+  transition: opacity 0.35s ease;
+}
+
+.gereja-item--reverse .gereja-item-overlay {
+  background: linear-gradient(
+    270deg,
+    rgba(28, 22, 18, 0.15) 0%,
+    rgba(28, 22, 18, 0) 45%,
+    rgba(247, 244, 238, 0.65) 82%,
+    var(--color-putih-soft) 100%
+  ), linear-gradient(
+    180deg,
+    rgba(28, 22, 18, 0.35) 0%,
+    rgba(28, 22, 18, 0) 40%,
+    rgba(28, 22, 18, 0.45) 100%
+  );
+}
+
+.gereja-item:hover .gereja-item-overlay {
+  opacity: 1;
 }
 
 .gereja-item-content {
-  padding: 2.25rem 2.5rem;
+  padding: 2.5rem 2.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 3;
 }
 
 .gereja-item-title {
-  margin: 0 0 1rem;
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  font-weight: 500;
+  margin: 0 0 0.85rem;
+  font-family: var(--font-display, "Playfair Display", Georgia, serif);
+  font-size: 2.1rem;
+  font-weight: 600;
   color: var(--color-wenge);
   letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
 .gereja-item-address {
@@ -148,34 +229,63 @@
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--color-text-secondary);
-  line-height: 1.6;
+  line-height: 1.65;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.address-icon {
+  color: var(--color-kunyit);
+  margin-top: 0.2rem;
+  flex-shrink: 0;
 }
 
 .gereja-item-schedule {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 }
 
 .schedule-label {
-  margin: 0 0 0.75rem;
-  font-family: var(--font-display);
-  font-size: 1.3rem;
+  margin: 0 0 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-kunyit);
-  text-transform: capitalize;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
-.schedule-list {
-  margin: 0;
-  padding-left: 0;
-  list-style: none;
+.schedule-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.schedule-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
   font-family: var(--font-body);
-  color: var(--color-text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: rgba(196, 136, 74, 0.1);
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  color: var(--color-wenge);
+}
+
+.schedule-pill i {
+  color: var(--color-kunyit);
+  font-size: 0.75rem;
 }
 
 .gereja-item-contact {
-  margin-top: 1.25rem;
+  margin-top: 1.35rem;
 }
 
 .contact-list {
@@ -184,8 +294,36 @@
   list-style: none;
   font-family: var(--font-body);
   color: var(--color-text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.925rem;
   line-height: 1.8;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contact-icon {
+  width: 1.25rem;
+  color: var(--color-kunyit);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.contact-icon.wa-color {
+  color: #25d366;
+}
+
+.contact-icon.ig-color {
+  color: #e1306c;
+}
+
+.contact-list span {
+  font-weight: 500;
+  color: var(--color-wenge);
 }
 
 .contact-list a {
@@ -197,6 +335,38 @@
 
 .contact-list a:hover {
   color: var(--color-kunyit);
+}
+
+.gereja-item-action {
+  margin-top: 1.65rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.gereja-maps-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1.35rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: linear-gradient(135deg, #c4884a 0%, #a26c34 100%);
+  border: none;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(196, 136, 74, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gereja-maps-btn:hover {
+  background: linear-gradient(135deg, #d89958 0%, #b57a3e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(196, 136, 74, 0.45);
+  color: #ffffff;
 }
 
 .gereja-item--reverse {

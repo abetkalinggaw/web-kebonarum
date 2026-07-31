@@ -24,19 +24,19 @@ export const pendetaDataList = [
   },
   {
     id: 3,
-    name: "Pdt. Christian Soetopo (alm)",
+    name: "Pdt. Djimanto Setiadi (alm)",
     title: "Pendeta Emertus (Alm)",
     subtitle:
-      "Mantan pendeta jemaat GKJ Kebonarum yang telah menyelesaikan panggilan pelayanan dan pengabdiannya dalam damai Tuhan.",
+      "Mantan pendeta jemaat GKJ Kebonarum yang telah meletakkan fondasi iman dan membimbing jemaat semasa hidupnya.",
     status: "Emertus (Alm)",
     image: pendeta3,
   },
   {
     id: 4,
-    name: "Pdt. Djimanto (alm)",
+    name: "Pdt. Christian Soetopo (alm)",
     title: "Pendeta Emertus (Alm)",
     subtitle:
-      "Mantan pendeta jemaat GKJ Kebonarum yang telah meletakkan fondasi iman dan membimbing jemaat semasa hidupnya.",
+      "Mantan pendeta jemaat GKJ Kebonarum yang telah menyelesaikan panggilan pelayanan dan pengabdiannya dalam damai Tuhan.",
     status: "Emertus (Alm)",
     image: pendeta4,
   },

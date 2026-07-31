@@ -235,13 +235,14 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(28, 22, 18, 0.82);
-  backdrop-filter: blur(10px);
+  background: rgba(14, 11, 8, 0.92);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .qr-modal-content {

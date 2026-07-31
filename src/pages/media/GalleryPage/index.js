@@ -341,6 +341,125 @@ const ModalGalleryImage = ({ image, alt }) => {
   );
 };
 
+const GalleryModal = ({
+  image,
+  onClose,
+  onPrev,
+  onNext,
+  hasMultiple,
+  currentIndex,
+  totalCount,
+  albumTitle,
+}) => {
+  if (!image) return null;
+
+  const isVideo = typeof image !== "string" && image?.mimeType?.includes("video");
+  const fileName = typeof image !== "string" ? image?.name : "";
+  const driveId = typeof image !== "string" ? image?.id : "";
+  const webContentLink = typeof image !== "string" ? image?.webContentLink : "";
+
+  return (
+    <div
+      className="gallery-modal-backdrop"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        className="gallery-modal-container"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="gallery-modal-header">
+          <div className="gallery-modal-header-info">
+            <span className={`gallery-modal-badge ${isVideo ? "video" : "photo"}`}>
+              <i className={isVideo ? "fas fa-play-circle" : "fas fa-camera"}></i>
+              {isVideo ? "Video" : "Foto"}
+            </span>
+            <div className="gallery-modal-title-group">
+              <h3 className="gallery-modal-title">
+                {fileName || albumTitle || "Dokumentasi Media"}
+              </h3>
+              {hasMultiple && totalCount > 1 && (
+                <span className="gallery-modal-counter">
+                  {currentIndex + 1} / {totalCount}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="gallery-modal-actions">
+            {driveId && (
+              <a
+                href={`https://drive.google.com/file/d/${driveId}/view`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gallery-modal-action-btn"
+                title="Buka di Google Drive"
+              >
+                <i className="fab fa-google-drive"></i>
+                <span>Drive</span>
+              </a>
+            )}
+            {webContentLink && !isVideo && (
+              <a
+                href={webContentLink}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gallery-modal-action-btn primary"
+                title="Unduh Foto"
+              >
+                <i className="fas fa-download"></i>
+                <span>Unduh</span>
+              </a>
+            )}
+            <button
+              className="gallery-modal-close-btn"
+              onClick={onClose}
+              aria-label="Tutup preview"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div className="gallery-modal-body">
+          {hasMultiple && totalCount > 1 && (
+            <button
+              className="gallery-modal-nav-btn prev"
+              onClick={onPrev}
+              aria-label="Foto Sebelumnya"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+          )}
+
+          <div className="gallery-modal-media-wrapper">
+            <ModalGalleryImage image={image} alt={fileName || albumTitle} />
+          </div>
+
+          {hasMultiple && totalCount > 1 && (
+            <button
+              className="gallery-modal-nav-btn next"
+              onClick={onNext}
+              aria-label="Foto Selanjutnya"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const GalleryPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -666,6 +785,53 @@ const GalleryPage = () => {
     return rawPath.filter((p) => !isIdString(p));
   }, [location.state, id]);
 
+  const selectedImageIndex = useMemo(() => {
+    if (!selectedImage) return -1;
+    return galleryImages.findIndex((img) => {
+      if (typeof img === "string" && typeof selectedImage === "string") {
+        return img === selectedImage;
+      }
+      return (
+        (img?.id && img.id === selectedImage?.id) ||
+        img?.url === selectedImage?.url ||
+        img === selectedImage
+      );
+    });
+  }, [selectedImage, galleryImages]);
+
+  const handlePrevImage = useCallback(() => {
+    if (selectedImageIndex > 0) {
+      setSelectedImage(galleryImages[selectedImageIndex - 1]);
+    } else if (galleryImages.length > 0) {
+      setSelectedImage(galleryImages[galleryImages.length - 1]);
+    }
+  }, [selectedImageIndex, galleryImages]);
+
+  const handleNextImage = useCallback(() => {
+    if (selectedImageIndex >= 0 && selectedImageIndex < galleryImages.length - 1) {
+      setSelectedImage(galleryImages[selectedImageIndex + 1]);
+    } else if (galleryImages.length > 0) {
+      setSelectedImage(galleryImages[0]);
+    }
+  }, [selectedImageIndex, galleryImages]);
+
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setSelectedImage(null);
+      } else if (e.key === "ArrowLeft") {
+        handlePrevImage();
+      } else if (e.key === "ArrowRight") {
+        handleNextImage();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImage, handlePrevImage, handleNextImage]);
+
   if (!item && !isLoadingItem) {
     return (
       <>
@@ -967,17 +1133,16 @@ const GalleryPage = () => {
         </section>
       </main>
       <Footer />
-      {selectedImage && (
-        <div className="gallery-modal" onClick={closeModal}>
-          <div className="gallery-modal-content">
-            <button
-              className="gallery-modal-close"
-              onClick={closeModal}
-            ></button>
-            <ModalGalleryImage image={selectedImage} alt="" />
-          </div>
-        </div>
-      )}
+      <GalleryModal
+        image={selectedImage}
+        onClose={closeModal}
+        onPrev={handlePrevImage}
+        onNext={handleNextImage}
+        hasMultiple={galleryImages.length > 1}
+        currentIndex={selectedImageIndex}
+        totalCount={galleryImages.length}
+        albumTitle={resolvedTitle}
+      />
     </>
   );
 };

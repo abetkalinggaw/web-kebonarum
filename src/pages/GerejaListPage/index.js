@@ -116,26 +116,44 @@ const GerejaListPage = () => {
                 >
                   <div className="gereja-item-image">
                     <img src={gereja.image} alt={gereja.name} />
+                    <span className="gereja-item-tag">
+                      <i className="fas fa-church"></i> WILAYAH {gereja.name}
+                    </span>
+                    <div className="gereja-item-overlay" />
                   </div>
                   <div className="gereja-item-content">
-                    <h2 className="gereja-item-title">{gereja.name}</h2>
+                    <h2 className="gereja-item-title">GKJ Kebonarum {gereja.name}</h2>
+                    <p className="gereja-item-address">
+                      <i className="fas fa-map-marker-alt address-icon"></i>
+                      {gereja.address}
+                    </p>
+
                     <div className="gereja-item-details">
-                      <p className="gereja-item-address">{gereja.address}</p>
                       <div className="gereja-item-schedule">
-                        <h4 className="schedule-label">{gereja.ibadahLabel}</h4>
-                        <ul className="schedule-list">
+                        <h4 className="schedule-label">
+                          <i className="far fa-clock"></i> {gereja.ibadahLabel}
+                        </h4>
+                        <div className="schedule-pill-group">
                           {gereja.schedule.map((jadwal, idx) => (
-                            <li key={idx}>{jadwal}</li>
+                            <span key={idx} className="schedule-pill">
+                              <i className="fas fa-sun"></i> {jadwal}
+                            </span>
                           ))}
-                        </ul>
+                        </div>
                       </div>
 
                       <div className="gereja-item-contact">
-                        <h4 className="schedule-label">Kontak</h4>
+                        <h4 className="schedule-label">
+                          <i className="far fa-address-book"></i> Kontak & Informasi
+                        </h4>
                         <ul className="contact-list">
-                          <li>Telepon: {gereja.contact.phone}</li>
                           <li>
-                            Whatsapp:{" "}
+                            <i className="fas fa-phone-alt contact-icon"></i>
+                            <span>Telepon:</span> {gereja.contact.phone}
+                          </li>
+                          <li>
+                            <i className="fab fa-whatsapp contact-icon wa-color"></i>
+                            <span>WhatsApp:</span>{" "}
                             <a
                               href={`https://wa.me/${gereja.contact.whatsappNumber.replace(/\D/g, "")}`}
                               target="_blank"
@@ -145,13 +163,15 @@ const GerejaListPage = () => {
                             </a>
                           </li>
                           <li>
-                            Email:{" "}
+                            <i className="far fa-envelope contact-icon"></i>
+                            <span>Email:</span>{" "}
                             <a href={`mailto:${gereja.contact.email}`}>
                               {gereja.contact.email}
                             </a>
                           </li>
                           <li>
-                            Instagram:{" "}
+                            <i className="fab fa-instagram contact-icon ig-color"></i>
+                            <span>Instagram:</span>{" "}
                             <a
                               href={`https://instagram.com/${gereja.contact.instagram.replace("@", "")}`}
                               target="_blank"
@@ -161,6 +181,18 @@ const GerejaListPage = () => {
                             </a>
                           </li>
                         </ul>
+                      </div>
+
+                      <div className="gereja-item-action">
+                        <a
+                          href={`https://maps.google.com/?q=${encodeURIComponent(`GKJ Kebonarum Wilayah ${gereja.name}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="gereja-maps-btn"
+                        >
+                          <i className="fas fa-directions"></i>
+                          <span>Petunjuk Arah (Maps)</span>
+                        </a>
                       </div>
                     </div>
                   </div>

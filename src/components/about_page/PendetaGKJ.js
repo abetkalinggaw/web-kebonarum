@@ -52,7 +52,9 @@ const PendetaGKJ = () => {
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? maxIndex : prevIndex - 1));
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? maxIndex : prevIndex - 1,
+    );
   };
 
   const handleTouchStart = (e) => {
@@ -123,14 +125,20 @@ const PendetaGKJ = () => {
                     <div className="pendeta-gkj-card">
                       <div
                         className="pendeta-gkj-image"
-                        style={{ backgroundImage: `url(${item.image || pendeta1})` }}
+                        style={{
+                          backgroundImage: `url(${item.image || pendeta1})`,
+                        }}
                       >
                         <div className="pendeta-gkj-overlay"></div>
                       </div>
                       <div className="pendeta-gkj-info">
-                        <span className="pendeta-role-badge">{item.title || "Pendeta Jemaat"}</span>
+                        <span className="pendeta-role-badge">
+                          {item.title || "Pendeta Jemaat"}
+                        </span>
                         <h3 className="pendeta-gkj-name">{item.name}</h3>
-                        <p className="pendeta-gkj-subtitle">{item.subtitle || item.description}</p>
+                        <p className="pendeta-gkj-subtitle">
+                          {item.subtitle || item.description}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -169,9 +177,13 @@ const PendetaGKJ = () => {
                   <div className="pendeta-gkj-overlay"></div>
                 </div>
                 <div className="pendeta-gkj-info">
-                  <span className="pendeta-role-badge">{item.title || "Pendeta Jemaat"}</span>
+                  <span className="pendeta-role-badge">
+                    {item.title || "Pendeta Jemaat"}
+                  </span>
                   <h3 className="pendeta-gkj-name">{item.name}</h3>
-                  <p className="pendeta-gkj-subtitle">{item.subtitle || item.description}</p>
+                  <p className="pendeta-gkj-subtitle">
+                    {item.subtitle || item.description}
+                  </p>
                 </div>
               </div>
             ))}

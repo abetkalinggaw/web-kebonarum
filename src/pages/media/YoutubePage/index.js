@@ -88,7 +88,12 @@ const VideoModal = ({ item, onClose }) => {
     >
       <div className="youtube-modal-panel" onClick={(e) => e.stopPropagation()}>
         <div className="youtube-modal-header">
-          <h2 className="youtube-modal-title">{item.title}</h2>
+          <div className="youtube-modal-header-info">
+            <span className="youtube-modal-badge">
+              <i className="fab fa-youtube"></i> LIVE & MEDIA
+            </span>
+            <h2 className="youtube-modal-title">{item.title}</h2>
+          </div>
           <button
             className="youtube-modal-close"
             onClick={onClose}
