@@ -95,9 +95,14 @@
 }
 
 .admin-nav-item.active {
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background: rgba(196, 136, 74, 0.22);
+  color: #e5b075;
   font-weight: 600;
+  border-left: 3px solid var(--color-kunyit, #c4884a);
+}
+
+.admin-nav-item.active i {
+  color: var(--color-kunyit, #c4884a);
 }
 
 .admin-nav-item i {
@@ -105,6 +110,11 @@
   text-align: center;
   font-size: 0.88rem;
   flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.admin-nav-item:hover i {
+  color: #e5b075;
 }
 
 .admin-logout {
@@ -116,7 +126,7 @@
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.65);
   padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
@@ -129,9 +139,9 @@
 }
 
 .admin-logout button:hover {
-  background: rgba(220, 38, 38, 0.15);
+  background: rgba(220, 38, 38, 0.18);
   color: #f87171;
-  border-color: rgba(220, 38, 38, 0.3);
+  border-color: rgba(220, 38, 38, 0.35);
 }
 
 /* ─── Main Area ───────────────────────────── */
@@ -146,8 +156,10 @@
 /* ─── Top Header ──────────────────────────── */
 .admin-header {
   height: 68px;
-  background: var(--admin-surface);
-  border-bottom: 1px solid var(--admin-border);
+  background: rgba(253, 250, 246, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(196, 136, 74, 0.2);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -155,38 +167,41 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  box-shadow: 0 1px 0 var(--admin-border);
+  box-shadow: 0 4px 16px rgba(28, 22, 18, 0.03);
 }
 
 .admin-header-left h1 {
-  font-family: var(--admin-font-heading);
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 600;
   margin: 0;
   color: var(--admin-text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .admin-header-breadcrumb {
-  font-size: 0.8rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
   color: var(--admin-text-muted);
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .admin-user-info {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 6px 14px;
-  background: var(--admin-surface-2);
-  border: 1px solid var(--admin-border);
+  padding: 6px 16px;
+  background: rgba(196, 136, 74, 0.1);
+  border: 1px solid rgba(196, 136, 74, 0.25);
   border-radius: 100px;
-  font-size: 0.88rem;
-  color: var(--admin-text-secondary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-wenge, #1c1612);
 }
 
 .admin-user-info i {
-  color: var(--admin-accent);
+  color: var(--color-kunyit, #c4884a);
 }
 
 /* ─── Content Area ────────────────────────── */

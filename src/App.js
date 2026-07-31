@@ -33,8 +33,9 @@ import AdminDashboard from './admin/pages/DashboardPage';
 import AgendaAdminPage from './admin/pages/AgendaPage';
 import WartaAdminPage from './admin/pages/WartaPage';
 import StatistikAdminPage from './admin/pages/StatistikPage';
-import MajelisAdminPage from './admin/pages/MajelisPage';
-import PendetaAdminPage from './admin/pages/PendetaPage';
+import UserListPage from './admin/pages/UserListPage';
+import DatabaseJemaatPage from './admin/pages/DatabaseJemaatPage';
+import KeuanganAdminPage from './admin/pages/KeuanganAdminPage';
 
 const routeNameOverrides = {
   tentang: "Tentang",
@@ -140,11 +141,12 @@ function AppContent() {
         <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route index element={<AdminDashboard />} />
           <Route path="register" element={<AdminRegisterPage />} />
+          <Route path="users" element={<UserListPage />} />
+          <Route path="jemaat" element={<DatabaseJemaatPage />} />
+          <Route path="keuangan-administrasi" element={<KeuanganAdminPage />} />
           <Route path="agenda" element={<AgendaAdminPage />} />
           <Route path="warta" element={<WartaAdminPage />} />
           <Route path="statistik" element={<StatistikAdminPage />} />
-          <Route path="majelis" element={<MajelisAdminPage />} />
-          <Route path="pendeta" element={<PendetaAdminPage />} />
         </Route>
 
         <Route path="*" element={<LandingPage />} />

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../auth/authContext';
 import { apiCall } from '../../adminApi';
 import './LoginPage.css';
@@ -85,10 +85,6 @@ const LoginPage = () => {
             {loading ? <><i className="fas fa-spinner fa-spin"></i> Memuat...</> : <><i className="fas fa-sign-in-alt"></i> Masuk</>}
           </button>
         </form>
-
-        <div className="admin-login-footer">
-          Belum punya akun? <Link to="/admin/register">Daftar di sini</Link>
-        </div>
       </div>
     </div>
   );

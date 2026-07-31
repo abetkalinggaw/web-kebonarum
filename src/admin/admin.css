@@ -246,19 +246,20 @@ body.admin-body {
   color: var(--admin-accent);
 }
 
-/* ─── Modals ──────────────────────────────── */
+/* ─── Master Modals System ──────────────────── */
 .admin-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(58, 63, 60, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(18, 14, 11, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-  animation: adminFadeIn 0.2s ease;
+  z-index: 99999 !important;
+  padding: 2.5rem 1rem;
+  overflow-y: auto;
+  animation: adminFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes adminFadeIn {
@@ -266,63 +267,105 @@ body.admin-body {
   to   { opacity: 1; }
 }
 
-.admin-modal {
-  background: var(--admin-surface);
-  border: 1px solid var(--admin-border);
+.admin-modal,
+.admin-modal-panel {
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.35);
   border-radius: 20px;
-  width: 90%;
-  max-width: 540px;
-  padding: 32px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: var(--admin-shadow-lg);
-  animation: adminSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 24px 60px rgba(18, 14, 11, 0.3), 0 4px 20px rgba(196, 136, 74, 0.12);
+  overflow: hidden;
+  margin: auto 0;
+  animation: adminSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes adminSlideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: scale(0.96) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .admin-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--admin-border);
+  padding: 1.25rem 1.75rem;
+  background: var(--color-putih-soft, #f7f2ec);
+  border-bottom: 1px solid rgba(196, 136, 74, 0.22);
 }
 
 .admin-modal-header h3 {
-  font-family: var(--admin-font-heading);
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
   font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--admin-text-primary);
+  font-weight: 600;
+  color: var(--color-wenge, #1c1612);
   margin: 0;
-  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  letter-spacing: -0.01em;
+}
+
+.admin-modal-header h3 i,
+.admin-modal-header .modal-icon {
+  color: var(--color-kunyit, #c4884a);
+  font-size: 1.15rem;
+}
+
+.admin-modal-header.danger-header {
+  background: rgba(220, 38, 38, 0.06);
+  border-bottom-color: rgba(220, 38, 38, 0.2);
+}
+
+.admin-modal-header.danger-header h3,
+.admin-modal-header.danger-header .modal-icon {
+  color: #dc2626;
 }
 
 .admin-modal-close {
-  background: var(--admin-surface-2);
-  border: 1px solid var(--admin-border);
-  color: var(--admin-text-muted);
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  background: rgba(196, 136, 74, 0.08);
+  border: 1px solid rgba(196, 136, 74, 0.2);
+  color: var(--admin-text-muted, #8a7a6a);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  transition: all 0.2s ease;
+  font-size: 1.25rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   line-height: 1;
   padding: 0;
 }
 
 .admin-modal-close:hover {
-  background: var(--admin-danger-light);
-  color: var(--admin-danger);
-  border-color: transparent;
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: rotate(90deg);
+}
+
+.admin-modal-body {
+  padding: 1.65rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  max-height: calc(85vh - 120px);
+  overflow-y: auto;
+}
+
+.admin-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  padding: 1.15rem 1.75rem;
+  background: #ffffff;
+  border-top: 1px solid rgba(28, 22, 18, 0.08);
+  margin-top: auto;
 }
 
 /* ─── Page Headers ────────────────────────── */

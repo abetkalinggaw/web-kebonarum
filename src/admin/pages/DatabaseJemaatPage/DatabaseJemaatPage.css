@@ -1,0 +1,400 @@
+.database-jemaat-page {
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.jemaat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.header-title-group h2 {
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--admin-text-primary, #1c1612);
+  margin: 0 0 0.25rem;
+}
+
+.header-title-group p {
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.92rem;
+  color: var(--admin-text-muted, #8a7a6a);
+  margin: 0;
+}
+
+/* Filter Card */
+.jemaat-filter-card {
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  border-radius: 18px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  box-shadow: 0 4px 16px rgba(28, 22, 18, 0.03);
+  flex-wrap: wrap;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 280px;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--admin-text-muted, #8a7a6a);
+  font-size: 0.9rem;
+}
+
+.search-input {
+  padding-left: 2.5rem !important;
+  margin-bottom: 0 !important;
+  border-radius: 50px !important;
+}
+
+.search-btn {
+  border-radius: 50px;
+  padding: 0.65rem 1.25rem;
+}
+
+.filter-dropdowns {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-select {
+  margin-bottom: 0 !important;
+  border-radius: 50px !important;
+  min-width: 150px;
+}
+
+/* Table Card */
+.jemaat-table-card {
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(28, 22, 18, 0.04);
+}
+
+.jemaat-loading {
+  padding: 3.5rem;
+  text-align: center;
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.95rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+.jemaat-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.jemaat-table th {
+  background: var(--color-putih-soft, #f7f2ec);
+  padding: 1.1rem 1.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--admin-text-muted, #8a7a6a);
+  border-bottom: 1px solid rgba(196, 136, 74, 0.2);
+}
+
+.jemaat-table td {
+  padding: 1.1rem 1.5rem;
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.92rem;
+  color: var(--admin-text-primary, #1c1612);
+  border-bottom: 1px solid rgba(28, 22, 18, 0.06);
+  vertical-align: middle;
+}
+
+.jemaat-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.jemaat-table tbody tr:hover {
+  background: rgba(247, 242, 236, 0.5);
+}
+
+.jemaat-nama-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.jemaat-name {
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-wenge, #1c1612);
+}
+
+.jemaat-nik {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--color-kunyit, #c4884a);
+  font-weight: 500;
+}
+
+.jemaat-sub-meta {
+  font-size: 0.78rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+.jemaat-wilayah-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.wilayah-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 50px;
+  background: rgba(196, 136, 74, 0.12);
+  color: var(--color-kunyit, #c4884a);
+  border: 1px solid rgba(196, 136, 74, 0.28);
+}
+
+.komisi-tag {
+  font-size: 0.8rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+.jemaat-kontak-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.hp-text {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-wenge, #1c1612);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hp-text i {
+  color: var(--color-kunyit, #c4884a);
+  font-size: 0.75rem;
+}
+
+.alamat-text {
+  font-size: 0.8rem;
+  color: var(--admin-text-muted, #8a7a6a);
+  max-width: 260px;
+  line-height: 1.4;
+}
+
+.jemaat-sakramen-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pill.status-aktif {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-pill.status-pindah {
+  background: rgba(217, 119, 6, 0.12);
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
+
+.status-pill.status-emeritus {
+  background: rgba(196, 136, 74, 0.14);
+  color: #c4884a;
+  border: 1px solid rgba(196, 136, 74, 0.3);
+}
+
+.status-pill.status-meninggal {
+  background: rgba(107, 114, 128, 0.12);
+  color: #4b5563;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.jemaat-actions-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.table-empty {
+  text-align: center;
+  padding: 3rem !important;
+  color: var(--admin-text-muted, #8a7a6a);
+  font-style: italic;
+}
+
+/* Modal Styling */
+.jemaat-modal-panel {
+  max-width: 780px !important;
+}
+
+.modal-tabs {
+  display: flex;
+  align-items: center;
+  background: var(--color-putih-soft, #f7f2ec);
+  border-bottom: 1px solid rgba(196, 136, 74, 0.2);
+  padding: 0 1rem;
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  padding: 0.85rem 1.15rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--admin-text-muted, #8a7a6a);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  color: var(--color-kunyit, #c4884a);
+  border-bottom-color: var(--color-kunyit, #c4884a);
+}
+
+.tab-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .form-row-2,
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Peran Gereja Role Pills */
+.peran-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.73rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.peran-pendeta {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+.peran-penatua {
+  background: rgba(196, 136, 74, 0.12);
+  color: #a26c34;
+  border: 1px solid rgba(196, 136, 74, 0.35);
+}
+
+.peran-diaken {
+  background: rgba(20, 184, 166, 0.1);
+  color: #0f766e;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
+.peran-majelis {
+  background: rgba(37, 99, 235, 0.09);
+  color: #1d4ed8;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+}
+
+.peran-jemaat {
+  background: rgba(107, 114, 128, 0.1);
+  color: #4b5563;
+  border: 1px solid rgba(107, 114, 128, 0.2);
+}
+
+/* Form section divider */
+.form-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-kunyit, #c4884a);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0.5rem 0;
+}
+
+.form-section-divider::before,
+.form-section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(196, 136, 74, 0.25);
+}

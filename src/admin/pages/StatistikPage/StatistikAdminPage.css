@@ -1,0 +1,398 @@
+.statistik-admin-page {
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* Header */
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.header-title-group h2 {
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--admin-text-primary, #1c1612);
+  margin: 0 0 0.25rem;
+}
+
+.header-title-group p {
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.92rem;
+  color: var(--admin-text-muted, #8a7a6a);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.auto-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 50px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.auto-sync-badge i {
+  font-size: 0.65rem;
+}
+
+.stats-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.last-refreshed {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+/* Sync Notice */
+.sync-notice-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(196, 136, 74, 0.07);
+  border: 1px solid rgba(196, 136, 74, 0.25);
+  border-radius: 14px;
+  padding: 1.15rem 1.5rem;
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.9rem;
+  color: var(--admin-text-primary, #1c1612);
+  line-height: 1.6;
+}
+
+.notice-icon {
+  color: var(--color-kunyit, #c4884a);
+  font-size: 1.1rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.sync-notice-card a {
+  color: var(--color-kunyit, #c4884a);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s;
+}
+
+.sync-notice-card a:hover {
+  text-decoration-color: var(--color-kunyit, #c4884a);
+}
+
+/* Section Labels */
+.stats-section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--admin-text-muted, #8a7a6a);
+  border-bottom: 1px solid rgba(196, 136, 74, 0.15);
+  padding-bottom: 0.6rem;
+}
+
+.stats-section-label i {
+  color: var(--color-kunyit, #c4884a);
+}
+
+/* Metrics Grid */
+.stats-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.stat-live-card {
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  border-radius: 18px;
+  padding: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 14px rgba(28, 22, 18, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-live-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(28, 22, 18, 0.08);
+}
+
+.stat-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(196, 136, 74, 0.15), rgba(196, 136, 74, 0.06));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--color-kunyit, #c4884a);
+  flex-shrink: 0;
+}
+
+.stat-live-value {
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--color-wenge, #1c1612);
+  line-height: 1;
+}
+
+.stat-live-label {
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.85rem;
+  color: var(--admin-text-muted, #8a7a6a);
+  margin-top: 0.25rem;
+}
+
+.stat-live-trend {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #16a34a;
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Extended Summary Grid */
+.extended-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.18);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  transition: all 0.22s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(28, 22, 18, 0.07);
+}
+
+.summary-item-icon {
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+.summary-item-gold .summary-item-icon { color: #c4884a; }
+.summary-item-emerald .summary-item-icon { color: #16a34a; }
+.summary-item-amber .summary-item-icon { color: #d97706; }
+.summary-item-soga .summary-item-icon { color: #7c5e40; }
+.summary-item-green .summary-item-icon { color: #15803d; }
+.summary-item-blue .summary-item-icon { color: #2563eb; }
+
+.summary-item-value {
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-wenge, #1c1612);
+  line-height: 1;
+}
+
+.summary-text-val {
+  font-size: 1rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+}
+
+.summary-item-label {
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.78rem;
+  color: var(--admin-text-muted, #8a7a6a);
+  margin-top: 0.2rem;
+}
+
+.summary-arrow {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--admin-text-muted, #8a7a6a);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.summary-item:hover .summary-arrow {
+  opacity: 1;
+  color: var(--color-kunyit, #c4884a);
+}
+
+/* Demographics Chart */
+.demo-chart-card {
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  border-radius: 18px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 4px 14px rgba(28, 22, 18, 0.03);
+}
+
+.demo-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.demo-bar-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.demo-bar-label {
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-wenge, #1c1612);
+}
+
+.demo-bar-pct {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.demo-bar-track {
+  height: 10px;
+  border-radius: 50px;
+  background: rgba(28, 22, 18, 0.07);
+  overflow: hidden;
+}
+
+.demo-bar-fill {
+  height: 100%;
+  border-radius: 50px;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.demo-note {
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.8rem;
+  color: var(--admin-text-muted, #8a7a6a);
+  margin: 0;
+  border-top: 1px solid rgba(28, 22, 18, 0.06);
+  padding-top: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.demo-note i {
+  color: var(--color-kunyit, #c4884a);
+}
+
+/* Growth Chart */
+.growth-chart-card {
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  border-radius: 18px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 14px rgba(28, 22, 18, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.growth-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  height: 160px;
+}
+
+.growth-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.growth-pct-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+.growth-bar {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  min-height: 8px;
+  transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.growth-year {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+/* Loading */
+.stats-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 40vh;
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 1rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+.stats-loading i {
+  color: var(--color-kunyit, #c4884a);
+  font-size: 1.4rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .stats-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .extended-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-metrics-grid,
+  .extended-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

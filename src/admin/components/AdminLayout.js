@@ -20,16 +20,19 @@ const AdminLayout = () => {
     navigate('/admin/login');
   };
 
+  const isSuperadmin = user?.role?.toLowerCase() === 'superadmin';
+
   const getPageTitle = () => {
     const path = location.pathname;
     if (path === '/admin' || path === '/admin/') return 'Dashboard';
+    if (path.includes('jemaat')) return 'Database Digital Jemaat';
+    if (path.includes('keuangan-administrasi')) return 'Keuangan & Administrasi Gereja';
     if (path.includes('agenda')) return 'Agenda';
     if (path.includes('warta')) return 'Warta Gereja';
-    if (path.includes('statistik')) return 'Statistik';
-    if (path.includes('majelis')) return 'Majelis';
-    if (path.includes('pendeta')) return 'Pendeta';
-    if (path.includes('register')) return 'Buat Akun Admin';
-    return 'Admin';
+    if (path.includes('statistik')) return 'Statistik Live — Auto-Sync';
+    if (path.includes('users')) return 'Kelola User (User List)';
+    if (path.includes('register')) return 'Tambah Admin';
+    return 'Admin Panel';
   };
 
   return (
@@ -49,6 +52,14 @@ const AdminLayout = () => {
             <i className="fas fa-tachometer-alt"></i> Dashboard
           </NavLink>
 
+          <span className="admin-nav-section-label">Digitalisasi Gereja</span>
+          <NavLink to="/admin/jemaat" className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}>
+            <i className="fas fa-id-card"></i> Database Jemaat
+          </NavLink>
+          <NavLink to="/admin/keuangan-administrasi" className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}>
+            <i className="fas fa-file-invoice-dollar"></i> Keuangan & Aset
+          </NavLink>
+
           <span className="admin-nav-section-label">Konten</span>
           <NavLink to="/admin/agenda" className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}>
             <i className="fas fa-calendar-alt"></i> Agenda
@@ -59,19 +70,17 @@ const AdminLayout = () => {
 
           <span className="admin-nav-section-label">Data Jemaat</span>
           <NavLink to="/admin/statistik" className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}>
-            <i className="fas fa-chart-bar"></i> Statistik
-          </NavLink>
-          <NavLink to="/admin/majelis" className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}>
-            <i className="fas fa-users"></i> Majelis
-          </NavLink>
-          <NavLink to="/admin/pendeta" className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}>
-            <i className="fas fa-user-tie"></i> Pendeta
+            <i className="fas fa-chart-bar"></i> Statistik Live
           </NavLink>
 
-          <span className="admin-nav-section-label">Pengaturan</span>
-          <NavLink to="/admin/register" className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}>
-            <i className="fas fa-user-plus"></i> Tambah Admin
-          </NavLink>
+          {isSuperadmin && (
+            <>
+              <span className="admin-nav-section-label">Superadmin</span>
+              <NavLink to="/admin/users" className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}>
+                <i className="fas fa-users-cog"></i> Kelola User List
+              </NavLink>
+            </>
+          )}
         </nav>
 
         <div className="admin-logout">
@@ -89,7 +98,11 @@ const AdminLayout = () => {
           </div>
           <div className="admin-user-info">
             <i className="fas fa-user-circle"></i>
-            {user?.username || 'Admin'}
+            <span>{user?.name || user?.username || 'Admin'}</span>
+            <span style={{ opacity: 0.6 }}>&bull;</span>
+            <span style={{ color: 'var(--color-kunyit)', textTransform: 'capitalize' }}>
+              {user?.role || 'Users'}
+            </span>
           </div>
         </header>
 

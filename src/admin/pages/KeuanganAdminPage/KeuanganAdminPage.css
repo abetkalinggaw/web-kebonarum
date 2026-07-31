@@ -1,0 +1,165 @@
+.keuangan-admin-page {
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.keuangan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.module-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.module-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 50px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--admin-text-muted, #8a7a6a);
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(28, 22, 18, 0.03);
+}
+
+.module-tab-btn.active {
+  background: linear-gradient(135deg, #c4884a 0%, #a26c34 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(196, 136, 74, 0.35);
+}
+
+.keuangan-table-card {
+  background: #ffffff;
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(28, 22, 18, 0.04);
+}
+
+.table-loading {
+  padding: 3.5rem;
+  text-align: center;
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+.admin-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-data-table th {
+  background: var(--color-putih-soft, #f7f2ec);
+  padding: 1.1rem 1.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--admin-text-muted, #8a7a6a);
+  border-bottom: 1px solid rgba(196, 136, 74, 0.2);
+}
+
+.admin-data-table td {
+  padding: 1.1rem 1.5rem;
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.92rem;
+  color: var(--admin-text-primary, #1c1612);
+  border-bottom: 1px solid rgba(28, 22, 18, 0.06);
+  vertical-align: middle;
+}
+
+.admin-data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-data-table tbody tr:hover {
+  background: rgba(247, 242, 236, 0.5);
+}
+
+.mono-date {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}
+
+.bold-title {
+  font-weight: 600;
+  color: var(--color-wenge, #1c1612);
+}
+
+.rupiah-val {
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.kode-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(196, 136, 74, 0.12);
+  color: var(--color-kunyit, #c4884a);
+  border: 1px solid rgba(196, 136, 74, 0.25);
+}
+
+.bulan-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+}
+
+.kondisi-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563eb;
+}
+
+.surat-type-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 50px;
+}
+
+.surat-type-tag.masuk {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+}
+
+.surat-type-tag.keluar {
+  background: rgba(217, 119, 6, 0.12);
+  color: #d97706;
+}
+
+.surat-status {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  color: var(--admin-text-muted, #8a7a6a);
+}

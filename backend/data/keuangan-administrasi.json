@@ -1,0 +1,78 @@
+{
+  "persembahan": [
+    {
+      "id": "psb_1",
+      "tanggal": "2026-07-26",
+      "jenis": "Persembahan Minggu Ibadah Pagi",
+      "jumlah": 3450000,
+      "keterangan": "Ibadah Pagi 06.00 WIB Sumberejo"
+    },
+    {
+      "id": "psb_2",
+      "tanggal": "2026-07-26",
+      "jenis": "Persembahan Kasih Diakonia",
+      "jumlah": 1850000,
+      "keterangan": "Penggalangan dana bantuan diakonia"
+    }
+  ],
+  "perpuluhan": [
+    {
+      "id": "pph_1",
+      "tanggal": "2026-07-20",
+      "namaJemaat": "NN (Sumberejo)",
+      "jumlah": 1500000,
+      "bulan": "Juli 2026"
+    },
+    {
+      "id": "pph_2",
+      "tanggal": "2026-07-24",
+      "namaJemaat": "Keluarga Y. Budi Santoso",
+      "jumlah": 2000000,
+      "bulan": "Juli 2026"
+    }
+  ],
+  "asetGereja": [
+    {
+      "id": "ast_1",
+      "namaAset": "Sound System Soundcraft Signature 22",
+      "kodeAset": "AST-AUD-001",
+      "jumlah": 1,
+      "kondisi": "Baik",
+      "lokasi": "Gedung Utama GKJ Kebonarum"
+    },
+    {
+      "id": "ast_2",
+      "namaAset": "Kamera PTZ Live Streaming 4K",
+      "kodeAset": "AST-VID-002",
+      "jumlah": 2,
+      "kondisi": "Baik",
+      "lokasi": "Balkon Multimedia"
+    },
+    {
+      "id": "ast_3",
+      "namaAset": "Organ Digital Roland AT-300",
+      "kodeAset": "AST-MUS-003",
+      "jumlah": 1,
+      "kondisi": "Baik",
+      "lokasi": "Panggung Utama"
+    }
+  ],
+  "suratMenyurat": [
+    {
+      "id": "srt_1",
+      "nomorSurat": "042/GKJ-KBN/VII/2026",
+      "jenisSurat": "Surat Keluar",
+      "perihal": "Surat Permohonan Pelayanan Pelawat Synod",
+      "tanggal": "2026-07-15",
+      "status": "Terkirim"
+    },
+    {
+      "id": "srt_2",
+      "nomorSurat": "118/SYN-GKJ/VII/2026",
+      "jenisSurat": "Surat Masuk",
+      "perihal": "Undangan Persidangan Majelis Klasis Klaten Barat",
+      "tanggal": "2026-07-18",
+      "status": "Diterima"
+    }
+  ]
+}

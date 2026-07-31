@@ -1,7 +1,26 @@
 [
   {
-    "username": "admin",
+    "id": "usr_superadmin",
+    "username": "superadmin",
+    "name": "Super Administrator",
     "password": "$2b$10$RaNunbUQS8hdT7WCGPjj7u2bUMDqP.6.UNo7n5498bFZ4rfPKh3bq",
-    "role": "admin"
+    "role": "Superadmin",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "usr_admin",
+    "username": "admin",
+    "name": "Administrator Jemaat",
+    "password": "$2b$10$RaNunbUQS8hdT7WCGPjj7u2bUMDqP.6.UNo7n5498bFZ4rfPKh3bq",
+    "role": "Admin",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "usr_user",
+    "username": "user",
+    "name": "Anggota Jemaat",
+    "password": "$2b$10$RaNunbUQS8hdT7WCGPjj7u2bUMDqP.6.UNo7n5498bFZ4rfPKh3bq",
+    "role": "Users",
+    "createdAt": "2026-01-01T00:00:00.000Z"
   }
 ]

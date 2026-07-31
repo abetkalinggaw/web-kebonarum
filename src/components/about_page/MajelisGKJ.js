@@ -1,94 +1,90 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MajelisGKJ.css";
+import { getMajelisData } from "../../services/majelisApi";
 import majelis1 from "../../assets/majelis/majelis1.jpg";
 import majelis2 from "../../assets/majelis/majelis2.jpg";
 import majelis3 from "../../assets/majelis/majelis3.jpg";
 import majelis4 from "../../assets/majelis/majelis4.jpg";
 import majelis5 from "../../assets/majelis/majelis5.jpg";
+import majelis6 from "../../assets/majelis/majelis6.jpg";
+
+const MAJELIS_IMAGES = [majelis1, majelis2, majelis3, majelis4, majelis5, majelis6];
+
+// Initial fallback data synced with DB Jemaat
+const FALLBACK_PENATUA = [
+  { id: "jmt_penatua_001", name: "Pnt. Yohanes Budi Santoso", role: "Penatua", detail: "Wilayah Sumberejo", image: majelis1 },
+  { id: "pnt_2", name: "Pnt. Fajar Eko Kristanto", role: "Penatua", detail: "Wilayah Sumberejo", image: majelis2 },
+  { id: "pnt_3", name: "Pnt. Hendra Budi Saputra", role: "Penatua", detail: "Wilayah Krosok", image: majelis3 },
+  { id: "pnt_4", name: "Pnt. Bambang Tri Mulyono", role: "Penatua", detail: "Wilayah Pluneng", image: majelis4 },
+  { id: "pnt_5", name: "Pnt. Joko Dwi Hermawan", role: "Penatua", detail: "Wilayah Ngrundul", image: majelis5 },
+];
+
+const FALLBACK_DIAKEN = [
+  { id: "jmt_diaken_001", name: "Dkn. Bapak Agus Prasetyo", role: "Diaken", detail: "Wilayah Krosok", image: majelis1 },
+  { id: "dkn_2", name: "Dkn. Nisa Putra Handoko", role: "Diaken", detail: "Wilayah Krosok", image: majelis2 },
+  { id: "dkn_3", name: "Dkn. Eko Heru Supriyanto", role: "Diaken", detail: "Wilayah Pluneng", image: majelis3 },
+  { id: "dkn_4", name: "Dkn. Sigit Adi Rahardjo", role: "Diaken", detail: "Wilayah Ngrundul", image: majelis4 },
+  { id: "dkn_5", name: "Dkn. Danu Tri Mulyono", role: "Diaken", detail: "Wilayah Prayan", image: majelis5 },
+];
+
+const formatPenatuaName = (name) => {
+  if (!name) return "Pnt. Penatua";
+  if (name.startsWith("Pnt.") || name.startsWith("Pdm.") || name.startsWith("Dkn.")) return name;
+  return `Pnt. ${name}`;
+};
+
+const formatDiakenName = (name) => {
+  if (!name) return "Dkn. Diaken";
+  if (name.startsWith("Dkn.") || name.startsWith("Pnt.") || name.startsWith("Pdm.")) return name;
+  return `Dkn. ${name}`;
+};
 
 const MajelisGKJ = () => {
   const navigate = useNavigate();
+  const [penatuaList, setPenatuaList] = useState(FALLBACK_PENATUA);
+  const [diakenList, setDiakenList] = useState(FALLBACK_DIAKEN);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const rawData = await getMajelisData();
+        if (Array.isArray(rawData) && rawData.length > 0) {
+          const penatuas = rawData
+            .filter((item) => item.subPeran === "Penatua")
+            .map((item, idx) => ({
+              id: item.id || `pnt_${idx}`,
+              name: formatPenatuaName(item.namaLengkap),
+              role: "Penatua",
+              detail: `Wilayah ${item.wilayah || "Kebonarum"}`,
+              image: item.imageUrl || MAJELIS_IMAGES[idx % MAJELIS_IMAGES.length],
+            }));
+
+          const diakens = rawData
+            .filter((item) => item.subPeran === "Diaken")
+            .map((item, idx) => ({
+              id: item.id || `dkn_${idx}`,
+              name: formatDiakenName(item.namaLengkap),
+              role: "Diaken",
+              detail: `Wilayah ${item.wilayah || "Kebonarum"}`,
+              image: item.imageUrl || MAJELIS_IMAGES[idx % MAJELIS_IMAGES.length],
+            }));
+
+          if (penatuas.length > 0) setPenatuaList(penatuas.slice(0, 5));
+          if (diakens.length > 0) setDiakenList(diakens.slice(0, 5));
+        }
+      } catch (err) {
+        console.warn("Using fallback majelis data:", err.message);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const handleClick = () => {
     window.scrollTo(0, 0);
     navigate("/majelis");
   };
-
-  const majelisPenatuaData = [
-    {
-      id: 1,
-      name: "Pnt. Penatua 1",
-      role: "Penatua",
-      detail: "Wilayah Sumberejo",
-      image: majelis1,
-    },
-    {
-      id: 2,
-      name: "Pnt. Penatua 2",
-      role: "Penatua",
-      detail: "Wilayah Krosok",
-      image: majelis2,
-    },
-    {
-      id: 3,
-      name: "Pnt. Penatua 3",
-      role: "Penatua",
-      detail: "Wilayah Pluneng",
-      image: majelis3,
-    },
-    {
-      id: 4,
-      name: "Pnt. Penatua 4",
-      role: "Penatua",
-      detail: "Wilayah Ngrundul",
-      image: majelis4,
-    },
-    {
-      id: 5,
-      name: "Pnt. Penatua 5",
-      role: "Penatua",
-      detail: "Wilayah Prayan",
-      image: majelis5,
-    },
-  ];
-
-  const majelisDiakenData = [
-    {
-      id: 1,
-      name: "Dkn. Diaken 1",
-      role: "Diaken",
-      detail: "Wilayah Sumberejo",
-      image: majelis1,
-    },
-    {
-      id: 2,
-      name: "Dkn. Diaken 2",
-      role: "Diaken",
-      detail: "Wilayah Krosok",
-      image: majelis2,
-    },
-    {
-      id: 3,
-      name: "Dkn. Diaken 3",
-      role: "Diaken",
-      detail: "Wilayah Pluneng",
-      image: majelis3,
-    },
-    {
-      id: 4,
-      name: "Dkn. Diaken 4",
-      role: "Diaken",
-      detail: "Wilayah Ngrundul",
-      image: majelis4,
-    },
-    {
-      id: 5,
-      name: "Dkn. Diaken 5",
-      role: "Diaken",
-      detail: "Wilayah Prayan",
-      image: majelis5,
-    },
-  ];
 
   return (
     <section className="majelis-gkj-kebonarum">
@@ -121,7 +117,7 @@ const MajelisGKJ = () => {
             {/* Right: Cards Grid */}
             <div className="majelis-gkj-right">
               <div className="majelis-gkj-grid">
-                {majelisPenatuaData.map((item) => (
+                {penatuaList.map((item) => (
                   <article key={item.id} className="majelis-gkj-card">
                     <div
                       className="majelis-gkj-image"
@@ -160,7 +156,7 @@ const MajelisGKJ = () => {
             {/* Right: Cards Grid */}
             <div className="majelis-gkj-right">
               <div className="majelis-gkj-grid">
-                {majelisDiakenData.map((item) => (
+                {diakenList.map((item) => (
                   <article key={item.id} className="majelis-gkj-card">
                     <div
                       className="majelis-gkj-image"

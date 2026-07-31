@@ -18,4 +18,20 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = { authMiddleware, JWT_SECRET };
+const requireRole = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user || !req.user.role) {
+      return res.status(403).json({ message: 'Akses ditolak. Peran pengguna tidak ditemukan.' });
+    }
+    const userRole = (req.user.role || '').toLowerCase();
+    const hasRole = allowedRoles.some(r => r.toLowerCase() === userRole);
+    if (!hasRole) {
+      return res.status(403).json({
+        message: `Akses ditolak. Peran "${req.user.role}" tidak memiliki izin untuk tindakan ini.`,
+      });
+    }
+    next();
+  };
+};
+
+module.exports = { authMiddleware, requireRole, JWT_SECRET };
