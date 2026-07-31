@@ -1,0 +1,156 @@
+.instagram-page {
+  color: var(--color-text-900);
+}
+
+.instagram-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: url("../../../assets/gkj-bg.png");
+  background-size: cover;
+  background-position: center;
+  color: var(--color-white);
+  padding: 8rem 0 4.5rem;
+}
+
+.instagram-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 23, 20, 0.5) 0%,
+    rgba(17, 23, 20, 0.72) 55%,
+    rgba(17, 23, 20, 0.88) 100%
+  );
+  z-index: 1;
+}
+
+.instagram-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--container-pad-desktop);
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.instagram-kicker {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.instagram-title {
+  font-size: 3rem;
+  margin: 0 0 1rem;
+}
+
+.instagram-lead {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin: 0 0 1rem;
+  max-width: 1000px;
+}
+
+.instagram-account-link {
+  display: inline-block;
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  text-decoration: none;
+  padding: 0.55rem 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.instagram-account-link:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.instagram-section {
+  padding: 3.5rem 0;
+  max-width: 100%;
+  min-height: 1080px;
+}
+
+.instagram-section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--container-pad-desktop);
+}
+
+.instagram-media {
+  background: var(--color-white);
+  border: none;
+  border-radius: 14px;
+}
+
+@media (max-width: 1024px) {
+  .instagram-title {
+    font-size: 2.4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .instagram-hero {
+    min-height: 50vh;
+    padding: 4.5rem 0 2.5rem;
+  }
+
+  .instagram-hero-content,
+  .instagram-section-inner {
+    padding: 0 var(--container-pad-tablet);
+  }
+
+  .instagram-title {
+    font-size: 2rem;
+  }
+
+  .instagram-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .instagram-blockquote-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .instagram-media {
+    width: 100% !important;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .instagram-hero-content,
+  .instagram-section-inner {
+    padding: 0 var(--container-pad-mobile);
+  }
+
+  .instagram-title {
+    font-size: 1.7rem;
+  }
+
+  .instagram-blockquote-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem;
+  }
+
+  .instagram-media {
+    width: 100% !important;
+  }
+}

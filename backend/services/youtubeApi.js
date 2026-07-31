@@ -39,10 +39,22 @@ const MEDIA_KEYWORDS = Array.from(
 const hasYoutubeConfig = () => Boolean(YOUTUBE_API_KEY && YOUTUBE_CHANNEL_ID);
 const hasYoutubeChannelId = () => Boolean(YOUTUBE_CHANNEL_ID);
 
+let rateLimitUntil = 0;
+let hasLoggedRateLimit = false;
+
 const logYoutubeError = ({ context, error, status = null, details = null }) => {
   const reason = details?.error?.errors?.[0]?.reason || "unknown_reason";
   const message =
     details?.error?.message || error?.message || "Unknown YouTube error";
+
+  // Suppress spammy console errors for quota limits since we gracefully fallback
+  if (status === 429 || status === 403) {
+    if (!hasLoggedRateLimit) {
+      console.warn(`[YouTubeAPI] Quota Exceeded (status ${status}). Muting further quota warnings and falling back to RSS for 1 hour.`);
+      hasLoggedRateLimit = true;
+    }
+    return;
+  }
 
   console.error(
     `[YouTubeAPI] ${context} failed${status ? ` (status ${status})` : ""}: ${reason} - ${message}`,
@@ -58,6 +70,12 @@ const readJsonSafely = async (response) => {
 };
 
 const fetchYoutubeApiJson = async ({ path, params, context }) => {
+  if (Date.now() < rateLimitUntil) {
+    const cachedError = new Error("Rate limited previously. Using RSS fallback.");
+    cachedError.status = 429;
+    throw cachedError;
+  }
+
   const query = new URLSearchParams({
     ...params,
     key: YOUTUBE_API_KEY,
@@ -67,6 +85,11 @@ const fetchYoutubeApiJson = async ({ path, params, context }) => {
 
   if (response.ok) {
     return response.json();
+  }
+
+  if (response.status === 429 || response.status === 403) {
+    // Cache the rate limit for 1 hour so we don't spam Google APIs
+    rateLimitUntil = Date.now() + 60 * 60 * 1000;
   }
 
   const errorDetails = await readJsonSafely(response);

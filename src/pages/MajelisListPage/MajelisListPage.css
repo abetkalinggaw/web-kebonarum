@@ -1,0 +1,336 @@
+.majelis-list-page {
+  background: #fbfcfb;
+  color: var(--color-text-900);
+}
+
+.majelis-list-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: url("../../assets/gkj-bg.png");
+  background-size: cover;
+  background-position: center;
+  color: var(--color-white);
+  padding: 8rem 0 4.5rem;
+}
+
+.majelis-list-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 23, 20, 0.5) 0%,
+    rgba(17, 23, 20, 0.72) 55%,
+    rgba(17, 23, 20, 0.88) 100%
+  );
+  z-index: 1;
+}
+
+.majelis-list-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--container-pad-desktop);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--color-white);
+  padding: 0.4rem 1.25rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateX(-3px);
+}
+
+.back-button svg {
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover svg {
+  transform: translateX(-3px);
+}
+
+.majelis-list-kicker {
+  margin-bottom: 0.5rem;
+}
+
+.majelis-list-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 600;
+  margin: 0.5rem 0 1rem;
+  letter-spacing: -0.02em;
+}
+
+.majelis-list-lead {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.majelis-list-section {
+  padding: 5rem 0 6rem;
+}
+
+.majelis-list-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--container-pad-desktop);
+}
+
+.majelis-section {
+  margin-bottom: 4rem;
+}
+
+.majelis-section:last-child {
+  margin-bottom: 0;
+}
+
+.majelis-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-brand-800);
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+.majelis-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.majelis-card {
+  background: #f9fbf9;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.majelis-card:hover {
+  transform: translateY(-4px);
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+  border-color: rgba(52, 78, 65, 0.2);
+}
+
+.majelis-card-image {
+  width: 100%;
+  height: 220px;
+  background-size: cover;
+  background-position: center top;
+  transition: transform 0.5s ease;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.majelis-card:hover .majelis-card-image {
+  transform: scale(1.03);
+}
+
+.majelis-card-image img {
+  display: none;
+}
+
+.majelis-card-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.majelis-card-name {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-900);
+}
+
+.majelis-card-role {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-600);
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .majelis-list-hero {
+    min-height: 55vh;
+    padding: 4.5rem 0 3rem;
+  }
+
+  .majelis-list-title {
+    font-size: 2.5rem;
+  }
+
+  .majelis-list-section {
+    padding: 4rem 0;
+  }
+
+  .majelis-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .majelis-card-image {
+    height: 340px;
+  }
+
+  .majelis-section-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .majelis-list-hero {
+    min-height: 50vh;
+    padding: 5rem 0 2.5rem;
+  }
+
+  .majelis-list-hero-content {
+    padding: 0 var(--container-pad-tablet);
+  }
+
+  .back-button {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .majelis-list-title {
+    font-size: 2.1rem;
+  }
+
+  .majelis-list-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .majelis-list-section {
+    padding: 3rem 0;
+  }
+
+  .majelis-list-inner {
+    padding: 0 var(--container-pad-tablet);
+  }
+
+  .majelis-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .majelis-card-image {
+    height: 400px;
+  }
+
+  .majelis-section-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .majelis-card-name {
+    font-size: 0.95rem;
+  }
+
+  .majelis-card-role {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .majelis-list-hero {
+    min-height: 40vh;
+    padding: 3rem 0 2rem;
+  }
+
+  .majelis-list-hero-content {
+    padding: 0 var(--container-pad-mobile);
+  }
+
+  .back-button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .majelis-list-title {
+    font-size: 2rem;
+  }
+
+  .majelis-list-inner {
+    padding: 0 var(--container-pad-mobile);
+  }
+
+  .majelis-list-section {
+    padding: 2.5rem 0;
+  }
+
+  .majelis-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .majelis-card-image {
+    height: 260px;
+    margin-bottom: 0.75rem;
+  }
+
+  .majelis-section-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .majelis-card-name {
+    font-size: 0.9rem;
+  }
+
+  .majelis-card-role {
+    font-size: 0.8rem;
+  }
+}

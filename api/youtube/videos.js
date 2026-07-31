@@ -95,14 +95,14 @@ module.exports = async (req, res) => {
       `[YouTubeAPI] Results - items: ${items.length}, livestreamItems: ${livestreamItems.length}, liveNowItems: ${liveNowItems.length}`,
     );
 
-    const hasApi403 = [itemsResult, livestreamResult, liveNowResult].some(
+    const hasRateLimitOrQuotaError = [itemsResult, livestreamResult, liveNowResult].some(
       (result) =>
-        result.status === "rejected" && Number(result.reason?.status) === 403,
+        result.status === "rejected" && (Number(result.reason?.status) === 403 || Number(result.reason?.status) === 429),
     );
 
     const shouldUseRssFallback =
       hasYoutubeChannelId() &&
-      (hasApi403 || (!items.length && !livestreamItems.length));
+      (hasRateLimitOrQuotaError || (!items.length && !livestreamItems.length));
 
     if (shouldUseRssFallback) {
       try {
