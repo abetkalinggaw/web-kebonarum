@@ -1,4 +1,5 @@
-const GOOGLE_DRIVE_API_KEY = process.env.GOOGLE_DRIVE_API_KEY;
+const GOOGLE_DRIVE_API_KEY =
+  process.env.GOOGLE_DRIVE_API_KEY || process.env.REACT_APP_GOOGLE_DRIVE_API_KEY;
 const GOOGLE_DRIVE_ROOT_FOLDER_ID =
   process.env.GOOGLE_DRIVE_ROOT_FOLDER_ID ||
   "1u8W7fIhWNg4Hlh6y165AhWo1NcpuzSEW";
@@ -6,11 +7,21 @@ const GOOGLE_DRIVE_API_BASE_URL = "https://www.googleapis.com/drive/v3/files";
 
 const hasGoogleDriveApiKey = () => Boolean(GOOGLE_DRIVE_API_KEY);
 
-const createDriveThumbnailUrl = (fileId) =>
-  `https://lh3.googleusercontent.com/d/${fileId}=w1600`;
+const createDriveThumbnailUrl = (fileOrId) => {
+  if (!fileOrId) return "";
+  if (typeof fileOrId === "object") {
+    if (fileOrId.thumbnailLink) {
+      return fileOrId.thumbnailLink
+        .replace(/=s\d+/, "=s1600")
+        .replace(/=w\d+/, "=w1600");
+    }
+    return fileOrId.id ? `https://lh3.googleusercontent.com/d/${fileOrId.id}=w1600` : "";
+  }
+  return `https://lh3.googleusercontent.com/d/${fileOrId}=w1600`;
+};
 
 const buildFolderImageQuery = (folderId) =>
-  `'${folderId}' in parents and mimeType contains 'image/' and trashed=false`;
+  `'${folderId}' in parents and (mimeType contains 'image/' or mimeType contains 'video/') and trashed=false`;
 
 const buildChildFolderQuery = (folderId) =>
   `'${folderId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`;
@@ -90,7 +101,7 @@ const fetchDriveFiles = async ({
   query,
   pageSize = 1000,
   orderBy = "createdTime desc",
-  fields = "nextPageToken,files(id,name,mimeType,createdTime)",
+  fields = "nextPageToken,files(id,name,mimeType,thumbnailLink,webContentLink,createdTime,modifiedTime)",
   pageToken = "",
 }) => {
   if (!hasGoogleDriveApiKey()) {
@@ -117,7 +128,7 @@ const fetchDriveFiles = async ({
 
 const fetchDriveFileById = async (fileId, fields) => {
   const params = new URLSearchParams({
-    fields,
+    fields: fields || "id,name,mimeType,thumbnailLink,webContentLink,createdTime,modifiedTime",
     key: GOOGLE_DRIVE_API_KEY,
   });
 
@@ -127,30 +138,157 @@ const fetchDriveFileById = async (fileId, fields) => {
   });
 };
 
-const fetchDriveFolderCoverUrl = async (folderId) => {
-  const data = await fetchDriveFiles({
-    query: buildFolderImageQuery(folderId),
+const fetchDriveFolderCoverUrl = async (folderId, depth = 0) => {
+  if (!folderId) return null;
+
+  try {
+    const data = await fetchDriveFiles({
+      query: buildFolderImageQuery(folderId),
+      pageSize: 1,
+      orderBy: "createdTime",
+      fields: "files(id,mimeType,thumbnailLink,createdTime)",
+    });
+
+    const files = Array.isArray(data.files) ? data.files : [];
+    const firstImage = files.find((file) => file?.id);
+
+    if (firstImage?.id) {
+      return createDriveThumbnailUrl(firstImage);
+    }
+
+    if (depth < 2) {
+      const childFolderPage = await fetchDriveChildFolderPage({
+        folderId,
+        pageSize: 3,
+      });
+
+      for (const childFolder of childFolderPage.folders) {
+        const childCover = await fetchDriveFolderCoverUrl(childFolder.id, depth + 1);
+        if (childCover) {
+          return childCover;
+        }
+      }
+    }
+  } catch (error) {
+    // Return null on failure
+  }
+
+  return null;
+};
+
+const fetchDriveFirstChildFolderCoverUrl = async (folderId) => {
+  const childFolderPage = await fetchDriveChildFolderPage({
+    folderId,
     pageSize: 1,
-    orderBy: "createdTime",
-    fields: "files(id,mimeType,createdTime)",
   });
 
-  const files = Array.isArray(data.files) ? data.files : [];
-  const firstImage = files.find((file) => file?.id);
+  const firstChildFolder = childFolderPage.folders.find((folder) => folder?.id);
 
-  return firstImage?.id ? createDriveThumbnailUrl(firstImage.id) : null;
+  if (!firstChildFolder?.id) {
+    return null;
+  }
+
+  return fetchDriveFolderCoverUrl(firstChildFolder.id);
+};
+
+const fetchDriveFolderCoversMap = async (folderIds) => {
+  if (!folderIds.length) return {};
+
+  const CHUNK_SIZE = 20;
+  const coverMap = {};
+
+  try {
+    for (let i = 0; i < folderIds.length; i += CHUNK_SIZE) {
+      const chunk = folderIds.slice(i, i + CHUNK_SIZE);
+      const query = `(${chunk
+        .map((id) => `'${id}' in parents`)
+        .join(" or ")}) and (mimeType contains 'image/' or mimeType contains 'video/') and trashed=false`;
+
+      const data = await fetchDriveFiles({
+        query,
+        pageSize: chunk.length,
+        orderBy: "createdTime",
+        fields: "files(id,parents,mimeType,thumbnailLink,createdTime)",
+      });
+
+      const files = Array.isArray(data.files) ? data.files : [];
+
+      const parentsAvailable = files.some(
+        (file) => Array.isArray(file.parents) && file.parents.length > 0,
+      );
+
+      if (files.length === 0 || !parentsAvailable) {
+        const results = await Promise.allSettled(
+          chunk.map(async (folderId) => ({
+            folderId,
+            url: await fetchDriveFolderCoverUrl(folderId),
+          })),
+        );
+
+        for (const result of results) {
+          if (result.status === "fulfilled" && result.value.url) {
+            coverMap[result.value.folderId] = result.value.url;
+          }
+        }
+      } else {
+        for (const file of files) {
+          const parentId = file.parents?.[0];
+          if (parentId && !coverMap[parentId] && file.id) {
+            coverMap[parentId] = createDriveThumbnailUrl(file);
+          }
+        }
+      }
+    }
+
+    const missingIds = folderIds.filter((id) => !coverMap[id]);
+    if (missingIds.length > 0) {
+      const fallbackResults = await Promise.allSettled(
+        missingIds.map(async (folderId) => ({
+          folderId,
+          url: await fetchDriveFolderCoverUrl(folderId),
+        })),
+      );
+
+      for (const result of fallbackResults) {
+        if (result.status === "fulfilled" && result.value.url) {
+          coverMap[result.value.folderId] = result.value.url;
+        }
+      }
+    }
+
+    return coverMap;
+  } catch (error) {
+    if (!isExpectedDrivePermissionError(error)) {
+      logDriveError({ context: "fetchDriveFolderCoversMap.batch", error });
+    }
+
+    const results = await Promise.allSettled(
+      folderIds.map(async (folderId) => ({
+        folderId,
+        url: await fetchDriveFolderCoverUrl(folderId),
+      })),
+    );
+
+    const fallbackMap = {};
+    for (const result of results) {
+      if (result.status === "fulfilled" && result.value.url) {
+        fallbackMap[result.value.folderId] = result.value.url;
+      }
+    }
+    return fallbackMap;
+  }
 };
 
 const fetchDriveFolderImagePage = async ({
   folderId,
-  pageSize = 8,
+  pageSize = 24,
   pageToken = "",
 }) => {
   const data = await fetchDriveFiles({
     query: buildFolderImageQuery(folderId),
     pageSize,
     orderBy: "createdTime",
-    fields: "nextPageToken,files(id,mimeType,name,createdTime)",
+    fields: "nextPageToken,files(id,mimeType,name,thumbnailLink,webContentLink,createdTime)",
     pageToken,
   });
 
@@ -158,14 +296,21 @@ const fetchDriveFolderImagePage = async ({
   const imageFiles = files.filter((file) => file?.id);
 
   return {
-    images: imageFiles.map((file) => createDriveThumbnailUrl(file.id)),
+    images: imageFiles.map((file) => ({
+      url: createDriveThumbnailUrl(file),
+      thumbnailLink: file.thumbnailLink || "",
+      webContentLink: file.webContentLink || "",
+      mimeType: file.mimeType || "",
+      id: file.id,
+      name: file.name || "",
+    })),
     nextPageToken: data.nextPageToken || "",
   };
 };
 
 const fetchDriveChildFolderPage = async ({
   folderId,
-  pageSize = 8,
+  pageSize = 24,
   pageToken = "",
 }) => {
   const data = await fetchDriveFiles({
@@ -184,24 +329,35 @@ const fetchDriveChildFolderPage = async ({
   };
 };
 
-const mapFolderToDocumentationItem = ({ folder, imageUrl = "" }) => ({
-  id: folder.id,
-  driveFolderId: folder.id,
-  title: folder.name || "Untitled Folder",
-  description: "",
-  category: "Google Drive",
-  date: folder.createdTime || folder.modifiedTime || new Date().toISOString(),
-  imageUrl,
-  images: [],
-});
+const isRawDriveId = (str) =>
+  typeof str === "string" && /^[a-zA-Z0-9_-]{25,45}$/.test(str);
+
+const mapFolderToDocumentationItem = ({ folder, imageUrl = "" }) => {
+  const rawName = folder.name || "";
+  const title = !rawName || isRawDriveId(rawName) ? "Album Dokumentasi" : rawName;
+
+  return {
+    id: folder.id,
+    driveFolderId: folder.id,
+    title,
+    description: "",
+    category: "Google Drive",
+    date: folder.createdTime || folder.modifiedTime || new Date().toISOString(),
+    imageUrl,
+    images: [],
+  };
+};
 
 module.exports = {
   hasGoogleDriveApiKey,
   logDriveError,
   isReferrerRestrictedApiKeyError,
   resolveFolderId,
+  createDriveThumbnailUrl,
   fetchDriveFileById,
   fetchDriveFolderCoverUrl,
+  fetchDriveFirstChildFolderCoverUrl,
+  fetchDriveFolderCoversMap,
   fetchDriveFolderImagePage,
   fetchDriveChildFolderPage,
   mapFolderToDocumentationItem,

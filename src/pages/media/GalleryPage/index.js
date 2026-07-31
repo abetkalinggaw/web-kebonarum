@@ -9,10 +9,10 @@ import {
   getDocumentationItemById,
 } from "../../../services/documentationApi";
 
-const IMAGE_PAGE_SIZE = 12;
-const GALLERY_IMAGE_LOAD_DELAY_MS = 80;
-const GALLERY_IMAGE_REQUEST_DELAY_MS = 140;
-const LOAD_MORE_REQUEST_DELAY_MS = 180;
+const IMAGE_PAGE_SIZE = 24;
+const GALLERY_IMAGE_LOAD_DELAY_MS = 60;
+const GALLERY_IMAGE_REQUEST_DELAY_MS = 100;
+const LOAD_MORE_REQUEST_DELAY_MS = 140;
 
 const extractDriveFileId = (url = "") => {
   if (!url) {
@@ -32,32 +32,68 @@ const extractDriveFileId = (url = "") => {
   return "";
 };
 
-const buildImageCandidates = (url = "") => {
-  const fileId = extractDriveFileId(url);
+const buildImageCandidates = (src = "", imageObj = null) => {
   const candidates = [];
+  const rawSrc = typeof src === "string" ? src : src?.url || imageObj?.url || "";
 
-  if (url) {
-    candidates.push(url);
+  let thumbnailLink = "";
+  let webContentLink = "";
+  let id = "";
+
+  if (typeof src === "object" && src !== null) {
+    thumbnailLink = src.thumbnailLink || "";
+    webContentLink = src.webContentLink || "";
+    id = src.id || "";
+  }
+  if (imageObj && typeof imageObj === "object") {
+    thumbnailLink = thumbnailLink || imageObj.thumbnailLink || "";
+    webContentLink = webContentLink || imageObj.webContentLink || "";
+    id = id || imageObj.id || "";
   }
 
-  if (fileId) {
-    candidates.push(`https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`);
-    candidates.push(`https://drive.google.com/uc?export=view&id=${fileId}`);
-    candidates.push(`https://lh3.googleusercontent.com/d/${fileId}=w1600`);
+  if (!id && rawSrc) {
+    id = extractDriveFileId(rawSrc);
+  }
+
+  if (thumbnailLink) {
+    const highRes = thumbnailLink
+      .replace(/=s\d+/, "=s1600")
+      .replace(/=w\d+/, "=w1600");
+    candidates.push(highRes);
+    candidates.push(thumbnailLink);
+  }
+
+  if (rawSrc) {
+    candidates.push(rawSrc);
+  }
+
+  if (id) {
+    candidates.push(`https://lh3.googleusercontent.com/d/${id}=w1600`);
+    candidates.push(`https://drive.google.com/thumbnail?id=${id}&sz=w1600`);
+    candidates.push(`https://drive.google.com/uc?export=view&id=${id}`);
+  }
+
+  if (webContentLink) {
+    candidates.push(webContentLink);
   }
 
   return [...new Set(candidates.filter(Boolean))];
 };
 
 const mergeUniqueImages = (existingImages, incomingImages) => {
-  const getUrl = (img) => typeof img === "string" ? img : img?.url;
-  const seen = new Set(existingImages.map(getUrl));
+  const getIdentifier = (img) => {
+    if (!img) return "";
+    if (typeof img === "string") return img;
+    return img.id || img.url || "";
+  };
+
+  const seen = new Set(existingImages.map(getIdentifier));
   const merged = [...existingImages];
 
   incomingImages.forEach((image) => {
-    const url = getUrl(image);
-    if (!seen.has(url)) {
-      seen.add(url);
+    const key = getIdentifier(image);
+    if (key && !seen.has(key)) {
+      seen.add(key);
       merged.push(image);
     }
   });
@@ -79,17 +115,20 @@ const GallerySkeleton = ({ count = 8 }) => (
   </>
 );
 
-const LazyGalleryImage = ({ src, isVideo, alt, onClick, delay = 0 }) => {
+const LazyGalleryImage = ({ src, imageObj, isVideo, alt, onClick, delay = 0 }) => {
   const imageRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
   const [sourceIndex, setSourceIndex] = useState(0);
-  const imageCandidates = useMemo(() => buildImageCandidates(src), [src]);
+  const imageCandidates = useMemo(
+    () => buildImageCandidates(src, imageObj),
+    [src, imageObj],
+  );
   const activeImageSrc = imageCandidates[sourceIndex] || "";
 
   useEffect(() => {
     setSourceIndex(0);
-  }, [src]);
+  }, [src, imageObj]);
 
   useEffect(() => {
     const element = imageRef.current;
@@ -109,7 +148,7 @@ const LazyGalleryImage = ({ src, isVideo, alt, onClick, delay = 0 }) => {
       },
       {
         root: null,
-        rootMargin: "240px",
+        rootMargin: "300px",
         threshold: 0.01,
       },
     );
@@ -136,21 +175,23 @@ const LazyGalleryImage = ({ src, isVideo, alt, onClick, delay = 0 }) => {
     };
   }, [delay, isInView]);
 
+  const hasExhaustedCandidates = sourceIndex >= imageCandidates.length;
+
   return (
-    <div ref={imageRef} className={`gallery-item ${isVideo ? "is-video" : ""}`} onClick={onClick}>
-      {shouldLoad && activeImageSrc ? (
+    <div
+      ref={imageRef}
+      className={`gallery-item ${isVideo ? "is-video" : ""}`}
+      onClick={onClick}
+    >
+      {shouldLoad && activeImageSrc && !hasExhaustedCandidates ? (
         <>
           <img
             src={activeImageSrc}
-            alt={alt}
+            alt={alt || imageObj?.name || ""}
             loading="lazy"
             decoding="async"
             onError={() => {
-              setSourceIndex((previousIndex) =>
-                previousIndex + 1 < imageCandidates.length
-                  ? previousIndex + 1
-                  : imageCandidates.length,
-              );
+              setSourceIndex((previousIndex) => previousIndex + 1);
             }}
           />
           {isVideo && (
@@ -161,6 +202,22 @@ const LazyGalleryImage = ({ src, isVideo, alt, onClick, delay = 0 }) => {
             </div>
           )}
         </>
+      ) : hasExhaustedCandidates ? (
+        <div className="gallery-item-failed">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+          <span>{imageObj?.name || "Foto"}</span>
+        </div>
       ) : (
         <div className="gallery-item-placeholder" aria-hidden="true" />
       )}
@@ -173,8 +230,8 @@ const GalleryFolderCard = ({ folder, onClick }) => {
   const resolvedImageUrl = folder?.imageUrl || folder?.images?.[0] || "";
   const [sourceIndex, setSourceIndex] = useState(0);
   const imageCandidates = useMemo(
-    () => buildImageCandidates(resolvedImageUrl),
-    [resolvedImageUrl],
+    () => buildImageCandidates(resolvedImageUrl, folder),
+    [resolvedImageUrl, folder],
   );
   const activeImageSrc = imageCandidates[sourceIndex] || "";
 
@@ -192,19 +249,50 @@ const GalleryFolderCard = ({ folder, onClick }) => {
             loading="lazy"
             decoding="async"
             onError={() => {
-              setSourceIndex((previousIndex) =>
-                previousIndex + 1 < imageCandidates.length
-                  ? previousIndex + 1
-                  : imageCandidates.length,
-              );
+              setSourceIndex((previousIndex) => previousIndex + 1);
             }}
           />
         ) : (
-          <div className="gallery-folder-card-placeholder" aria-hidden="true" />
+          <div className="gallery-folder-card-placeholder" aria-hidden="true">
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              style={{ opacity: 0.4 }}
+            >
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+            </svg>
+          </div>
         )}
+        <div className="gallery-folder-card-overlay" />
+        <span className="gallery-folder-card-tag">
+          <i className="fas fa-folder-open"></i>
+          <span>Sub-Folder</span>
+        </span>
       </div>
       <div className="gallery-folder-card-content">
         <h3 className="gallery-folder-card-title">{folder.title}</h3>
+        <div className="gallery-folder-card-footer">
+          <span className="gallery-folder-card-link">
+            <span>Buka Folder</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </span>
+        </div>
       </div>
     </article>
   );
@@ -214,12 +302,15 @@ const ModalGalleryImage = ({ image, alt }) => {
   const isVideo = typeof image !== "string" && image?.mimeType?.includes("video");
   const src = typeof image === "string" ? image : image?.url;
   const [sourceIndex, setSourceIndex] = useState(0);
-  const imageCandidates = useMemo(() => buildImageCandidates(src), [src]);
+  const imageCandidates = useMemo(
+    () => buildImageCandidates(src, image),
+    [src, image],
+  );
   const activeImageSrc = imageCandidates[sourceIndex] || "";
 
   useEffect(() => {
     setSourceIndex(0);
-  }, [src]);
+  }, [src, image]);
 
   if (isVideo && image?.id) {
     return (
@@ -227,7 +318,7 @@ const ModalGalleryImage = ({ image, alt }) => {
         <iframe
           src={`https://drive.google.com/file/d/${image.id}/preview`}
           allow="autoplay; fullscreen"
-          title={alt || "Video preview"}
+          title={alt || image?.name || "Video preview"}
         />
       </div>
     );
@@ -242,13 +333,9 @@ const ModalGalleryImage = ({ image, alt }) => {
   return (
     <img
       src={activeImageSrc}
-      alt={alt}
+      alt={alt || image?.name || ""}
       onError={() => {
-        setSourceIndex((previousIndex) =>
-          previousIndex + 1 < imageCandidates.length
-            ? previousIndex + 1
-            : imageCandidates.length,
-        );
+        setSourceIndex((previousIndex) => previousIndex + 1);
       }}
     />
   );
@@ -400,32 +487,38 @@ const GalleryPage = () => {
     setIsLoadingMoreImages(true);
 
     try {
-      if (prefetchedPage && prefetchedPage.images.length > 0) {
+      if (prefetchedPage && Array.isArray(prefetchedPage.images) && prefetchedPage.images.length > 0) {
+        // 1. Merge prefetched images into driveImages immediately
         setDriveImages((previousImages) =>
           mergeUniqueImages(previousImages, prefetchedPage.images),
         );
 
         const tokenAfterPrefetchedPage = prefetchedPage.nextPageToken || "";
-        setNextPageToken(tokenAfterPrefetchedPage);
         setPrefetchedPage(null);
+        setNextPageToken(tokenAfterPrefetchedPage);
 
         if (!tokenAfterPrefetchedPage) {
           setHasMoreImages(false);
           return;
         }
 
+        // 2. Fetch next batch from API
         const preloadedPage = await getDocumentationImagesById(item.id, {
           pageSize: IMAGE_PAGE_SIZE,
           pageToken: tokenAfterPrefetchedPage,
         });
 
-        setPrefetchedPage({
-          images: preloadedPage.images,
-          nextPageToken: preloadedPage.nextPageToken,
-        });
+        // 3. Merge preloadedPage.images into driveImages IMMEDIATELY so page 3 images are shown
+        setDriveImages((previousImages) =>
+          mergeUniqueImages(previousImages, preloadedPage.images),
+        );
+
+        // 4. Save preloadedPage.prefetchedNextPage into buffer for NEXT scroll
+        setPrefetchedPage(preloadedPage.prefetchedNextPage || null);
+        setNextPageToken(preloadedPage.nextPageToken || "");
         setHasMoreImages(
-          preloadedPage.images.length > 0 ||
-            Boolean(preloadedPage.nextPageToken),
+          Boolean(preloadedPage.nextPageToken) ||
+            Boolean(preloadedPage.prefetchedNextPage?.images?.length),
         );
         return;
       }
@@ -485,7 +578,7 @@ const GalleryPage = () => {
       },
       {
         root: null,
-        rootMargin: "240px",
+        rootMargin: "300px",
         threshold: 0.01,
       },
     );
@@ -510,6 +603,68 @@ const GalleryPage = () => {
       }),
     );
   }, [item?.childFolders]);
+  const parentFolderName = useMemo(() => {
+    const isIdString = (str) => {
+      if (!str || typeof str !== "string") return true;
+      const trimmed = str.trim();
+      return (
+        trimmed === id ||
+        (trimmed.length >= 20 && /^[a-zA-Z0-9_-]+$/.test(trimmed) && !trimmed.includes(" "))
+      );
+    };
+
+    const rawCandidates = [
+      ...(Array.isArray(location.state?.titlePath) ? location.state.titlePath : []),
+      location.state?.parentTitle,
+      location.state?.parentFolderName,
+      item?.parentTitle,
+    ];
+    const valid = rawCandidates.filter((p) => !isIdString(p));
+    return valid.length > 0 ? valid[valid.length - 1] : "";
+  }, [location.state, item?.parentTitle, id]);
+
+  const resolvedTitle = useMemo(() => {
+    const isIdString = (str) => {
+      if (!str || typeof str !== "string") return true;
+      const trimmed = str.trim();
+      return (
+        trimmed === id ||
+        (trimmed.length >= 20 && /^[a-zA-Z0-9_-]+$/.test(trimmed) && !trimmed.includes(" "))
+      );
+    };
+
+    if (item?.title && !isIdString(item.title)) {
+      return item.title;
+    }
+    if (location.state?.item?.title && !isIdString(location.state.item.title)) {
+      return location.state.item.title;
+    }
+    if (location.state?.folderName && !isIdString(location.state.folderName)) {
+      return location.state.folderName;
+    }
+    if (isLoadingItem) {
+      return parentFolderName ? `${parentFolderName} / Memuat Sub-folder...` : "Memuat Album...";
+    }
+    return "Dokumentasi";
+  }, [item?.title, location.state, isLoadingItem, parentFolderName, id]);
+
+  const cleanTitlePath = useMemo(() => {
+    const isIdString = (str) => {
+      if (!str || typeof str !== "string") return true;
+      const trimmed = str.trim();
+      return (
+        trimmed === id ||
+        (trimmed.length >= 20 && /^[a-zA-Z0-9_-]+$/.test(trimmed) && !trimmed.includes(" "))
+      );
+    };
+
+    const rawPath = Array.isArray(location.state?.titlePath)
+      ? location.state.titlePath
+      : location.state?.parentTitle
+        ? [location.state.parentTitle]
+        : [];
+    return rawPath.filter((p) => !isIdString(p));
+  }, [location.state, id]);
 
   if (!item && !isLoadingItem) {
     return (
@@ -538,18 +693,37 @@ const GalleryPage = () => {
     navigate("/media/documentation");
   };
 
-  const displayTitle = item?.title || "";
+  const isIdStringHelper = (str) => {
+    if (!str || typeof str !== "string") return true;
+    const trimmed = str.trim();
+    return (
+      trimmed === id ||
+      (trimmed.length >= 20 && /^[a-zA-Z0-9_-]+$/.test(trimmed) && !trimmed.includes(" "))
+    );
+  };
+
   const displayDescription = item?.description || "";
-  const titlePath = Array.isArray(location.state?.titlePath)
-    ? location.state.titlePath
-    : location.state?.parentTitle
-      ? [location.state.parentTitle]
-      : [];
-  const heroTitle = [...titlePath, displayTitle].filter(Boolean).join(" / ");
+  const isSubfolder = cleanTitlePath.length > 0 || Boolean(parentFolderName);
+  const heroTitle = [...cleanTitlePath, resolvedTitle].filter(Boolean).join(" / ");
+  const heroCoverUrl =
+    item?.imageUrl ||
+    item?.images?.[0] ||
+    (typeof driveImages[0] === "string"
+      ? driveImages[0]
+      : driveImages[0]?.url) ||
+    "";
 
   const handleFolderClick = (folder) => {
+    const safeTitle = !isIdStringHelper(resolvedTitle) ? resolvedTitle : parentFolderName || "";
+    const updatedPath = [...cleanTitlePath, safeTitle].filter(Boolean);
+
     navigate(`/media/documentation/gallery/${folder.id}`, {
-      state: { item: folder, titlePath: [...titlePath, displayTitle] },
+      state: {
+        item: folder,
+        titlePath: updatedPath,
+        parentTitle: safeTitle || "Dokumentasi",
+        parentFolderName: safeTitle || "Dokumentasi",
+      },
     });
   };
 
@@ -559,52 +733,172 @@ const GalleryPage = () => {
       <main className="gallery-page">
         <section className="gallery-hero">
           <div className="gallery-hero-content">
-            <button className="back-button" onClick={handleBackClick}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M12.5 15L7.5 10L12.5 5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Kembali
-            </button>
-            <p className="gallery-kicker"><span className="section-tag light">GKJ KEBONARUM KLATEN</span></p>
-            <h1 className="gallery-title">
-              Dokumentasi
-              <br />
-              {heroTitle}
-            </h1>
-            {item?.driveFolderId && (
-              <a
-                href={`https://drive.google.com/drive/folders/${item.driveFolderId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="gallery-drive-button"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <div className="gallery-hero-top-nav">
+              <button className="back-button" onClick={handleBackClick}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path
-                    d="M3 9h18v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V9z"
+                    d="M12.5 15L7.5 10L12.5 5"
                     stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M3 9l2.5-5c.3-.6.9-1 1.5-1h9c.6 0 1.2.4 1.5 1l2.5 5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
-                Link Google Drive
-              </a>
-            )}
-            {displayDescription && (
-              <p className="gallery-description">{displayDescription}</p>
+                Kembali
+              </button>
+
+              <nav className="gallery-breadcrumb">
+                <span
+                  className="breadcrumb-link"
+                  onClick={() => navigate("/media/documentation")}
+                >
+                  Dokumentasi
+                </span>
+                {cleanTitlePath.map((pathTitle, idx) => (
+                  <span key={idx} className="breadcrumb-step">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                    <span className="breadcrumb-text">{pathTitle}</span>
+                  </span>
+                ))}
+                <span className="breadcrumb-step current">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                  <span className="breadcrumb-text">{resolvedTitle}</span>
+                </span>
+              </nav>
+            </div>
+
+            {isSubfolder ? (
+              <div className="gallery-hero-card">
+                <div className="gallery-hero-card-media">
+                  {heroCoverUrl ? (
+                    <img src={heroCoverUrl} alt={resolvedTitle} />
+                  ) : (
+                    <div className="gallery-hero-card-media-placeholder">
+                      <svg
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1"
+                      >
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                      </svg>
+                    </div>
+                  )}
+                  <div className="gallery-hero-card-tag">
+                    <i className="fas fa-folder-open"></i>
+                    <span>SUB-FOLDER</span>
+                  </div>
+                </div>
+
+                <div className="gallery-hero-card-info">
+                  <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
+                  <h1 className="gallery-hero-card-title">{resolvedTitle}</h1>
+
+                  <div className="gallery-hero-card-stats">
+                    {galleryImages.length > 0 && (
+                      <span className="hero-stat-pill">
+                        <i className="fas fa-camera"></i> {galleryImages.length} Foto & Media
+                      </span>
+                    )}
+                    {childFolders.length > 0 && (
+                      <span className="hero-stat-pill">
+                        <i className="fas fa-folder"></i> {childFolders.length} Sub-folder
+                      </span>
+                    )}
+                  </div>
+
+                  {displayDescription && (
+                    <p className="gallery-hero-card-desc">{displayDescription}</p>
+                  )}
+
+                  {item?.driveFolderId && (
+                    <a
+                      href={`https://drive.google.com/drive/folders/${item.driveFolderId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gallery-drive-button"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M3 9h18v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V9z"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M3 9l2.5-5c.3-.6.9-1 1.5-1h9c.6 0 1.2.4 1.5 1l2.5 5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      Buka di Google Drive
+                    </a>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="gallery-hero-standard">
+                <p className="gallery-kicker">
+                  <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
+                </p>
+                <h1 className="gallery-title">
+                  Dokumentasi
+                  <br />
+                  {heroTitle}
+                </h1>
+                {item?.driveFolderId && (
+                  <a
+                    href={`https://drive.google.com/drive/folders/${item.driveFolderId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="gallery-drive-button"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M3 9h18v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V9z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M3 9l2.5-5c.3-.6.9-1 1.5-1h9c.6 0 1.2.4 1.5 1l2.5 5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    Buka di Google Drive
+                  </a>
+                )}
+                {displayDescription && (
+                  <p className="gallery-description">{displayDescription}</p>
+                )}
+              </div>
             )}
           </div>
         </section>
@@ -615,10 +909,10 @@ const GalleryPage = () => {
               <div className="gallery-subfolder-section">
                 <div className="gallery-subfolder-header">
                   <h2 className="gallery-subfolder-title">
-                    Folder di dalam folder ini
+                    Sub-Folder Dokumentasi ({childFolders.length})
                   </h2>
                   <p className="gallery-subfolder-description">
-                    Buka folder lain yang tersimpan di dalam dokumentasi ini.
+                    Pilih folder di bawah untuk melihat foto & media di dalamnya.
                   </p>
                 </div>
                 <div className="gallery-subfolder-grid">
@@ -640,14 +934,15 @@ const GalleryPage = () => {
                   {galleryImages.map((image, index) => {
                     const isObj = typeof image !== "string";
                     const src = isObj ? image.url : image;
-                    const key = isObj ? image.id : image;
+                    const key = isObj ? image.id || image.url : image;
                     const isVideo = isObj && image?.mimeType?.includes("video");
                     return (
                       <LazyGalleryImage
                         key={key}
                         src={src}
+                        imageObj={isObj ? image : null}
                         isVideo={isVideo}
-                        alt=""
+                        alt={isObj ? image.name : ""}
                         onClick={() => handleImageClick(image)}
                         delay={Math.min(index * GALLERY_IMAGE_LOAD_DELAY_MS, 640)}
                       />

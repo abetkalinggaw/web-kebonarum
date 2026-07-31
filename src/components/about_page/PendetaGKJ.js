@@ -1,44 +1,33 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./PendetaGKJ.css";
 import pendeta1 from "../../assets/pdt/pendeta1.jpeg";
-import pendeta2 from "../../assets/pdt/pendeta2.jpeg";
 
-const pendetaData = [
-  {
-    id: 1,
-    name: "Pdt. Nama Lengkap",
-    subtitle:
-      "Lorem ipsum dolor sit amet consectetur. Convallis faucibus augue porttitor vestibulum. Aliquam ac eget venenatis integer. ",
-    image: pendeta1,
-  },
-  {
-    id: 2,
-    name: "Pdt. Nama Lengkap",
-    subtitle:
-      "Lorem ipsum dolor sit amet consectetur. Convallis faucibus augue porttitor vestibulum. Aliquam ac eget venenatis integer. ",
-    image: pendeta2,
-  },
-  {
-    id: 3,
-    name: "Pdt. Nama Lengkap",
-    subtitle:
-      "Lorem ipsum dolor sit amet consectetur. Convallis faucibus augue porttitor vestibulum. Aliquam ac eget venenatis integer. ",
-    image: pendeta1,
-  },
-  {
-    id: 4,
-    name: "Pdt. Nama Lengkap",
-    subtitle:
-      "Lorem ipsum dolor sit amet consectetur. Convallis faucibus augue porttitor vestibulum. Aliquam ac eget venenatis integer. ",
-    image: pendeta2,
-  },
-];
+import { createApiUrl } from "../../utils/apiConfig";
+import { pendetaDataList } from "../../data/pendetaData";
 
 const PendetaGKJ = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
+  const [pendeta, setPendeta] = useState(pendetaDataList);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+
+  useEffect(() => {
+    const fetchPendeta = async () => {
+      try {
+        const response = await fetch(createApiUrl("/api/pendeta"));
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setPendeta(data);
+          }
+        }
+      } catch {
+        // Fallback already set
+      }
+    };
+    fetchPendeta();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,7 +44,7 @@ const PendetaGKJ = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const maxIndex = Math.max(0, pendetaData.length - itemsPerView);
+  const maxIndex = Math.max(0, pendeta.length - itemsPerView);
   const isCarousel = itemsPerView < 4;
 
   const nextSlide = () => {
@@ -125,7 +114,7 @@ const PendetaGKJ = () => {
                   transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
                 }}
               >
-                {pendetaData.map((item) => (
+                {pendeta.map((item) => (
                   <div
                     key={item.id}
                     className="carousel-item"
@@ -134,14 +123,14 @@ const PendetaGKJ = () => {
                     <div className="pendeta-gkj-card">
                       <div
                         className="pendeta-gkj-image"
-                        style={{ backgroundImage: `url(${item.image})` }}
+                        style={{ backgroundImage: `url(${item.image || pendeta1})` }}
                       >
                         <div className="pendeta-gkj-overlay"></div>
                       </div>
                       <div className="pendeta-gkj-info">
-                        <span className="pendeta-role-badge">Pendeta Jemaat</span>
+                        <span className="pendeta-role-badge">{item.title || "Pendeta Jemaat"}</span>
                         <h3 className="pendeta-gkj-name">{item.name}</h3>
-                        <p className="pendeta-gkj-subtitle">{item.subtitle}</p>
+                        <p className="pendeta-gkj-subtitle">{item.subtitle || item.description}</p>
                       </div>
                     </div>
                   </div>
@@ -171,18 +160,18 @@ const PendetaGKJ = () => {
           </div>
         ) : (
           <div className="pendeta-gkj-grid">
-            {pendetaData.map((item) => (
+            {pendeta.map((item) => (
               <div key={item.id} className="pendeta-gkj-card">
                 <div
                   className="pendeta-gkj-image"
-                  style={{ backgroundImage: `url(${item.image})` }}
+                  style={{ backgroundImage: `url(${item.image || pendeta1})` }}
                 >
                   <div className="pendeta-gkj-overlay"></div>
                 </div>
                 <div className="pendeta-gkj-info">
-                  <span className="pendeta-role-badge">Pendeta Jemaat</span>
+                  <span className="pendeta-role-badge">{item.title || "Pendeta Jemaat"}</span>
                   <h3 className="pendeta-gkj-name">{item.name}</h3>
-                  <p className="pendeta-gkj-subtitle">{item.subtitle}</p>
+                  <p className="pendeta-gkj-subtitle">{item.subtitle || item.description}</p>
                 </div>
               </div>
             ))}

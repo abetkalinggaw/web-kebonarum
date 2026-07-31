@@ -6,9 +6,19 @@ const {
   isReferrerRestrictedApiKeyError,
   fetchDriveFileById,
   fetchDriveFolderCoverUrl,
+  fetchDriveFolderCoversMap,
   fetchDriveFolderImagePage,
+  fetchDriveChildFolderPage,
   mapFolderToDocumentationItem,
 } = require("../services/googleDriveApi");
+
+const foldersToItems = (folders, coverMap) =>
+  folders.map((folder) =>
+    mapFolderToDocumentationItem({
+      folder,
+      imageUrl: coverMap[folder.id] || "",
+    }),
+  );
 
 module.exports = async (req, res) => {
   await runMiddleware(req, res, corsMiddleware);
@@ -50,9 +60,38 @@ module.exports = async (req, res) => {
       coverUrl = "";
     }
 
-    return res.json(
-      mapFolderToDocumentationItem({ folder, imageUrl: coverUrl }),
-    );
+    let childFolders = [];
+    try {
+      const childFolderPage = await fetchDriveChildFolderPage({
+        folderId,
+        pageSize: 50,
+      });
+
+      if (childFolderPage.folders.length > 0) {
+        const childFolderIds = childFolderPage.folders.map(
+          (folder) => folder.id,
+        );
+        let childCoverMap = {};
+
+        try {
+          childCoverMap = await fetchDriveFolderCoversMap(childFolderIds);
+        } catch (error) {
+          logDriveError({
+            context: "documentation.get.childFolders.covers",
+            error,
+          });
+        }
+
+        childFolders = foldersToItems(childFolderPage.folders, childCoverMap);
+      }
+    } catch (error) {
+      logDriveError({ context: "documentation.get.childFolders", error });
+    }
+
+    return res.json({
+      ...mapFolderToDocumentationItem({ folder, imageUrl: coverUrl }),
+      childFolders,
+    });
   } catch (error) {
     if (error?.status === 404 || error?.message?.includes("status 404")) {
       return res
@@ -76,10 +115,10 @@ module.exports = async (req, res) => {
 };
 
 async function handleImages(folderId, req, res) {
-  const requestedPageSize = Number(req.query.pageSize || 12);
+  const requestedPageSize = Number(req.query.pageSize || 24);
   const pageSize = Number.isFinite(requestedPageSize)
-    ? Math.max(1, Math.min(requestedPageSize, 50))
-    : 12;
+    ? Math.max(1, Math.min(requestedPageSize, 100))
+    : 24;
   const pageToken = String(req.query.pageToken || "");
 
   if (!folderId || !hasGoogleDriveApiKey()) {

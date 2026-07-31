@@ -175,14 +175,28 @@
 @media (max-width: 1024px) {
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 3.5rem 2rem;
+    gap: 3rem 2rem;
   }
-  .map-col { grid-column: span 2; }
-  .footer-map-wrapper { height: 280px; }
+  .map-col {
+    grid-column: span 2;
+  }
+  .footer-map-wrapper {
+    height: 240px;
+  }
 }
 
 @media (max-width: 768px) {
-  .footer { padding: 3.5rem 1.5rem 1.5rem; }
+  .footer-spacer {
+    display: none !important;
+  }
+  .footer {
+    position: relative !important;
+    z-index: 1 !important;
+    padding: 3.5rem 1.5rem 2rem;
+  }
+  .footer-container {
+    padding: 0;
+  }
   .footer-brand {
     flex-direction: column;
     text-align: center;
@@ -192,21 +206,65 @@
   }
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
     margin-bottom: 2.5rem;
   }
-  .map-col { grid-column: span 1; }
-  .footer-col { align-items: center; text-align: center; }
-  .footer-col h3 { margin: 0 0 1rem 0; }
-  .footer-map-wrapper { height: 200px; }
+  .map-col {
+    grid-column: span 1;
+  }
+  .footer-col {
+    align-items: center;
+    text-align: center;
+  }
+  .footer-col h3 {
+    margin: 0 0 1.25rem 0;
+  }
+  .footer-link {
+    justify-content: center;
+    padding: 0.25rem 0;
+  }
+  .footer-link:hover {
+    transform: translateY(-2px);
+  }
+  .footer-map-wrapper {
+    height: 220px;
+  }
 }
 
 @media (max-width: 480px) {
-  .footer { padding: 2.5rem 1.25rem 1.25rem; }
-  .footer-brand { margin-bottom: 1.5rem; padding-bottom: 1.5rem; }
-  .footer-brand-text h2 { font-size: 1.5rem; }
-  .footer-grid { gap: 1.5rem; margin-bottom: 2rem; }
-  .footer-link { margin-bottom: 0.75rem; }
-  .footer-map-wrapper { height: 180px; }
-  .footer-bottom { padding-top: 1.5rem; }
+  .footer {
+    padding: 3rem 1.25rem 1.75rem;
+  }
+  .footer-brand {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+  }
+  .footer-brand-text h2 {
+    font-size: 1.5rem;
+  }
+  .footer-brand-text p {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+  .footer-grid {
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .footer-link {
+    font-size: 0.88rem;
+    margin-bottom: 0.75rem;
+    padding: 0.35rem 0;
+  }
+  .footer-socials {
+    justify-content: center;
+  }
+  .footer-map-wrapper {
+    height: 200px;
+  }
+  .footer-bottom {
+    padding-top: 1.5rem;
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
 }
+

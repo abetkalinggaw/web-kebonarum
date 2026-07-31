@@ -75,7 +75,7 @@ export const getDocumentationItemById = async (id) =>
 
 export const getDocumentationImagesById = async (
   id,
-  { pageSize = 12, pageToken = "" } = {},
+  { pageSize = 24, pageToken = "" } = {},
 ) => {
   const params = new URLSearchParams({
     pageSize: String(pageSize),

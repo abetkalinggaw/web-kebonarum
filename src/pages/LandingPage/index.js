@@ -6,6 +6,8 @@ import PendetaGKJ from "../../components/landing_page/PendetaGKJ";
 import Separator from "../../components/landing_page/Separator";
 import KebonarumInfo from "../../components/landing_page/KebonarumInfo";
 import VisiMisi from "../../components/landing_page/VisiMisi";
+import SorotanPelayanan from "../../components/landing_page/SorotanPelayanan";
+import KemitraanSection from "../../components/landing_page/KemitraanSection";
 import LandingFooterStack from "../../components/landing_page/LandingFooterStack";
 import backgroundVideo from "../../assets/videos/background-video.mp4";
 import sugenRawuhBig from "../../assets/sugeng-rawuh-big.svg";
@@ -69,6 +71,8 @@ const LandingPage = () => {
         <VisiMisi />
         <PendetaGKJ />
         <StatistikSection />
+        <SorotanPelayanan />
+        <KemitraanSection />
       </main>
       <LandingFooterStack />
     </>

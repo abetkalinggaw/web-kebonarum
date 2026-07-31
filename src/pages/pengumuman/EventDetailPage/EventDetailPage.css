@@ -211,6 +211,108 @@
   line-height: 1.8;
 }
 
+/* Past Event Documentation Banner */
+.past-event-doc-banner {
+  margin-top: 2rem;
+  padding: 2rem 2.25rem;
+  background: var(--color-wenge);
+  border: 1px solid rgba(196, 136, 74, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--color-gading);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.past-event-doc-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-kunyit) 30%,
+    var(--color-soga) 70%,
+    transparent 100%
+  );
+  opacity: 0.8;
+}
+
+.past-event-doc-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.past-event-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-kunyit);
+  background: rgba(196, 136, 74, 0.15);
+  border: 1px solid rgba(196, 136, 74, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill);
+  align-self: flex-start;
+}
+
+.past-event-doc-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--color-gading);
+  margin: 0.35rem 0 0.15rem;
+}
+
+.past-event-doc-content p {
+  font-family: var(--font-body) !important;
+  font-size: 0.92rem !important;
+  font-weight: 400 !important;
+  color: rgba(242, 235, 224, 0.75) !important;
+  line-height: 1.65 !important;
+}
+
+.doc-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: var(--color-kunyit);
+  color: var(--color-wenge);
+  border: 1px solid var(--color-kunyit);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.doc-nav-btn:hover {
+  background: var(--color-kunyit-light);
+  color: var(--color-wenge);
+  box-shadow: 0 0 20px rgba(196, 136, 74, 0.4);
+}
+
+.doc-nav-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.doc-nav-btn:hover svg:last-child {
+  transform: translateX(4px);
+}
+
 /* Sidebar Info Card */
 .event-detail-sidebar {
   position: sticky;

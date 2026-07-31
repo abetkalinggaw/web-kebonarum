@@ -5,97 +5,8 @@ import Footer from "../../../components/menu/Footer";
 import "./EventDetailPage.css";
 
 import event1 from "../../../assets/events/event1.jpg";
-import event2 from "../../../assets/events/event2.jpg";
-import event3 from "../../../assets/events/event3.jpg";
-import event4 from "../../../assets/events/event4.jpg";
-import event5 from "../../../assets/events/event5.jpg";
-
-const fallbackEvents = [
-  {
-    id: 1,
-    title: "Ibadah Minggu Raya",
-    date: "2026-03-01",
-    time: "06.00 WIB & 08.00 WIB",
-    location: "Gedung GKJ Kebonarum Utama",
-    type: "Ibadah",
-    description:
-      "Ibadah Minggu Raya jemaat GKJ Kebonarum dengan pelayanan sabda firman dan persekutuan jemaat.",
-    content: [
-      "Selamat datang dalam Ibadah Minggu Raya jemaat GKJ Kebonarum. Ibadah dilaksanakan dalam dua sesi, yaitu Sesi I pada pukul 06.00 WIB dan Sesi II pada pukul 08.00 WIB.",
-      "Mari hadir dengan hati yang rindu akan firman Tuhan, mempersembahkan pujian dan syukur dalam persekutuan jemaat yang kudus.",
-      "Diharapkan seluruh jemaat tetap menjaga ketertiban ibadah dan mengikuti arahan dari para diaken serta majelis penatalayanan.",
-    ],
-    organizer: "Majelis GKJ Kebonarum",
-    image: event1,
-  },
-  {
-    id: 2,
-    title: "Persekutuan Doa Malam Jemaat",
-    date: "2026-03-04",
-    time: "19.00 WIB",
-    location: "Ruang Serbaguna GKJ Kebonarum",
-    type: "Persekutuan",
-    description:
-      "Persekutuan doa malam bersama seluruh jemaat dan majelis untuk saling menguatkan dalam doa.",
-    content: [
-      "Persekutuan Doa Malam merupakan wadah bagi seluruh jemaat GKJ Kebonarum untuk berkumpul, menaikkan ucapan syukur, serta saling mendoakan kebutuhan pelayanan dan kehidupan beriman.",
-      "Acara akan diisi dengan pujian penyembahan, perenungan firman, dan sesi doa syafaat bersama untuk pergumulan jemaat, gereja, serta bangsa.",
-      "Seluruh jemaat diundang hadir mengajak keluarga dan sesama saudara seiman.",
-    ],
-    organizer: "Komisi Doa & Diakonia",
-    image: event2,
-  },
-  {
-    id: 3,
-    title: "Rapat Pleno Majelis Jemaat",
-    date: "2026-03-10",
-    time: "18.30 WIB",
-    location: "Ruang Rapat Majelis",
-    type: "Rapat",
-    description:
-      "Rapat koordinasi dan evaluasi pelayanan bulanan majelis penatua dan diaken GKJ Kebonarum.",
-    content: [
-      "Rapat Pleno Majelis Jemaat GKJ Kebonarum dilaksanakan rutin setiap bulan untuk membahas laporan keuangan, evaluasi program kerja komisi, serta perencanaan pelayanan mendatang.",
-      "Dimohon kepada seluruh anggota Penatua dan Diaken untuk mempersiapkan laporan berkala masing-masing komisi dan hadir tepat waktu.",
-    ],
-    organizer: "Pengurus Harian Majelis",
-    image: event3,
-  },
-  {
-    id: 4,
-    title: "Bakti Sosial Diakonia Kasih",
-    date: "2026-03-15",
-    time: "09.00 WIB",
-    location: "Wilayah Sumberejo & Krosok",
-    type: "Kegiatan",
-    description:
-      "Penyaluran bantuan sembako dan perhatian kasih bagi warga sekitar dan jemaat yang membutuhkan.",
-    content: [
-      "Sebagai wujud nyata warta kasih Kristus di tengah masyarakat, Komisi Diakonia GKJ Kebonarum menyelenggarakan aksi Bakti Sosial dan Penyaluran Sembako Kasih.",
-      "Kegiatan ini menargetkan keluarga jemaat serta warga sekitar di wilayah Sumberejo dan Krosok yang membutuhkan uluran tangan.",
-      "Bagi jemaat yang rindu mendukung kegiatan ini melalui bantuan persembahan atau barang dapat menghubungi panitia diakonia gereja.",
-    ],
-    organizer: "Komisi Diakonia & Pelayanan Sosial",
-    image: event4,
-  },
-  {
-    id: 5,
-    title: "Persekutuan Pemuda Remaja (PRGKJ)",
-    date: "2026-03-21",
-    time: "16.30 WIB",
-    location: "Gedung Pemuda GKJ Kebonarum",
-    type: "Persekutuan",
-    description:
-      "Ibadah dan persekutuan rutin pemuda-pemudi GKJ Kebonarum dengan puji-pujian dan diskusi Alkitab.",
-    content: [
-      "Persekutuan Pemuda & Remaja GKJ Kebonarum (PRGKJ) mengundang seluruh anak muda untuk hadir dalam persekutuan hangat dan inspiratif.",
-      "Acara diisi dengan akustik worship, pemahaman Alkitab aplikatif untuk kaum muda, serta ruang diskusi seputar tantangan hidup beriman di masa kini.",
-      "Mari tumbuh bersama dalam iman dan persahabatan sejati di dalam Kristus!",
-    ],
-    organizer: "Komisi Pemuda Remaja GKJ",
-    image: event5,
-  },
-];
+import { agendaData } from "../../../data/agendaData";
+import { createApiUrl } from "../../../utils/apiConfig";
 
 const MONTHS_FULL_ID = [
   "Januari",
@@ -124,13 +35,13 @@ const EventDetailPage = () => {
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
-    const defaultIndex = Math.max(0, (Number(id) || 1) - 1) % fallbackEvents.length;
-    const matched = fallbackEvents.find((e) => e.id === Number(id)) || fallbackEvents[defaultIndex];
+    const defaultIndex = Math.max(0, (Number(id) || 1) - 1) % agendaData.length;
+    const matched = agendaData.find((e) => e.id === Number(id)) || agendaData[defaultIndex];
     setEvent(matched);
 
     const fetchDetail = async () => {
       try {
-        const response = await fetch(`http://localhost:5050/api/agenda/${id}`);
+        const response = await fetch(createApiUrl(`/api/agenda/${id}`));
         if (response.ok) {
           const data = await response.json();
           if (data && data.title) {
@@ -158,6 +69,12 @@ const EventDetailPage = () => {
   };
 
   const heroBg = event?.image || event1;
+
+  // Determine if the event date has passed
+  const eventDateObj = event?.date ? new Date(event.date) : null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const isPastEvent = eventDateObj && !isNaN(eventDateObj.getTime()) && eventDateObj < today;
 
   return (
     <>
@@ -222,6 +139,42 @@ const EventDetailPage = () => {
                       ))
                     ) : (
                       <p>{event.description}</p>
+                    )}
+
+                    {/* Check if event date is past/completed */}
+                    {isPastEvent && (
+                      <div className="past-event-doc-banner">
+                        <div className="past-event-doc-content">
+                          <div className="past-event-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Kegiatan Telah Terlaksana</span>
+                          </div>
+                          <h3>Lihat Dokumentasi Kegiatan</h3>
+                          <p>
+                            Kegiatan ini telah selesai dilaksanakan. Anda dapat melihat foto, video, dan ringkasan dokumentasi kegiatan jemaat melalui galeri media kami.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          className="doc-nav-btn"
+                          onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/media/documentation");
+                          }}
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                          </svg>
+                          <span>Galeri Dokumentasi</span>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </div>
                     )}
                   </div>
                 </article>

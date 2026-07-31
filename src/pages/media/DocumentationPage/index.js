@@ -54,9 +54,33 @@ const DocumentationCard = ({ item, imageUrl, onClick }) => {
               item?.images?.[0] || DEFAULT_DOCUMENTATION_IMAGE;
           }}
         />
+        <div className="documentation-card-overlay" />
+        <span className="documentation-card-tag">
+          <i className="fas fa-camera"></i>
+          <span>Galeri Foto</span>
+        </span>
       </div>
       <div className="documentation-card-content">
         <h3 className="documentation-card-title">{item.title}</h3>
+        <div className="documentation-card-footer">
+          <span className="documentation-card-link">
+            <span>Buka Album</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="doc-arrow-icon"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </span>
+        </div>
       </div>
     </article>
   );
@@ -257,13 +281,12 @@ const DocumentationPage = () => {
       <main className="documentation-page">
         <section className="documentation-hero">
           <div className="documentation-hero-content">
-            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
+            <span className="section-tag light">GALERI & MEDIA</span>
             <h1 className="documentation-title">
-              Dokumentasi GKJ Kebonarum
+              Dokumentasi Kegiatan
             </h1>
             <p className="documentation-lead">
-              Jelajahi dokumentasi kegiatan dan pelayanan GKJ Kebonarum,
-              termasuk foto, dan video yang merekam perjalanan iman jemaat kami.
+              Arsip dan rekaman momen pelayanan, ibadah, serta kegiatan kemasyarakatan jemaat GKJ Kebonarum.
             </p>
           </div>
         </section>

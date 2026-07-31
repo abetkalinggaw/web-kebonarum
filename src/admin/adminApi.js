@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5050/api';
+import { createApiUrl } from '../utils/apiConfig';
 
 const getHeaders = () => {
   const token = localStorage.getItem('admin_token');
@@ -9,7 +9,8 @@ const getHeaders = () => {
 };
 
 export const apiCall = async (endpoint, options = {}) => {
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const url = createApiUrl(`/api${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`);
+  const response = await fetch(url, {
     ...options,
     headers: { ...getHeaders(), ...options.headers },
   });

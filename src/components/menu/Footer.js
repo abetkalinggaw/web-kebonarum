@@ -31,9 +31,10 @@ const Footer = ({ isStatic = false }) => {
 
   return (
     <>
-      {/* Invisible spacer to push the document height so we can scroll past the main content */}
+      {/* Invisible spacer to push the document height on desktop so we can scroll past fixed footer */}
       {!isStatic && (
         <div
+          className="footer-spacer"
           style={{
             height: footerHeight,
             pointerEvents: "none",

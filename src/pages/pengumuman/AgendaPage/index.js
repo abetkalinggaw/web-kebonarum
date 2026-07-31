@@ -8,71 +8,15 @@ import event2 from "../../../assets/events/event2.jpg";
 import event3 from "../../../assets/events/event3.jpg";
 import event4 from "../../../assets/events/event4.jpg";
 import event5 from "../../../assets/events/event5.jpg";
-
-const fallbackAgenda = [
-  {
-    id: 1,
-    title: "Ibadah Minggu Raya",
-    date: "2026-03-01",
-    time: "06.00 WIB & 08.00 WIB",
-    location: "Gedung GKJ Kebonarum Utama",
-    type: "Ibadah",
-    description:
-      "Ibadah Minggu Raya jemaat GKJ Kebonarum dengan pelayanan sabda firman dan persekutuan jemaat.",
-    image: event1,
-  },
-  {
-    id: 2,
-    title: "Persekutuan Doa Malam Jemaat",
-    date: "2026-03-04",
-    time: "19.00 WIB",
-    location: "Ruang Serbaguna GKJ Kebonarum",
-    type: "Persekutuan",
-    description:
-      "Persekutuan doa malam bersama seluruh jemaat dan majelis untuk saling menguatkan dalam doa.",
-    image: event2,
-  },
-  {
-    id: 3,
-    title: "Rapat Pleno Majelis Jemaat",
-    date: "2026-03-10",
-    time: "18.30 WIB",
-    location: "Ruang Rapat Majelis",
-    type: "Rapat",
-    description:
-      "Rapat koordinasi dan evaluasi pelayanan bulanan majelis penatua dan diaken GKJ Kebonarum.",
-    image: event3,
-  },
-  {
-    id: 4,
-    title: "Bakti Sosial Diakonia Kasih",
-    date: "2026-03-15",
-    time: "09.00 WIB",
-    location: "Wilayah Sumberejo & Krosok",
-    type: "Kegiatan",
-    description:
-      "Penyaluran bantuan sembako dan perhatian kasih bagi warga sekitar dan jemaat yang membutuhkan.",
-    image: event4,
-  },
-  {
-    id: 5,
-    title: "Persekutuan Pemuda Remaja (PRGKJ)",
-    date: "2026-03-21",
-    time: "16.30 WIB",
-    location: "Gedung Pemuda GKJ Kebonarum",
-    type: "Persekutuan",
-    description:
-      "Ibadah dan persekutuan rutin pemuda-pemudi GKJ Kebonarum dengan puji-pujian dan diskusi Alkitab.",
-    image: event5,
-  },
-];
+import { createApiUrl } from "../../../utils/apiConfig";
+import { agendaData } from "../../../data/agendaData";
 
 const AgendaPage = () => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState("Semua");
   const [searchQuery, setSearchQuery] = useState("");
-  const [agenda, setAgenda] = useState(fallbackAgenda);
-  const [loading, setLoading] = useState(false);
+  const [agenda, setAgenda] = useState(agendaData);
+  const [loading, setLoading] = useState(true);
 
   const types = ["Semua", "Ibadah", "Persekutuan", "Rapat", "Kegiatan"];
 
@@ -87,7 +31,7 @@ const AgendaPage = () => {
   useEffect(() => {
     const fetchAgenda = async () => {
       try {
-        const response = await fetch("http://localhost:5050/api/agenda");
+        const response = await fetch(createApiUrl("/api/agenda"));
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data) && data.length > 0) {

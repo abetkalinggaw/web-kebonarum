@@ -6,8 +6,18 @@ const {
 
 const hasGoogleDriveApiKey = () => Boolean(GOOGLE_DRIVE_API_KEY);
 
-const createDriveThumbnailUrl = (fileId) =>
-  `https://lh3.googleusercontent.com/d/${fileId}=w1600`;
+const createDriveThumbnailUrl = (fileOrId) => {
+  if (!fileOrId) return "";
+  if (typeof fileOrId === "object") {
+    if (fileOrId.thumbnailLink) {
+      return fileOrId.thumbnailLink
+        .replace(/=s\d+/, "=s1600")
+        .replace(/=w\d+/, "=w1600");
+    }
+    return fileOrId.id ? `https://lh3.googleusercontent.com/d/${fileOrId.id}=w1600` : "";
+  }
+  return `https://lh3.googleusercontent.com/d/${fileOrId}=w1600`;
+};
 
 const buildFolderImageQuery = (folderId) =>
   `'${folderId}' in parents and (mimeType contains 'image/' or mimeType contains 'video/') and trashed=false`;
@@ -90,7 +100,7 @@ const fetchDriveFiles = async ({
   query,
   pageSize = 1000,
   orderBy = "createdTime desc",
-  fields = "nextPageToken,files(id,name,mimeType,createdTime)",
+  fields = "nextPageToken,files(id,name,mimeType,thumbnailLink,webContentLink,createdTime,modifiedTime)",
   pageToken = "",
 }) => {
   if (!hasGoogleDriveApiKey()) {
@@ -117,7 +127,7 @@ const fetchDriveFiles = async ({
 
 const fetchDriveFileById = async (fileId, fields) => {
   const params = new URLSearchParams({
-    fields,
+    fields: fields || "id,name,mimeType,thumbnailLink,webContentLink,createdTime,modifiedTime",
     key: GOOGLE_DRIVE_API_KEY,
   });
 
@@ -127,18 +137,42 @@ const fetchDriveFileById = async (fileId, fields) => {
   });
 };
 
-const fetchDriveFolderCoverUrl = async (folderId) => {
-  const data = await fetchDriveFiles({
-    query: buildFolderImageQuery(folderId),
-    pageSize: 1,
-    orderBy: "createdTime",
-    fields: "files(id,mimeType,createdTime)",
-  });
+const fetchDriveFolderCoverUrl = async (folderId, depth = 0) => {
+  if (!folderId) return null;
 
-  const files = Array.isArray(data.files) ? data.files : [];
-  const firstImage = files.find((file) => file?.id);
+  try {
+    const data = await fetchDriveFiles({
+      query: buildFolderImageQuery(folderId),
+      pageSize: 1,
+      orderBy: "createdTime",
+      fields: "files(id,mimeType,thumbnailLink,createdTime)",
+    });
 
-  return firstImage?.id ? createDriveThumbnailUrl(firstImage.id) : null;
+    const files = Array.isArray(data.files) ? data.files : [];
+    const firstImage = files.find((file) => file?.id);
+
+    if (firstImage?.id) {
+      return createDriveThumbnailUrl(firstImage);
+    }
+
+    if (depth < 2) {
+      const childFolderPage = await fetchDriveChildFolderPage({
+        folderId,
+        pageSize: 3,
+      });
+
+      for (const childFolder of childFolderPage.folders) {
+        const childCover = await fetchDriveFolderCoverUrl(childFolder.id, depth + 1);
+        if (childCover) {
+          return childCover;
+        }
+      }
+    }
+  } catch (error) {
+    // Return null on failure
+  }
+
+  return null;
 };
 
 const fetchDriveFirstChildFolderCoverUrl = async (folderId) => {
@@ -156,15 +190,6 @@ const fetchDriveFirstChildFolderCoverUrl = async (folderId) => {
   return fetchDriveFolderCoverUrl(firstChildFolder.id);
 };
 
-/**
- * Fetches cover images for multiple folders.
- *
- * Strategy:
- * 1. Try batched OR query in chunks of 20 (avoids query length limits).
- * 2. If `parents` field is missing from results (API key restriction)
- *    or batch returns 0 files, fall back to individual fetches per folder.
- * 3. If batch throws entirely, fall back to individual fetches.
- */
 const fetchDriveFolderCoversMap = async (folderIds) => {
   if (!folderIds.length) return {};
 
@@ -182,18 +207,16 @@ const fetchDriveFolderCoversMap = async (folderIds) => {
         query,
         pageSize: chunk.length,
         orderBy: "createdTime",
-        fields: "files(id,parents,mimeType,createdTime)",
+        fields: "files(id,parents,mimeType,thumbnailLink,createdTime)",
       });
 
       const files = Array.isArray(data.files) ? data.files : [];
 
-      // Detect if `parents` field is actually returned by the API
       const parentsAvailable = files.some(
         (file) => Array.isArray(file.parents) && file.parents.length > 0,
       );
 
       if (files.length === 0 || !parentsAvailable) {
-        // Fall back: fetch covers individually for this chunk
         const results = await Promise.allSettled(
           chunk.map(async (folderId) => ({
             folderId,
@@ -210,8 +233,25 @@ const fetchDriveFolderCoversMap = async (folderIds) => {
         for (const file of files) {
           const parentId = file.parents?.[0];
           if (parentId && !coverMap[parentId] && file.id) {
-            coverMap[parentId] = createDriveThumbnailUrl(file.id);
+            coverMap[parentId] = createDriveThumbnailUrl(file);
           }
+        }
+      }
+    }
+
+    // For any missing covers, try recursive child search
+    const missingIds = folderIds.filter((id) => !coverMap[id]);
+    if (missingIds.length > 0) {
+      const fallbackResults = await Promise.allSettled(
+        missingIds.map(async (folderId) => ({
+          folderId,
+          url: await fetchDriveFolderCoverUrl(folderId),
+        })),
+      );
+
+      for (const result of fallbackResults) {
+        if (result.status === "fulfilled" && result.value.url) {
+          coverMap[result.value.folderId] = result.value.url;
         }
       }
     }
@@ -222,7 +262,6 @@ const fetchDriveFolderCoversMap = async (folderIds) => {
       logDriveError({ context: "fetchDriveFolderCoversMap.batch", error });
     }
 
-    // Full fallback: individual fetches for all folders
     const results = await Promise.allSettled(
       folderIds.map(async (folderId) => ({
         folderId,
@@ -242,14 +281,14 @@ const fetchDriveFolderCoversMap = async (folderIds) => {
 
 const fetchDriveFolderImagePage = async ({
   folderId,
-  pageSize = 8,
+  pageSize = 24,
   pageToken = "",
 }) => {
   const data = await fetchDriveFiles({
     query: buildFolderImageQuery(folderId),
     pageSize,
     orderBy: "createdTime",
-    fields: "nextPageToken,files(id,mimeType,name,createdTime)",
+    fields: "nextPageToken,files(id,mimeType,name,thumbnailLink,webContentLink,createdTime)",
     pageToken,
   });
 
@@ -258,10 +297,12 @@ const fetchDriveFolderImagePage = async ({
 
   return {
     images: imageFiles.map((file) => ({
-      url: createDriveThumbnailUrl(file.id),
-      mimeType: file.mimeType,
+      url: createDriveThumbnailUrl(file),
+      thumbnailLink: file.thumbnailLink || "",
+      webContentLink: file.webContentLink || "",
+      mimeType: file.mimeType || "",
       id: file.id,
-      name: file.name
+      name: file.name || "",
     })),
     nextPageToken: data.nextPageToken || "",
   };
@@ -269,7 +310,7 @@ const fetchDriveFolderImagePage = async ({
 
 const fetchDriveChildFolderPage = async ({
   folderId,
-  pageSize = 8,
+  pageSize = 24,
   pageToken = "",
 }) => {
   const data = await fetchDriveFiles({
@@ -288,22 +329,31 @@ const fetchDriveChildFolderPage = async ({
   };
 };
 
-const mapFolderToDocumentationItem = ({ folder, imageUrl = "" }) => ({
-  id: folder.id,
-  driveFolderId: folder.id,
-  title: folder.name || "Untitled Folder",
-  description: "",
-  category: "Google Drive",
-  date: folder.createdTime || folder.modifiedTime || new Date().toISOString(),
-  imageUrl,
-  images: [],
-});
+const isRawDriveId = (str) =>
+  typeof str === "string" && /^[a-zA-Z0-9_-]{25,45}$/.test(str);
+
+const mapFolderToDocumentationItem = ({ folder, imageUrl = "" }) => {
+  const rawName = folder.name || "";
+  const title = !rawName || isRawDriveId(rawName) ? "Album Dokumentasi" : rawName;
+
+  return {
+    id: folder.id,
+    driveFolderId: folder.id,
+    title,
+    description: "",
+    category: "Google Drive",
+    date: folder.createdTime || folder.modifiedTime || new Date().toISOString(),
+    imageUrl,
+    images: [],
+  };
+};
 
 module.exports = {
   hasGoogleDriveApiKey,
   logDriveError,
   isReferrerRestrictedApiKeyError,
   resolveFolderId,
+  createDriveThumbnailUrl,
   fetchDriveFileById,
   fetchDriveFolderCoverUrl,
   fetchDriveFirstChildFolderCoverUrl,

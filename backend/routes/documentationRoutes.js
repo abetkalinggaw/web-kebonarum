@@ -210,10 +210,10 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:id/images", async (req, res) => {
   const folderId = req.params.id;
-  const requestedPageSize = Number(req.query.pageSize || 12);
+  const requestedPageSize = Number(req.query.pageSize || 24);
   const pageSize = Number.isFinite(requestedPageSize)
-    ? Math.max(1, Math.min(requestedPageSize, 50))
-    : 12;
+    ? Math.max(1, Math.min(requestedPageSize, 100))
+    : 24;
   const pageToken = String(req.query.pageToken || "");
 
   if (!folderId || !hasGoogleDriveApiKey()) {
