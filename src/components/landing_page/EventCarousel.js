@@ -15,7 +15,17 @@ const EventCarousel = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
-  const [events, setEvents] = useState(agendaData);
+  const processEvents = (dataList) => {
+    const sorted = [...dataList].sort((a, b) => {
+      const dateA = new Date(a.date || 0);
+      const dateB = new Date(b.date || 0);
+      if (dateB - dateA !== 0) return dateB - dateA;
+      return String(b.id).localeCompare(String(a.id));
+    });
+    return sorted.slice(0, 4);
+  };
+
+  const [events, setEvents] = useState(() => processEvents(agendaData));
   const [isHovered, setIsHovered] = useState(false);
 
   const touchStartX = useRef(0);
@@ -43,11 +53,15 @@ const EventCarousel = () => {
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data) && data.length > 0) {
-            setEvents(data);
+            setEvents(processEvents(data));
+          } else {
+            setEvents(processEvents(agendaData));
           }
+        } else {
+          setEvents(processEvents(agendaData));
         }
       } catch {
-        // Fallback already set
+        setEvents(processEvents(agendaData));
       }
     };
     fetchAgenda();

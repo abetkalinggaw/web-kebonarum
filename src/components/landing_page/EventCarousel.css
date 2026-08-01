@@ -406,6 +406,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .events-nav-btn {
+    display: none !important;
+  }
+}
+
 @media (max-width: 640px) {
   .events-section {
     padding: 3.5rem 0;
@@ -414,13 +420,6 @@
     margin-bottom: 2rem;
   }
   .events-nav-btn {
-    width: 36px;
-    height: 36px;
-  }
-  .events-nav-btn.prev {
-    left: -0.35rem;
-  }
-  .events-nav-btn.next {
-    right: -0.35rem;
+    display: none !important;
   }
 }

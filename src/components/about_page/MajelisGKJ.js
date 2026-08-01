@@ -12,12 +12,16 @@ import majelis6 from "../../assets/majelis/majelis6.jpg";
 const MAJELIS_IMAGES = [majelis1, majelis2, majelis3, majelis4, majelis5, majelis6];
 
 // Initial fallback data synced with DB Jemaat
+// Initial fallback data synced with DB Jemaat
 const FALLBACK_PENATUA = [
   { id: "jmt_penatua_001", name: "Pnt. Yohanes Budi Santoso", role: "Penatua", detail: "Wilayah Sumberejo", image: majelis1 },
   { id: "pnt_2", name: "Pnt. Fajar Eko Kristanto", role: "Penatua", detail: "Wilayah Sumberejo", image: majelis2 },
   { id: "pnt_3", name: "Pnt. Hendra Budi Saputra", role: "Penatua", detail: "Wilayah Krosok", image: majelis3 },
   { id: "pnt_4", name: "Pnt. Bambang Tri Mulyono", role: "Penatua", detail: "Wilayah Pluneng", image: majelis4 },
   { id: "pnt_5", name: "Pnt. Joko Dwi Hermawan", role: "Penatua", detail: "Wilayah Ngrundul", image: majelis5 },
+  { id: "pnt_6", name: "Pnt. Agus Kurniawan", role: "Penatua", detail: "Wilayah Prayan", image: majelis6 },
+  { id: "pnt_7", name: "Pnt. Suparna Wibowo", role: "Penatua", detail: "Wilayah Sumberejo", image: majelis1 },
+  { id: "pnt_8", name: "Pnt. Tri Wibowo", role: "Penatua", detail: "Wilayah Krosok", image: majelis2 },
 ];
 
 const FALLBACK_DIAKEN = [
@@ -26,6 +30,9 @@ const FALLBACK_DIAKEN = [
   { id: "dkn_3", name: "Dkn. Eko Heru Supriyanto", role: "Diaken", detail: "Wilayah Pluneng", image: majelis3 },
   { id: "dkn_4", name: "Dkn. Sigit Adi Rahardjo", role: "Diaken", detail: "Wilayah Ngrundul", image: majelis4 },
   { id: "dkn_5", name: "Dkn. Danu Tri Mulyono", role: "Diaken", detail: "Wilayah Prayan", image: majelis5 },
+  { id: "dkn_6", name: "Dkn. Rina Wahyuni", role: "Diaken", detail: "Wilayah Sumberejo", image: majelis6 },
+  { id: "dkn_7", name: "Dkn. Sri Wahyuni", role: "Diaken", detail: "Wilayah Pluneng", image: majelis1 },
+  { id: "dkn_8", name: "Dkn. Budi Utomo", role: "Diaken", detail: "Wilayah Ngrundul", image: majelis2 },
 ];
 
 const formatPenatuaName = (name) => {
@@ -70,8 +77,8 @@ const MajelisGKJ = () => {
               image: item.imageUrl || MAJELIS_IMAGES[idx % MAJELIS_IMAGES.length],
             }));
 
-          if (penatuas.length > 0) setPenatuaList(penatuas.slice(0, 5));
-          if (diakens.length > 0) setDiakenList(diakens.slice(0, 5));
+          if (penatuas.length > 0) setPenatuaList(penatuas.slice(0, 8));
+          if (diakens.length > 0) setDiakenList(diakens.slice(0, 8));
         }
       } catch (err) {
         console.warn("Using fallback majelis data:", err.message);
