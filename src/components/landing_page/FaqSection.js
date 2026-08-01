@@ -5,12 +5,12 @@ const faqData = [
   {
     question: "Kapan jadwal ibadah Minggu di GKJ Kebonarum?",
     answer:
-      "Ibadah Minggu di GKJ Kebonarum rutin dilaksanakan setiap pukul 06.00 WIB untuk Ibadah Pagi (Sesi I) dan pukul 08.00 WIB untuk Ibadah Pagi (Sesi II), serta persekutuan doa di jadwal yang ditentukan.",
+      "Ibadah Minggu di GKJ Kebonarum rutin dilaksanakan setiap pukul 07.00 WIB untuk Ibadah Pagi (Sesi I) dan pukul 17.00 WIB untuk Ibadah Pagi (Sesi II), serta persekutuan doa di jadwal yang ditentukan.",
   },
   {
     question: "Apakah ada ibadah khusus untuk Anak dan Pemuda?",
     answer:
-      "Ya, kami memiliki Ibadah Sekolah Minggu (Anak-anak) yang berjalan bersamaan dengan ibadah pagi, serta Persekutuan Pemuda & Remaja (PRGKJ) setiap hari Sabtu sore pukul 16.30 WIB.",
+      "Ya, kami memiliki Ibadah Sekolah Minggu (Anak-anak) yang berjalan bersamaan dengan ibadah pagi, serta Persekutuan Pemuda & Remaja (PRGKJ) setiap hari Sabtu sore sesuai dengan jadwal dari wilayah masing-masing.",
   },
   {
     question: "Bagaimana cara menjadi anggota jemaat GKJ Kebonarum?",
@@ -42,7 +42,7 @@ const FaqSection = () => {
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
 
     if (sectionRef.current) {
@@ -69,14 +69,16 @@ const FaqSection = () => {
             <span className="section-tag">PERTANYAAN UMUM</span>
             <h2 className="faq-section-title">Ingin Tahu Lebih Banyak?</h2>
             <p className="faq-section-lead">
-              Temukan jawaban atas pertanyaan yang paling sering diajukan mengenai jadwal ibadah,
-              keanggotaan jemaat, dan pelayanan di GKJ Kebonarum.
+              Temukan jawaban atas pertanyaan yang paling sering diajukan
+              mengenai jadwal ibadah, keanggotaan jemaat, dan pelayanan di GKJ
+              Kebonarum.
             </p>
 
             <div className="faq-contact-box">
               <span className="faq-contact-label">Punya pertanyaan lain?</span>
               <p className="faq-contact-text">
-                Hubungi sekretariat majelis kami untuk informasi pelayanan lebih lanjut.
+                Hubungi sekretariat majelis kami untuk informasi pelayanan lebih
+                lanjut.
               </p>
             </div>
           </div>

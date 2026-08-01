@@ -95,14 +95,6 @@ const WartaListPage = () => {
     fetchWartaData();
   }, []);
 
-  const handleBackClick = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-      return;
-    }
-    navigate("/");
-  };
-
   const filteredWarta = [...wartaList]
     .sort((a, b) => {
       const dateA = new Date(a.date || a.tanggal || 0);
@@ -130,27 +122,13 @@ const WartaListPage = () => {
         {/* HERO SECTION */}
         <section className="warta-hero">
           <div className="warta-hero-content">
-            <button className="back-button" onClick={handleBackClick} type="button">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M12.5 15L7.5 10L12.5 5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Kembali
-            </button>
             <p className="warta-kicker">
               <span className="section-tag light">WARTA JEMAAT</span>
             </p>
-            <h1 className="warta-title">
-              Warta Gereja GKJ Kebonarum
-            </h1>
+            <h1 className="warta-title">Warta Gereja GKJ Kebonarum</h1>
             <p className="warta-lead">
-              Kumpulan warta jemaat GKJ Kebonarum. Temukan pengumuman resmi, jadwal
-              kegiatan, serta warta pelayanan gereja setiap minggunya.
+              Kumpulan warta jemaat GKJ Kebonarum. Temukan pengumuman resmi,
+              jadwal kegiatan, serta warta pelayanan gereja setiap minggunya.
             </p>
           </div>
         </section>
@@ -203,7 +181,8 @@ const WartaListPage = () => {
                 <div className="warta-empty-icon">📋</div>
                 <h3>Warta Tidak Ditemukan</h3>
                 <p>
-                  Tidak ada warta gereja yang cocok dengan pencarian &ldquo;{searchQuery}&rdquo;.
+                  Tidak ada warta gereja yang cocok dengan pencarian &ldquo;
+                  {searchQuery}&rdquo;.
                 </p>
                 <button
                   type="button"
@@ -233,7 +212,9 @@ const WartaListPage = () => {
                           <article
                             key={warta.id}
                             className="warta-card"
-                            onClick={() => navigate(`/pengumuman/warta-gereja/${warta.id}`)}
+                            onClick={() =>
+                              navigate(`/pengumuman/warta-gereja/${warta.id}`)
+                            }
                           >
                             <div className="warta-card-body">
                               <div className="warta-card-meta">
@@ -292,4 +273,3 @@ const WartaListPage = () => {
 };
 
 export default WartaListPage;
-

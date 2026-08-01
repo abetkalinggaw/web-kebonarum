@@ -20,14 +20,6 @@ const AgendaPage = () => {
 
   const types = ["Semua", "Ibadah", "Persekutuan", "Rapat", "Kegiatan"];
 
-  const handleBackClick = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-      return;
-    }
-    navigate("/");
-  };
-
   useEffect(() => {
     const fetchAgenda = async () => {
       try {
@@ -71,25 +63,13 @@ const AgendaPage = () => {
         {/* HERO SECTION */}
         <section className="agenda-hero">
           <div className="agenda-hero-content">
-            <button className="back-button" onClick={handleBackClick} type="button">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M12.5 15L7.5 10L12.5 5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Kembali
-            </button>
             <p className="agenda-kicker">
               <span className="section-tag light">AGENDA & KEGIATAN</span>
             </p>
             <h1 className="agenda-title">Agenda & Kegiatan Gereja</h1>
             <p className="agenda-lead">
-              Ikuti terus jadwal ibadah, persekutuan, dan kegiatan pelayanan GKJ Kebonarum agar
-              dapat turut serta dalam persekutuan kasih Kristus.
+              Ikuti terus jadwal ibadah, persekutuan, dan kegiatan pelayanan GKJ
+              Kebonarum agar dapat turut serta dalam persekutuan kasih Kristus.
             </p>
           </div>
         </section>
@@ -158,7 +138,9 @@ const AgendaPage = () => {
                   month: "short",
                 });
                 const year = eventDate.getFullYear();
-                const cardImage = event.image || [event1, event2, event3, event4, event5][index % 5];
+                const cardImage =
+                  event.image ||
+                  [event1, event2, event3, event4, event5][index % 5];
 
                 return (
                   <article
@@ -265,4 +247,3 @@ const AgendaPage = () => {
 };
 
 export default AgendaPage;
-
