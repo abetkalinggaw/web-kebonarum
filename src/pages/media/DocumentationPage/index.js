@@ -4,7 +4,7 @@ import "./DocumentationPage.css";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
 import { getDocumentationItems } from "../../../services/documentationApi";
-import { Camera } from 'lucide-react';
+import { Camera } from "lucide-react";
 
 const ITEM_PAGE_SIZE = 12;
 
@@ -282,12 +282,14 @@ const DocumentationPage = () => {
       <main className="documentation-page">
         <section className="documentation-hero">
           <div className="documentation-hero-content">
-            <span className="section-tag light">GALERI & MEDIA</span>
             <h1 className="documentation-title">
               Dokumentasi Kegiatan
+              <br />
+              GKJ Kebonarum
             </h1>
             <p className="documentation-lead">
-              Arsip dan rekaman momen pelayanan, ibadah, serta kegiatan kemasyarakatan jemaat GKJ Kebonarum.
+              Arsip dan rekaman momen pelayanan, ibadah, serta kegiatan
+              kemasyarakatan jemaat GKJ Kebonarum.
             </p>
           </div>
         </section>

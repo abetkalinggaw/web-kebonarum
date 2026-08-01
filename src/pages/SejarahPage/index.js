@@ -324,12 +324,10 @@ const SejarahPage = () => {
           style={{ backgroundImage: `url(${sejarahHeroBg})` }}
         >
           <div className="sejarah-hero-content">
-            <span className="section-tag light">SEJARAH GEREJA</span>
-            <h1 className="sejarah-hero-title">
-              Perjalanan Iman Kami
-            </h1>
+            <h1 className="sejarah-hero-title">Perjalanan Iman Kami</h1>
             <p className="sejarah-hero-sub">
-              Lima dekade penuh berkat, pertumbuhan, dan ketahanan dalam kasih Kristus.
+              Lima dekade penuh berkat, pertumbuhan, dan ketahanan dalam kasih
+              Kristus.
             </p>
             <div className="sejarah-hero-years">
               <span className="sejarah-hero-year-tag">1910</span>
@@ -409,9 +407,13 @@ const SejarahPage = () => {
           <div className="sejarah-pendeta-container">
             <div className="sejarah-pendeta-header">
               <span className="section-tag accent">BIMBINGAN ROHANI</span>
-              <h2 className="sejarah-pendeta-title">Daftar Pendeta yang Diangkat & Melayani</h2>
+              <h2 className="sejarah-pendeta-title">
+                Daftar Pendeta yang Diangkat & Melayani
+              </h2>
               <p className="sejarah-pendeta-sub">
-                Dalam perjalanan sejarahnya, proses kependetaan di GKJ Kebonarum sangat dihargai sebagai wujud kepemimpinan spiritual yang setia menggembalakan jemaat.
+                Dalam perjalanan sejarahnya, proses kependetaan di GKJ Kebonarum
+                sangat dihargai sebagai wujud kepemimpinan spiritual yang setia
+                menggembalakan jemaat.
               </p>
             </div>
 
@@ -421,10 +423,13 @@ const SejarahPage = () => {
                 <h3 className="pendeta-name">Pdt. S. Notodiryo</h3>
                 <p className="pendeta-role">Pendeta Konsulen dari GKJ Klaten</p>
                 <p className="pendeta-desc">
-                  Beliau membidani dan memimpin ibadah peresmian pendewasaan GKJ Kebonarum pada 9 Juli 1971, serta mendampingi majelis dalam pencarian calon pendeta definitif pertama.
+                  Beliau membidani dan memimpin ibadah peresmian pendewasaan GKJ
+                  Kebonarum pada 9 Juli 1971, serta mendampingi majelis dalam
+                  pencarian calon pendeta definitif pertama.
                 </p>
                 <blockquote className="pendeta-verse">
-                  "Sebab Ia adalah gembala kita, dan kitalah umat gembalaan-Nya." — Mazmur 95:7
+                  "Sebab Ia adalah gembala kita, dan kitalah umat
+                  gembalaan-Nya." — Mazmur 95:7
                 </blockquote>
               </div>
 
@@ -433,10 +438,13 @@ const SejarahPage = () => {
                 <h3 className="pendeta-name">Pdt. Christian Sutopo, DPS</h3>
                 <p className="pendeta-role">Ditahbiskan 1 Desember 1972</p>
                 <p className="pendeta-desc">
-                  Pendeta pertama yang menggembalakan jemaat secara penuh setelah GKJ Kebonarum berdiri mandiri, meletakkan fondasi persekutuan yang kokoh.
+                  Pendeta pertama yang menggembalakan jemaat secara penuh
+                  setelah GKJ Kebonarum berdiri mandiri, meletakkan fondasi
+                  persekutuan yang kokoh.
                 </p>
                 <blockquote className="pendeta-verse">
-                  "Gembalakanlah kawanan domba Allah yang ada padamu..." — 1 Petrus 5:2
+                  "Gembalakanlah kawanan domba Allah yang ada padamu..." — 1
+                  Petrus 5:2
                 </blockquote>
               </div>
 
@@ -445,34 +453,51 @@ const SejarahPage = () => {
                 <h3 className="pendeta-name">Pdt. Djimanto Setiadi</h3>
                 <p className="pendeta-role">Setia Melayani hingga Emeritasi</p>
                 <p className="pendeta-desc">
-                  Melayani jemaat dengan penuh dedikasi hingga memasuki masa purna tugas (emeritus), membimbing pertumbuhan rohani jemaat lintas generasi.
+                  Melayani jemaat dengan penuh dedikasi hingga memasuki masa
+                  purna tugas (emeritus), membimbing pertumbuhan rohani jemaat
+                  lintas generasi.
                 </p>
                 <blockquote className="pendeta-verse">
-                  "Aku telah mengakhiri pertandingan yang baik, aku telah mencapai garis akhir..." — 2 Timotius 4:7
+                  "Aku telah mengakhiri pertandingan yang baik, aku telah
+                  mencapai garis akhir..." — 2 Timotius 4:7
                 </blockquote>
               </div>
 
               <div className="pendeta-history-card">
                 <span className="pendeta-badge">Pendeta Jemaat</span>
-                <h3 className="pendeta-name">Pdt. Dr. Tri Ratno Wahono, M.Si</h3>
+                <h3 className="pendeta-name">
+                  Pdt. Dr. Tri Ratno Wahono, M.Si
+                </h3>
                 <p className="pendeta-role">Penerus Masa Emeritasi</p>
                 <p className="pendeta-desc">
-                  Terpilih setelah melewati proses seleksi 7 bakal calon pendeta. Beliau menjalani masa orientasi, pembimbingan, dan vikariat hingga ditahbiskan melayani jemaat.
+                  Terpilih setelah melewati proses seleksi 7 bakal calon
+                  pendeta. Beliau menjalani masa orientasi, pembimbingan, dan
+                  vikariat hingga ditahbiskan melayani jemaat.
                 </p>
                 <blockquote className="pendeta-verse">
-                  "Bukan kamu yang memilih Aku, tetapi Akulah yang memilih kamu." — Yohanes 15:16
+                  "Bukan kamu yang memilih Aku, tetapi Akulah yang memilih
+                  kamu." — Yohanes 15:16
                 </blockquote>
               </div>
 
               <div className="pendeta-history-card highlight-card">
-                <span className="pendeta-badge green">Pendeta Aktif Masa Kini</span>
-                <h3 className="pendeta-name">Pdt. Debora Dwioktabriani, S.Si</h3>
-                <p className="pendeta-role">Pendeta Jemaat Modern (Era 2020-an)</p>
+                <span className="pendeta-badge green">
+                  Pendeta Aktif Masa Kini
+                </span>
+                <h3 className="pendeta-name">
+                  Pdt. Debora Dwioktabriani, S.Si
+                </h3>
+                <p className="pendeta-role">
+                  Pendeta Jemaat Modern (Era 2020-an)
+                </p>
                 <p className="pendeta-desc">
-                  Aktif menggembalakan jemaat GKJ Kebonarum dan memimpin peribadatan modern dengan semangat pembaruan dan kasih di era pelayanan modern.
+                  Aktif menggembalakan jemaat GKJ Kebonarum dan memimpin
+                  peribadatan modern dengan semangat pembaruan dan kasih di era
+                  pelayanan modern.
                 </p>
                 <blockquote className="pendeta-verse">
-                  "Jadilah teladan bagi orang-orang percaya, dalam perkataanmu, dalam tingkah lakumu..." — 1 Timotius 4:12
+                  "Jadilah teladan bagi orang-orang percaya, dalam perkataanmu,
+                  dalam tingkah lakumu..." — 1 Timotius 4:12
                 </blockquote>
               </div>
             </div>
@@ -488,7 +513,9 @@ const SejarahPage = () => {
               Bertumbuh
             </h2>
             <p className="sejarah-closing-sub">
-              Lima dekade lebih perjalanan iman telah kita lalui. GKJ Kebonarum terus berdiri teguh dalam bimbingan Tuhan, hadir untuk melayani, berkembang, dan menjadi berkat bagi sesama.
+              Lima dekade lebih perjalanan iman telah kita lalui. GKJ Kebonarum
+              terus berdiri teguh dalam bimbingan Tuhan, hadir untuk melayani,
+              berkembang, dan menjadi berkat bagi sesama.
             </p>
             <button className="sejarah-back-top-btn" onClick={scrollToTop}>
               Kembali ke Awal

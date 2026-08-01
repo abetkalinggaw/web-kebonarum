@@ -63,9 +63,6 @@ const AgendaPage = () => {
         {/* HERO SECTION */}
         <section className="agenda-hero">
           <div className="agenda-hero-content">
-            <p className="agenda-kicker">
-              <span className="section-tag light">AGENDA & KEGIATAN</span>
-            </p>
             <h1 className="agenda-title">Agenda & Kegiatan Gereja</h1>
             <p className="agenda-lead">
               Ikuti terus jadwal ibadah, persekutuan, dan kegiatan pelayanan GKJ

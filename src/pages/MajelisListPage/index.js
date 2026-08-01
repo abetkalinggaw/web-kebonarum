@@ -145,9 +145,7 @@ const MajelisListPage = () => {
               </svg>
               Kembali
             </button>
-            <p className="majelis-list-kicker">
-              <span className="section-tag light">KEPEMIMPINAN GEREJA</span>
-            </p>
+
             <h1 className="majelis-list-title">Majelis Jemaat GKJ Kebonarum</h1>
             <p className="majelis-list-lead">
               Para Penatua dan Diaken yang dipanggil dan diutus untuk melayani,

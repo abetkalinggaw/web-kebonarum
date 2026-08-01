@@ -122,10 +122,11 @@ const WartaListPage = () => {
         {/* HERO SECTION */}
         <section className="warta-hero">
           <div className="warta-hero-content">
-            <p className="warta-kicker">
-              <span className="section-tag light">WARTA JEMAAT</span>
-            </p>
-            <h1 className="warta-title">Warta Gereja GKJ Kebonarum</h1>
+            <h1 className="warta-title">
+              Warta Gereja
+              <br />
+              GKJ Kebonarum
+            </h1>
             <p className="warta-lead">
               Kumpulan warta jemaat GKJ Kebonarum. Temukan pengumuman resmi,
               jadwal kegiatan, serta warta pelayanan gereja setiap minggunya.

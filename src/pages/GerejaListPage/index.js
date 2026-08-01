@@ -206,8 +206,11 @@ const GerejaListPage = () => {
       <main className="gereja-list-page">
         <section className="gereja-list-hero">
           <div className="gereja-list-hero-content">
-            <span className="section-tag light">WILAYAH PELAYANAN</span>
-            <h1 className="gereja-list-title">Gereja GKJ Kebonarum</h1>
+            <h1 className="gereja-list-title">
+              Wilayah Gereja
+              <br />
+              GKJ Kebonarum
+            </h1>
             <p className="gereja-list-lead">
               Gereja-gereja wilayah GKJ Kebonarum yang tersebar di Kabupaten
               Klaten, siap melayani ibadah dan persekutuan jemaat.

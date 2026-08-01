@@ -4,7 +4,7 @@ import "./GalleryPage.css";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
 import GalleryError from "../../../components/media/GalleryError";
-import { FolderOpen } from 'lucide-react';
+import { FolderOpen } from "lucide-react";
 import {
   getDocumentationImagesById,
   getDocumentationItemById,
@@ -35,7 +35,8 @@ const extractDriveFileId = (url = "") => {
 
 const buildImageCandidates = (src = "", imageObj = null) => {
   const candidates = [];
-  const rawSrc = typeof src === "string" ? src : src?.url || imageObj?.url || "";
+  const rawSrc =
+    typeof src === "string" ? src : src?.url || imageObj?.url || "";
 
   let thumbnailLink = "";
   let webContentLink = "";
@@ -116,7 +117,14 @@ const GallerySkeleton = ({ count = 8 }) => (
   </>
 );
 
-const LazyGalleryImage = ({ src, imageObj, isVideo, alt, onClick, delay = 0 }) => {
+const LazyGalleryImage = ({
+  src,
+  imageObj,
+  isVideo,
+  alt,
+  onClick,
+  delay = 0,
+}) => {
   const imageRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
@@ -300,7 +308,8 @@ const GalleryFolderCard = ({ folder, onClick }) => {
 };
 
 const ModalGalleryImage = ({ image, alt }) => {
-  const isVideo = typeof image !== "string" && image?.mimeType?.includes("video");
+  const isVideo =
+    typeof image !== "string" && image?.mimeType?.includes("video");
   const src = typeof image === "string" ? image : image?.url;
   const [sourceIndex, setSourceIndex] = useState(0);
   const imageCandidates = useMemo(
@@ -372,7 +381,16 @@ const GalleryModal = ({
           onClick={onClose}
           aria-label="Tutup preview"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
@@ -385,7 +403,16 @@ const GalleryModal = ({
               onClick={onPrev}
               aria-label="Foto Sebelumnya"
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
@@ -401,7 +428,16 @@ const GalleryModal = ({
               onClick={onNext}
               aria-label="Foto Selanjutnya"
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </button>
@@ -558,7 +594,11 @@ const GalleryPage = () => {
     setIsLoadingMoreImages(true);
 
     try {
-      if (prefetchedPage && Array.isArray(prefetchedPage.images) && prefetchedPage.images.length > 0) {
+      if (
+        prefetchedPage &&
+        Array.isArray(prefetchedPage.images) &&
+        prefetchedPage.images.length > 0
+      ) {
         // 1. Merge prefetched images into driveImages immediately
         setDriveImages((previousImages) =>
           mergeUniqueImages(previousImages, prefetchedPage.images),
@@ -680,12 +720,16 @@ const GalleryPage = () => {
       const trimmed = str.trim();
       return (
         trimmed === id ||
-        (trimmed.length >= 20 && /^[a-zA-Z0-9_-]+$/.test(trimmed) && !trimmed.includes(" "))
+        (trimmed.length >= 20 &&
+          /^[a-zA-Z0-9_-]+$/.test(trimmed) &&
+          !trimmed.includes(" "))
       );
     };
 
     const rawCandidates = [
-      ...(Array.isArray(location.state?.titlePath) ? location.state.titlePath : []),
+      ...(Array.isArray(location.state?.titlePath)
+        ? location.state.titlePath
+        : []),
       location.state?.parentTitle,
       location.state?.parentFolderName,
       item?.parentTitle,
@@ -700,7 +744,9 @@ const GalleryPage = () => {
       const trimmed = str.trim();
       return (
         trimmed === id ||
-        (trimmed.length >= 20 && /^[a-zA-Z0-9_-]+$/.test(trimmed) && !trimmed.includes(" "))
+        (trimmed.length >= 20 &&
+          /^[a-zA-Z0-9_-]+$/.test(trimmed) &&
+          !trimmed.includes(" "))
       );
     };
 
@@ -714,7 +760,9 @@ const GalleryPage = () => {
       return location.state.folderName;
     }
     if (isLoadingItem) {
-      return parentFolderName ? `${parentFolderName} / Memuat Sub-folder...` : "Memuat Album...";
+      return parentFolderName
+        ? `${parentFolderName} / Memuat Sub-folder...`
+        : "Memuat Album...";
     }
     return "Dokumentasi";
   }, [item?.title, location.state, isLoadingItem, parentFolderName, id]);
@@ -725,7 +773,9 @@ const GalleryPage = () => {
       const trimmed = str.trim();
       return (
         trimmed === id ||
-        (trimmed.length >= 20 && /^[a-zA-Z0-9_-]+$/.test(trimmed) && !trimmed.includes(" "))
+        (trimmed.length >= 20 &&
+          /^[a-zA-Z0-9_-]+$/.test(trimmed) &&
+          !trimmed.includes(" "))
       );
     };
 
@@ -760,7 +810,10 @@ const GalleryPage = () => {
   }, [selectedImageIndex, galleryImages]);
 
   const handleNextImage = useCallback(() => {
-    if (selectedImageIndex >= 0 && selectedImageIndex < galleryImages.length - 1) {
+    if (
+      selectedImageIndex >= 0 &&
+      selectedImageIndex < galleryImages.length - 1
+    ) {
       setSelectedImage(galleryImages[selectedImageIndex + 1]);
     } else if (galleryImages.length > 0) {
       setSelectedImage(galleryImages[0]);
@@ -816,14 +869,18 @@ const GalleryPage = () => {
     const trimmed = str.trim();
     return (
       trimmed === id ||
-      (trimmed.length >= 20 && /^[a-zA-Z0-9_-]+$/.test(trimmed) && !trimmed.includes(" "))
+      (trimmed.length >= 20 &&
+        /^[a-zA-Z0-9_-]+$/.test(trimmed) &&
+        !trimmed.includes(" "))
     );
   };
 
   const displayDescription = item?.description || "";
 
   const handleFolderClick = (folder) => {
-    const safeTitle = !isIdStringHelper(resolvedTitle) ? resolvedTitle : parentFolderName || "";
+    const safeTitle = !isIdStringHelper(resolvedTitle)
+      ? resolvedTitle
+      : parentFolderName || "";
     const updatedPath = [...cleanTitlePath, safeTitle].filter(Boolean);
 
     navigate(`/media/documentation/gallery/${folder.id}`, {
@@ -895,13 +952,18 @@ const GalleryPage = () => {
             </div>
 
             <div className="gallery-hero-standard">
-              <p className="gallery-kicker">
-                <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
-              </p>
               <h1 className="gallery-title">
                 {parentFolderName ? (
                   <>
-                    <span style={{ fontSize: "0.6em", opacity: 0.85, fontWeight: 400, display: "block", marginBottom: "0.3rem" }}>
+                    <span
+                      style={{
+                        fontSize: "0.6em",
+                        opacity: 0.85,
+                        fontWeight: 400,
+                        display: "block",
+                        marginBottom: "0.3rem",
+                      }}
+                    >
                       {parentFolderName}
                     </span>
                     {resolvedTitle}
@@ -956,7 +1018,8 @@ const GalleryPage = () => {
                     Sub-Folder Dokumentasi ({childFolders.length})
                   </h2>
                   <p className="gallery-subfolder-description">
-                    Pilih folder di bawah untuk melihat foto & media di dalamnya.
+                    Pilih folder di bawah untuk melihat foto & media di
+                    dalamnya.
                   </p>
                 </div>
                 <div className="gallery-subfolder-grid">
@@ -988,7 +1051,10 @@ const GalleryPage = () => {
                         isVideo={isVideo}
                         alt={isObj ? image.name : ""}
                         onClick={() => handleImageClick(image)}
-                        delay={Math.min(index * GALLERY_IMAGE_LOAD_DELAY_MS, 640)}
+                        delay={Math.min(
+                          index * GALLERY_IMAGE_LOAD_DELAY_MS,
+                          640,
+                        )}
                       />
                     );
                   })}
@@ -997,7 +1063,9 @@ const GalleryPage = () => {
               ) : driveImageError ? (
                 <p className="gallery-no-images">{driveImageError}</p>
               ) : childFolders.length === 0 ? (
-                <p className="gallery-no-images">Belum ada foto dalam album ini.</p>
+                <p className="gallery-no-images">
+                  Belum ada foto dalam album ini.
+                </p>
               ) : null}
             </div>
             {hasMoreImages && (

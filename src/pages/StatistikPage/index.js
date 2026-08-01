@@ -4,7 +4,7 @@ import Footer from "../../components/menu/Footer";
 import "./StatistikPage.css";
 import { getStatistikData } from "../../services/statistikApi";
 import AnimatedNumber from "../../components/common/AnimatedNumber";
-import { ArrowUp, Award, Home, UserCheck, Users } from 'lucide-react';
+import { ArrowUp, Award, Home, UserCheck, Users } from "lucide-react";
 
 const StatistikPage = () => {
   const [data, setData] = useState(null);
@@ -66,7 +66,6 @@ const StatistikPage = () => {
       <main className="statistik-page">
         <section className="statistik-hero">
           <div className="statistik-hero-content">
-            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
             <h1 className="statistik-title">Statistik Gereja</h1>
             <p className="statistik-lead">
               Gambaran data pertumbuhan jemaat dan pelayanan GKJ Kebonarum. Data
@@ -157,9 +156,7 @@ const StatistikPage = () => {
                         <span
                           className="year-label"
                           style={{
-                            color: isLast
-                              ? "var(--color-kunyit)"
-                              : "inherit",
+                            color: isLast ? "var(--color-kunyit)" : "inherit",
                             fontWeight: isLast ? 700 : 400,
                             opacity: showCharts ? 1 : 0,
                             transition: "opacity 0.5s ease 1s",

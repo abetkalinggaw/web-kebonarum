@@ -20,10 +20,7 @@ const InstagramPage = () => {
       <main className="instagram-page">
         <section className="instagram-hero">
           <div className="instagram-hero-content">
-            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
-            <h1 className="instagram-title">
-              Instagram GKJ Kebonarum
-            </h1>
+            <h1 className="instagram-title">Instagram GKJ Kebonarum</h1>
             <p className="instagram-lead">
               Ikuti update terbaru pelayanan, kegiatan jemaat, dan momen
               kebersamaan melalui feed Instagram GKJ Kebonarum.

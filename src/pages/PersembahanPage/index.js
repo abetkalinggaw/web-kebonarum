@@ -66,8 +66,11 @@ const PersembahanPage = () => {
         {/* Hero Section */}
         <section className="persembahan-hero">
           <div className="persembahan-hero-content">
-            <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
-            <h1 className="persembahan-title">Persembahan Kasih</h1>
+            <h1 className="persembahan-title">
+              Persembahan Kasih
+              <br />
+              GKJ Kebonarum
+            </h1>
             <p className="persembahan-lead">
               "Hendaklah masing-masing memberikan menurut kerelaan hatinya,
               jangan dengan sedih hati atau karena paksaan, sebab Allah
@@ -105,7 +108,16 @@ const PersembahanPage = () => {
                       >
                         <img src={item.qrCode} alt={`QRIS ${item.name}`} />
                         <div className="qr-overlay-icon">
-                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg
+                            width="22"
+                            height="22"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                             <line x1="11" y1="8" x2="11" y2="14"></line>
@@ -124,15 +136,30 @@ const PersembahanPage = () => {
 
       {/* QR Code Modal */}
       {selectedQrItem && (
-        <div className="qr-modal-overlay" onClick={() => setSelectedQrItem(null)}>
-          <div className="qr-modal-content" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="qr-modal-overlay"
+          onClick={() => setSelectedQrItem(null)}
+        >
+          <div
+            className="qr-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="qr-modal-close"
               onClick={() => setSelectedQrItem(null)}
               aria-label="Tutup Modal"
               title="Tutup"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -144,11 +171,16 @@ const PersembahanPage = () => {
             </div>
 
             <div className="qr-modal-image-wrapper">
-              <img src={selectedQrItem.qrCode} alt={`QRIS ${selectedQrItem.name}`} className="qr-modal-img" />
+              <img
+                src={selectedQrItem.qrCode}
+                alt={`QRIS ${selectedQrItem.name}`}
+                className="qr-modal-img"
+              />
             </div>
 
             <p className="qr-modal-hint">
-              Scan QRIS ini menggunakan aplikasi M-Banking atau e-Wallet (Gopay, OVO, DANA, ShopeePay, LinkAja)
+              Scan QRIS ini menggunakan aplikasi M-Banking atau e-Wallet (Gopay,
+              OVO, DANA, ShopeePay, LinkAja)
             </p>
           </div>
         </div>
