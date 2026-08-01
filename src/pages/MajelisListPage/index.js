@@ -11,17 +11,34 @@ import majelis4 from "../../assets/majelis/majelis4.jpg";
 import majelis5 from "../../assets/majelis/majelis5.jpg";
 import majelis6 from "../../assets/majelis/majelis6.jpg";
 
-const MAJELIS_IMAGES = [majelis1, majelis2, majelis3, majelis4, majelis5, majelis6];
+const MAJELIS_IMAGES = [
+  majelis1,
+  majelis2,
+  majelis3,
+  majelis4,
+  majelis5,
+  majelis6,
+];
 
 const formatPenatuaName = (name) => {
   if (!name) return "Pnt. Penatua";
-  if (name.startsWith("Pnt.") || name.startsWith("Pdm.") || name.startsWith("Dkn.")) return name;
+  if (
+    name.startsWith("Pnt.") ||
+    name.startsWith("Pdm.") ||
+    name.startsWith("Dkn.")
+  )
+    return name;
   return `Pnt. ${name}`;
 };
 
 const formatDiakenName = (name) => {
   if (!name) return "Dkn. Diaken";
-  if (name.startsWith("Dkn.") || name.startsWith("Pnt.") || name.startsWith("Pdm.")) return name;
+  if (
+    name.startsWith("Dkn.") ||
+    name.startsWith("Pnt.") ||
+    name.startsWith("Pdm.")
+  )
+    return name;
   return `Dkn. ${name}`;
 };
 
@@ -46,7 +63,8 @@ const MajelisListPage = () => {
               name: formatPenatuaName(item.namaLengkap),
               role: "Penatua",
               detail: `Wilayah ${item.wilayah || "Kebonarum"}`,
-              image: item.imageUrl || MAJELIS_IMAGES[idx % MAJELIS_IMAGES.length],
+              image:
+                item.imageUrl || MAJELIS_IMAGES[idx % MAJELIS_IMAGES.length],
             }));
 
           const diakens = rawData
@@ -56,14 +74,18 @@ const MajelisListPage = () => {
               name: formatDiakenName(item.namaLengkap),
               role: "Diaken",
               detail: `Wilayah ${item.wilayah || "Kebonarum"}`,
-              image: item.imageUrl || MAJELIS_IMAGES[idx % MAJELIS_IMAGES.length],
+              image:
+                item.imageUrl || MAJELIS_IMAGES[idx % MAJELIS_IMAGES.length],
             }));
 
           setPenatuaList(penatuas);
           setDiakenList(diakens);
         }
       } catch (err) {
-        console.warn("Using default fallback for majelis list page:", err.message);
+        console.warn(
+          "Using default fallback for majelis list page:",
+          err.message,
+        );
       } finally {
         setLoading(false);
       }
@@ -87,7 +109,7 @@ const MajelisListPage = () => {
       (m) =>
         m.name.toLowerCase().includes(query) ||
         m.role.toLowerCase().includes(query) ||
-        m.detail.toLowerCase().includes(query)
+        m.detail.toLowerCase().includes(query),
     );
   };
 
@@ -107,7 +129,11 @@ const MajelisListPage = () => {
         {/* HERO SECTION */}
         <section className="majelis-list-hero">
           <div className="majelis-list-hero-content">
-            <button className="back-button" onClick={handleBackClick} type="button">
+            <button
+              className="back-button"
+              onClick={handleBackClick}
+              type="button"
+            >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path
                   d="M12.5 15L7.5 10L12.5 5"
@@ -122,28 +148,26 @@ const MajelisListPage = () => {
             <p className="majelis-list-kicker">
               <span className="section-tag light">KEPEMIMPINAN GEREJA</span>
             </p>
-            <h1 className="majelis-list-title">
-              Majelis Jemaat GKJ Kebonarum
-            </h1>
+            <h1 className="majelis-list-title">Majelis Jemaat GKJ Kebonarum</h1>
             <p className="majelis-list-lead">
-              Para Penatua dan Diaken yang dipanggil dan diutus untuk melayani, membimbing, serta memelihara persekutuan jemaat GKJ Kebonarum dalam kasih Kristus.
+              Para Penatua dan Diaken yang dipanggil dan diutus untuk melayani,
+              membimbing, serta memelihara persekutuan jemaat GKJ Kebonarum
+              dalam kasih Kristus.
             </p>
 
             <div className="majelis-hero-stats">
-              <div className="hero-stat-pill">
-                <span className="stat-num">{penatuaList.length}</span>
-                <span className="stat-label">Penatua</span>
-              </div>
-              <div className="hero-stat-divider" />
-              <div className="hero-stat-pill">
-                <span className="stat-num">{diakenList.length}</span>
-                <span className="stat-label">Diaken</span>
-              </div>
-              <div className="hero-stat-divider" />
-              <div className="hero-stat-pill">
-                <span className="stat-num">5</span>
-                <span className="stat-label">Wilayah</span>
-              </div>
+              <span className="hero-stat-text">
+                <strong className="stat-num">{penatuaList.length}</strong>{" "}
+                Penatua
+              </span>
+              <span className="hero-stat-dot">•</span>
+              <span className="hero-stat-text">
+                <strong className="stat-num">{diakenList.length}</strong> Diaken
+              </span>
+              <span className="hero-stat-dot">•</span>
+              <span className="hero-stat-text">
+                <strong className="stat-num">5</strong> Wilayah
+              </span>
             </div>
           </div>
         </section>
@@ -213,7 +237,14 @@ const MajelisListPage = () => {
             </div>
 
             {loading ? (
-              <div style={{ textAlign: "center", padding: "4rem 0", color: "#8a7a6a", fontSize: "1.1rem" }}>
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "4rem 0",
+                  color: "#8a7a6a",
+                  fontSize: "1.1rem",
+                }}
+              >
                 Memuat data majelis...
               </div>
             ) : (
@@ -224,7 +255,8 @@ const MajelisListPage = () => {
                     <div className="empty-icon">🔍</div>
                     <h3>Majelis Tidak Ditemukan</h3>
                     <p>
-                      Tidak ada anggota majelis yang cocok dengan kata kunci &ldquo;{searchQuery}&rdquo;.
+                      Tidak ada anggota majelis yang cocok dengan kata kunci
+                      &ldquo;{searchQuery}&rdquo;.
                     </p>
                     <button
                       type="button"
@@ -249,10 +281,13 @@ const MajelisListPage = () => {
                           Daftar Majelis Penatua
                         </h2>
                         <p className="majelis-section-subtitle">
-                          Memelihara pengajaran, ketertiban, dan pemeliharaan rohani jemaat GKJ Kebonarum.
+                          Memelihara pengajaran, ketertiban, dan pemeliharaan
+                          rohani jemaat GKJ Kebonarum.
                         </p>
                       </div>
-                      <span className="count-badge">{filteredPenatua.length} Anggota</span>
+                      <span className="count-badge">
+                        {filteredPenatua.length} Anggota
+                      </span>
                     </div>
 
                     <div className="batik-rule">
@@ -273,7 +308,9 @@ const MajelisListPage = () => {
                           </div>
                           <div className="majelis-card-content">
                             <h3 className="majelis-card-name">{member.name}</h3>
-                            <p className="majelis-card-detail">{member.detail}</p>
+                            <p className="majelis-card-detail">
+                              {member.detail}
+                            </p>
                           </div>
                         </article>
                       ))}
@@ -291,10 +328,13 @@ const MajelisListPage = () => {
                           Daftar Majelis Diaken
                         </h2>
                         <p className="majelis-section-subtitle">
-                          Melayani kebutuhan diakonia, perhatian kasih, dan kepedulian sosial jemaat.
+                          Melayani kebutuhan diakonia, perhatian kasih, dan
+                          kepedulian sosial jemaat.
                         </p>
                       </div>
-                      <span className="count-badge">{filteredDiaken.length} Anggota</span>
+                      <span className="count-badge">
+                        {filteredDiaken.length} Anggota
+                      </span>
                     </div>
 
                     <div className="batik-rule">
@@ -315,7 +355,9 @@ const MajelisListPage = () => {
                           </div>
                           <div className="majelis-card-content">
                             <h3 className="majelis-card-name">{member.name}</h3>
-                            <p className="majelis-card-detail">{member.detail}</p>
+                            <p className="majelis-card-detail">
+                              {member.detail}
+                            </p>
                           </div>
                         </article>
                       ))}

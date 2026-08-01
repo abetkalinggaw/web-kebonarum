@@ -14,134 +14,160 @@ const SEJARAH_IMAGES = [img1, img2, img3, img4, img5];
 
 const timelineData = [
   {
-    year: "1970",
-    era: "Awal Berdiri",
-    title: "Pendirian GKJ Kebonarum",
+    year: "1910",
+    era: "Awal Pemberitaan Injil",
+    title: "Izin Pekabaran Injil Hindia Belanda",
     description:
-      "GKJ Kebonarum resmi berdiri sebagai jemaat gereja yang mandiri. Persekutuan yang berakar dari kelompok-kelompok ibadah kecil di daerah Kebonarum, Klaten, akhirnya berkembang menjadi sebuah jemaat gereja yang terorganisir dengan penuh berkat dan harapan.",
+      "Pemerintah Hindia Belanda mulai memberikan izin resmi untuk pemberitaan Injil di wilayah Surakarta dan sekitarnya. Pemerintah mengutus Van Andel sebagai pekabar Injil awal yang merintis benih-benih iman di tanah Klaten dan sekitarnya.",
     quote:
-      '"Sebab di mana dua atau tiga orang berkumpul dalam nama-Ku, di situ Aku ada di tengah-tengah mereka." — Matius 18:20',
+      '"Betapa indahnya kedatangan mereka yang membawa kabar baik!" — Roma 10:15',
     bg: "#1A2821",
     accent: "#C5A059",
     image: SEJARAH_IMAGES[0],
   },
   {
-    year: "1975",
-    era: "Pembangunan",
-    title: "Pembangunan Gedung Gereja Pertama",
+    year: "1916",
+    era: "Perintisan Bendogantungan",
+    title: "Pengutusan Guru Injil Stefanus Arun",
     description:
-      "Dengan semangat gotong royong seluruh jemaat, dibangun gedung gereja pertama yang menjadi pusat ibadah dan kegiatan rohani. Setiap bata yang diletakkan adalah simbol iman dan persatuan jemaat yang tidak tergoyahkan.",
+      "Van Andel mengutus Guru Injil Stefanus Arun ke wilayah Klaten. Beliau menjadi orang pertama yang menetap dan mengajarkan Injil di daerah Bendogantungan — tempat yang kelak menjadi cikal bakal persekutuan GKJ Kebonarum.",
     quote:
-      '"Kalau bukan Tuhan yang membangun rumah, sia-sialah usaha orang yang membangunnya." — Mazmur 127:1',
+      '"Seorang menanam, yang lain menyiram, tetapi Allah yang memberi pertumbuhan." — 1 Korintus 3:6',
     bg: "#22342B",
     accent: "#D4A373",
     image: SEJARAH_IMAGES[1],
   },
   {
-    year: "1980",
-    era: "Pertumbuhan",
-    title: "Pentahbisan Pendeta Pertama",
+    year: "1927",
+    era: "Pelayanan Kesehatan & Injil",
+    title: "Berdirinya RS Tegalyoso & Benih Iman di Mayungan",
     description:
-      "GKJ Kebonarum menyambut pendeta pertamanya yang resmi ditahbiskan untuk melayani jemaat. Hadirnya pemimpin rohani yang tetap semakin memperkokoh fondasi spiritual dan organisasi gereja dalam melangkah maju.",
+      "Berdirinya Dr. Scheurer Hospitaal (RS Tegalyoso) oleh Klatenche Cultuur Maatschappij menjadi momentum penting. Salah satu pasien, Ibu Ngadikem Wangsa Taruna, menerima Injil dan membawanya pulang ke wilayah Mayungan.",
     quote:
-      '"Gembalakanlah kawanan domba Allah yang ada padamu, jangan dengan paksa, tetapi dengan sukarela sesuai dengan kehendak Allah." — 1 Petrus 5:2',
+      '"Ia menyembuhkan orang-orang yang patah hati dan membalut luka-luka mereka." — Mazmur 147:3',
     bg: "#1E2D25",
     accent: "#A3B18A",
     image: SEJARAH_IMAGES[2],
   },
   {
-    year: "1985",
-    era: "Organisasi",
-    title: "Pembentukan Majelis Gereja",
+    year: "9 Jul 1971",
+    era: "Pendewasaan Gereja",
+    title: "Peresmian Pendewasaan GKJ Kebonarum",
     description:
-      "Tata organisasi gereja diperkuat dengan pembentukan majelis gereja yang lengkap. Para penatua dan diaken dipilih dan dilantik untuk bersama-sama memimpin dan melayani jemaat dengan penuh tanggung jawab kepada Tuhan.",
+      "Bertempat di SD Kristen 2 Gudang, persekutuan jemaat di Kebonarum resmi didewasakan menjadi institusi gereja yang mandiri. Ibadah bersejarah ini dipimpin oleh Pdt. S. Notodiryo sebagai Pendeta Konsulen dari GKJ Klaten.",
     quote:
-      '"Dan Ia-lah yang memberikan baik rasul-rasul maupun nabi-nabi, baik pemberita-pemberita Injil maupun gembala-gembala dan pengajar-pengajar." — Efesus 4:11',
+      '"Di atas batu karang ini Aku akan mendirikan jemaat-Ku dan alam maut tidak akan menguasainya." — Matius 16:18',
     bg: "#26392F",
     accent: "#C5A059",
     image: SEJARAH_IMAGES[3],
   },
   {
-    year: "1990",
-    era: "Perayaan",
-    title: "Perayaan 20 Tahun GKJ Kebonarum",
+    year: "9 Nov 1971",
+    era: "Pemanggilan Pemimpin",
+    title: "Utusan Majelis Menuju Pati",
     description:
-      "Dengan penuh syukur, seluruh jemaat merayakan 20 tahun perjalanan GKJ Kebonarum. Sebuah momen refleksi atas segala berkat dan pertumbuhan yang telah dialami, sekaligus meneguhkan komitmen bersama untuk masa depan yang lebih cerah.",
+      "Majelis GKJ Kebonarum bersama Pdt. S. Notodiryo berangkat ke Pati untuk menemui Bp. Christian Sutopo. Kedatangan majelis bertujuan menyampaikan pemanggilan resmi beliau sebagai calon pendeta jemaat definitif pertama.",
     quote:
-      '"Bersyukurlah kepada Tuhan, sebab Ia baik! Bahwasanya untuk selama-lamanya kasih setia-Nya." — Mazmur 107:1',
+      '"Aku akan melepaskan domba-domba-Ku dan memberi mereka seorang gembala." — Yehezkiel 34:22-23',
     bg: "#213229",
     accent: "#D4A373",
     image: SEJARAH_IMAGES[4],
   },
   {
-    year: "1995",
-    era: "Pembaruan",
-    title: "Renovasi dan Perluasan Gedung Gereja",
+    year: "16 Feb 1972",
+    era: "Keputusan Jemaat",
+    title: "Pemilihan Pemimpin Rohani",
     description:
-      "Merespons pertumbuhan jemaat yang terus bertambah, dilakukan renovasi besar-besaran dan perluasan gedung gereja. Fasilitas yang diperbaharui ini mencerminkan visi gereja yang terus berkembang dan menatap masa depan dengan penuh keyakinan.",
+      "Setelah melewati proses saling mengenal dan perumusan visi persekutuan, jemaat GKJ Kebonarum secara resmi memilih Bp. Christian Sutopo sebagai calon pendeta pertama gereja.",
     quote:
-      '"Rancangan Tuhan tetap selama-lamanya, rancangan hati-Nya turun-temurun." — Mazmur 33:11',
+      '"Pilihlah di antara kamu orang-orang yang bijaksana, berakal budi dan berpengalaman." — Ulangan 1:13',
     bg: "#283C32",
     accent: "#A3B18A",
     image: SEJARAH_IMAGES[0],
   },
   {
-    year: "2000",
-    era: "Milenium Baru",
-    title: "Memasuki Milenium Baru",
+    year: "30-31 Mei 1972",
+    era: "Sidang Klasis",
+    title: "Penerimaan dalam Klasis Surakarta Barat",
     description:
-      "GKJ Kebonarum memasuki milenium baru dengan penuh harapan dan semangat pembaruan. Program-program inovatif diluncurkan untuk menjawab tantangan zaman dan memenuhi kebutuhan jemaat yang semakin beragam di era global.",
-    quote: '"Lihat, Aku membuat semuanya baru!" — Wahyu 21:5',
+      "Calon pendeta Bp. Christian Sutopo secara resmi diterima dalam Sidang Klasis Surakarta Barat untuk memasuki proses ujian dan pembimbingan gerejawi.",
+    quote:
+      '"Segala sesuatu harus dilakukan dengan sopan dan teratur." — 1 Korintus 14:40',
     bg: "#213229",
     accent: "#C5A059",
     image: SEJARAH_IMAGES[1],
   },
   {
-    year: "2005",
-    era: "Pelayanan",
-    title: "Program Pelayanan Komunitas",
+    year: "13-14 Nov 1972",
+    era: "Kelulusan Ujian",
+    title: "Kelulusan Ujian Peremptoir",
     description:
-      "Memperluas jangkauan pelayanan ke luar tembok gereja, GKJ Kebonarum meluncurkan berbagai program sosial dan pemberdayaan komunitas. Pelayanan kepada masyarakat sekitar menjadi wujud nyata kasih yang hidup dan nyata.",
+      "Bp. Christian Sutopo dinyatakan lulus ujian peremptoir (ujian akhir calon pendeta) di hadapan persidangan gerejawi dan dinyatakan layak untuk ditahbiskan melayani jemaat.",
     quote:
-      '"Dan kamu akan menjadi saksi-Ku di Yerusalem dan di seluruh Yudea dan Samaria dan sampai ke ujung bumi." — Kisah Para Rasul 1:8',
+      '"Usahakanlah supaya engkau layak di hadapan Allah sebagai seorang pekerja yang tidak usah malu." — 2 Timotius 2:15',
     bg: "#1F2F27",
     accent: "#D4A373",
     image: SEJARAH_IMAGES[2],
   },
   {
-    year: "2010",
-    era: "Jubileum",
-    title: "Perayaan 40 Tahun GKJ Kebonarum",
+    year: "1 Des 1972",
+    era: "Penahbisan Pertama",
+    title: "Penahbisan Pdt. Christian Sutopo, DPS",
     description:
-      "Merayakan empat dekade perjalanan iman yang penuh berkat. Perayaan jubileum ini mempererat persatuan jemaat sekaligus menjadi titik awal untuk melangkah ke babak baru dengan visi yang lebih besar dan hati yang lebih bersyukur.",
+      "Ibadah penahbisan Pdt. Christian Sutopo, DPS diselenggarakan dengan penuh syukur. Beliau resmi ditahbiskan sebagai pendeta definitif pertama yang menggembalakan jemaat GKJ Kebonarum secara penuh.",
     quote:
-      '"Sesungguhnya Tuhan adalah baik bagi orang yang berharap kepada-Nya, bagi jiwa yang mencari Dia." — Ratapan 3:25',
+      '"Gembalakanlah kawanan domba Allah yang ada padamu dengan sukarela sesuai dengan kehendak Allah." — 1 Petrus 5:2',
     bg: "#24362C",
     accent: "#A3B18A",
     image: SEJARAH_IMAGES[3],
   },
   {
-    year: "2015",
-    era: "Era Digital",
-    title: "Memasuki Era Pelayanan Digital",
+    year: "Era Pelayanan",
+    era: "Estafet Kepemimpinan",
+    title: "Penahbisan & Pelayanan Pdt. Djimanto Setiadi",
     description:
-      "Mengikuti perkembangan zaman, GKJ Kebonarum mulai memanfaatkan media digital untuk memperluas jangkauan pelayanan. Ibadah daring, media sosial, dan platform digital menjadi sarana baru untuk menyentuh lebih banyak jiwa.",
-    quote: '"Pergilah, jadikanlah semua bangsa murid-Ku." — Matius 28:19',
-    bg: "#213229",
+      "GKJ Kebonarum menyambut penahbisan Pdt. Djimanto Setiadi. Beliau melayani jemaat dengan penuh kesetiaan dan kasih hingga memasuki masa purna tugas (emeritasi).",
+    quote:
+      '"Aku telah mengakhiri pertandingan yang baik, aku telah mencapai garis akhir dan aku telah memelihara iman." — 2 Timotius 4:7',
+    bg: "#1E2D25",
     accent: "#C5A059",
     image: SEJARAH_IMAGES[4],
   },
   {
-    year: "2020",
-    era: "Ketahanan",
-    title: "Ketahanan di Masa Pandemi",
+    year: "Era Suksesi",
+    era: "Pembaruan Pelayanan",
+    title: "Penahbisan Pdt. Dr. Tri Ratno Wahono, M.Si",
     description:
-      "Menghadapi tantangan pandemi global, GKJ Kebonarum membuktikan ketangguhannya. Dengan kreativitas dan adaptasi penuh kasih, pelayanan terus berjalan meski dalam keterbatasan, memperkuat solidaritas dan iman di antara jemaat.",
+      "Setelah melalui masa orientasi, pembimbingan, dan vikariat dari 7 bakal calon pendeta, Pdt. Dr. Tri Ratno Wahono, M.Si secara resmi ditahbiskan meneruskan kepemimpinan spiritual jemaat.",
     quote:
-      '"Janganlah kita jemu berbuat baik, karena apabila sudah datang waktunya, kita akan menuai, jika kita tidak menjadi lemah." — Galatia 6:9',
-    bg: "#1A2821",
+      '"Bukan kamu yang memilih Aku, tetapi Akulah yang memilih kamu dan menetapkan kamu." — Yohanes 15:16',
+    bg: "#26392F",
     accent: "#D4A373",
     image: SEJARAH_IMAGES[0],
+  },
+  {
+    year: "Era Modern",
+    era: "Pelayanan Masa Kini",
+    title: "Penahbisan Pdt. Debora Dwioktabriani, S.Si",
+    description:
+      "Pdt. Debora Dwioktabriani, S.Si resmi ditahbiskan melayani jemaat GKJ Kebonarum. Beliau aktif memimpin peribadatan dan menggembalakan jemaat di era gereja modern (tercatat aktif hingga era 2020-an).",
+    quote:
+      '"Jadilah teladan bagi orang-orang percaya, dalam perkataanmu, dalam tingkah lakumu, dalam kasihmu..." — 1 Timotius 4:12',
+    bg: "#213229",
+    accent: "#A3B18A",
+    image: SEJARAH_IMAGES[1],
+  },
+  {
+    year: "9 Jul 2026",
+    era: "Jubileum 55 Tahun",
+    title: "Perayaan Syukur HUT ke-55 Kemandirian Gereja",
+    description:
+      "GKJ Kebonarum merayakan Ibadah Syukur 55 Tahun berdiri sebagai gereja mandiri. Perjalanan lima dekade lebih yang membuktikan kesetiaan dan kasih Tuhan dalam persekutuan jemaat.",
+    quote:
+      '"Sampai masa tuamu Aku tetap Dia dan sampai masa putih rambutmu Aku menggendong kamu." — Yesaya 46:4',
+    bg: "#1A2821",
+    accent: "#C5A059",
+    image: SEJARAH_IMAGES[2],
   },
 ];
 
@@ -306,9 +332,9 @@ const SejarahPage = () => {
               Lima dekade penuh berkat, pertumbuhan, dan ketahanan dalam kasih Kristus.
             </p>
             <div className="sejarah-hero-years">
-              <span className="sejarah-hero-year-tag">1970</span>
+              <span className="sejarah-hero-year-tag">1910</span>
               <span className="sejarah-hero-line-connector" />
-              <span className="sejarah-hero-year-tag">2020</span>
+              <span className="sejarah-hero-year-tag">2026</span>
             </div>
           </div>
           <div className="sejarah-scroll-hint">
@@ -378,6 +404,81 @@ const SejarahPage = () => {
           ))}
         </div>
 
+        {/* SECTION: DAFTAR PENDETA YANG MELAYANI */}
+        <section className="sejarah-pendeta-section">
+          <div className="sejarah-pendeta-container">
+            <div className="sejarah-pendeta-header">
+              <span className="section-tag accent">BIMBINGAN ROHANI</span>
+              <h2 className="sejarah-pendeta-title">Daftar Pendeta yang Diangkat & Melayani</h2>
+              <p className="sejarah-pendeta-sub">
+                Dalam perjalanan sejarahnya, proses kependetaan di GKJ Kebonarum sangat dihargai sebagai wujud kepemimpinan spiritual yang setia menggembalakan jemaat.
+              </p>
+            </div>
+
+            <div className="sejarah-pendeta-grid">
+              <div className="pendeta-history-card">
+                <span className="pendeta-badge">Pendeta Konsulen</span>
+                <h3 className="pendeta-name">Pdt. S. Notodiryo</h3>
+                <p className="pendeta-role">Pendeta Konsulen dari GKJ Klaten</p>
+                <p className="pendeta-desc">
+                  Beliau membidani dan memimpin ibadah peresmian pendewasaan GKJ Kebonarum pada 9 Juli 1971, serta mendampingi majelis dalam pencarian calon pendeta definitif pertama.
+                </p>
+                <blockquote className="pendeta-verse">
+                  "Sebab Ia adalah gembala kita, dan kitalah umat gembalaan-Nya." — Mazmur 95:7
+                </blockquote>
+              </div>
+
+              <div className="pendeta-history-card highlight-card">
+                <span className="pendeta-badge gold">Pendeta Pertama</span>
+                <h3 className="pendeta-name">Pdt. Christian Sutopo, DPS</h3>
+                <p className="pendeta-role">Ditahbiskan 1 Desember 1972</p>
+                <p className="pendeta-desc">
+                  Pendeta pertama yang menggembalakan jemaat secara penuh setelah GKJ Kebonarum berdiri mandiri, meletakkan fondasi persekutuan yang kokoh.
+                </p>
+                <blockquote className="pendeta-verse">
+                  "Gembalakanlah kawanan domba Allah yang ada padamu..." — 1 Petrus 5:2
+                </blockquote>
+              </div>
+
+              <div className="pendeta-history-card">
+                <span className="pendeta-badge">Pendeta Jemaat</span>
+                <h3 className="pendeta-name">Pdt. Djimanto Setiadi</h3>
+                <p className="pendeta-role">Setia Melayani hingga Emeritasi</p>
+                <p className="pendeta-desc">
+                  Melayani jemaat dengan penuh dedikasi hingga memasuki masa purna tugas (emeritus), membimbing pertumbuhan rohani jemaat lintas generasi.
+                </p>
+                <blockquote className="pendeta-verse">
+                  "Aku telah mengakhiri pertandingan yang baik, aku telah mencapai garis akhir..." — 2 Timotius 4:7
+                </blockquote>
+              </div>
+
+              <div className="pendeta-history-card">
+                <span className="pendeta-badge">Pendeta Jemaat</span>
+                <h3 className="pendeta-name">Pdt. Dr. Tri Ratno Wahono, M.Si</h3>
+                <p className="pendeta-role">Penerus Masa Emeritasi</p>
+                <p className="pendeta-desc">
+                  Terpilih setelah melewati proses seleksi 7 bakal calon pendeta. Beliau menjalani masa orientasi, pembimbingan, dan vikariat hingga ditahbiskan melayani jemaat.
+                </p>
+                <blockquote className="pendeta-verse">
+                  "Bukan kamu yang memilih Aku, tetapi Akulah yang memilih kamu." — Yohanes 15:16
+                </blockquote>
+              </div>
+
+              <div className="pendeta-history-card highlight-card">
+                <span className="pendeta-badge green">Pendeta Aktif Masa Kini</span>
+                <h3 className="pendeta-name">Pdt. Debora Dwioktabriani, S.Si</h3>
+                <p className="pendeta-role">Pendeta Jemaat Modern (Era 2020-an)</p>
+                <p className="pendeta-desc">
+                  Aktif menggembalakan jemaat GKJ Kebonarum dan memimpin peribadatan modern dengan semangat pembaruan dan kasih di era pelayanan modern.
+                </p>
+                <blockquote className="pendeta-verse">
+                  "Jadilah teladan bagi orang-orang percaya, dalam perkataanmu, dalam tingkah lakumu..." — 1 Timotius 4:12
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="sejarah-closing" ref={closingRef}>
           <div className="sejarah-closing-inner">
             <p className="sejarah-closing-kicker">Melanjutkan Perjalanan</p>
@@ -387,9 +488,7 @@ const SejarahPage = () => {
               Bertumbuh
             </h2>
             <p className="sejarah-closing-sub">
-              Lima dekade telah berlalu, namun perjalanan iman ini masih terus
-              berlanjut. GKJ Kebonarum hadir untuk melayani, berkembang, dan
-              menjadi berkat bagi sesama.
+              Lima dekade lebih perjalanan iman telah kita lalui. GKJ Kebonarum terus berdiri teguh dalam bimbingan Tuhan, hadir untuk melayani, berkembang, dan menjadi berkat bagi sesama.
             </p>
             <button className="sejarah-back-top-btn" onClick={scrollToTop}>
               Kembali ke Awal
