@@ -35,25 +35,37 @@ const EventDetailPage = () => {
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
-    const defaultIndex = Math.max(0, (Number(id) || 1) - 1) % agendaData.length;
-    const matched = agendaData.find((e) => e.id === Number(id)) || agendaData[defaultIndex];
-    setEvent(matched);
+    const matched = agendaData.find((e) => String(e.id) === String(id));
+    if (matched) {
+      setEvent(matched);
+    }
 
     const fetchDetail = async () => {
       try {
         const response = await fetch(createApiUrl(`/api/agenda/${id}`));
         if (response.ok) {
           const data = await response.json();
-          if (data && data.title) {
+          if (data && (data.title || data.id)) {
             setEvent({
               ...data,
-              image: data.image || matched.image,
-              content: data.content || matched.content,
+              image: data.image || (matched ? matched.image : event1),
+              content: Array.isArray(data.content)
+                ? data.content
+                : typeof data.description === "string"
+                ? [data.description]
+                : matched
+                ? matched.content
+                : [],
             });
+            return;
           }
         }
       } catch {
         // Fallback matched event already set
+      }
+
+      if (!matched) {
+        setEvent(agendaData[0]);
       }
     };
 

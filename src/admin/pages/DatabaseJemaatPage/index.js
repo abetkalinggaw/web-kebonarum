@@ -1494,21 +1494,37 @@ const DatabaseJemaatPage = () => {
                 >
                   Batal
                 </button>
-                <button
-                  type="submit"
-                  className="admin-btn"
-                  disabled={submitting}
+                <div
+                  onClick={(e) => {
+                    if (!formData.namaLengkap?.trim()) {
+                      e.preventDefault();
+                      showToast("Harap isi Nama Lengkap Jemaat", "warning");
+                    }
+                  }}
+                  style={{ display: "inline-block" }}
                 >
-                  {submitting ? (
-                    <>
-                      <Loader size={18} className="fa-spin" /> Menyimpan...
-                    </>
-                  ) : (
-                    <>
-                      <Save size={18} /> Simpan Data Jemaat
-                    </>
-                  )}
-                </button>
+                  <button
+                    type="submit"
+                    className="admin-btn"
+                    disabled={submitting || !formData.namaLengkap?.trim()}
+                    style={{
+                      opacity: !formData.namaLengkap?.trim() ? 0.5 : 1,
+                      cursor: !formData.namaLengkap?.trim() ? "not-allowed" : "pointer",
+                      background: !formData.namaLengkap?.trim() ? "#9ca3af" : undefined,
+                      borderColor: !formData.namaLengkap?.trim() ? "#9ca3af" : undefined,
+                    }}
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader size={18} className="fa-spin" /> Menyimpan...
+                      </>
+                    ) : (
+                      <>
+                        <Save size={18} /> Simpan Data Jemaat
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </form>
           </div>

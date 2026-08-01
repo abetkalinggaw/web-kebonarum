@@ -1,46 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WartaListPage.css";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
-
-const wartaList = [
-  {
-    id: 1,
-    title: "Warta Gereja Minggu, 1 Maret 2026",
-    date: "2026-03-01",
-    description:
-      "Warta jemaat minggu pertama bulan Maret 2026, memuat pengumuman kegiatan ibadah, pelayanan diakonia, dan agenda persekutuan doa bersama jemaat GKJ Kebonarum.",
-  },
-  {
-    id: 2,
-    title: "Warta Gereja Minggu, 22 Februari 2026",
-    date: "2026-02-22",
-    description:
-      "Informasi kegiatan ibadah, jadwal pelayanan, serta laporan perkembangan renovasi gedung gereja dan rencana kegiatan Paskah mendatang.",
-  },
-  {
-    id: 3,
-    title: "Warta Gereja Minggu, 15 Februari 2026",
-    date: "2026-02-15",
-    description:
-      "Pengumuman pembentukan panitia hari jadi gereja, jadwal pemuda-pemudi, dan informasi terkait penerimaan anggota jemaat baru.",
-  },
-  {
-    id: 4,
-    title: "Warta Gereja Minggu, 8 Februari 2026",
-    date: "2026-02-08",
-    description:
-      "Warta jemaat memuat agenda pendampingan pastoral, kegiatan sekolah minggu, serta pengumuman dari majelis gereja untuk bulan Februari.",
-  },
-  {
-    id: 5,
-    title: "Warta Gereja Minggu, 1 Februari 2026",
-    date: "2026-02-01",
-    description:
-      "Laporan diakonia bulan Januari, informasi kunjungan majelis, jadwal ibadah rumah tangga, dan agenda persekutuan seluruh jemaat.",
-  },
-];
+import { createApiUrl } from "../../../utils/apiConfig";
+import { initialWartaData } from "../../../data/wartaData";
 
 const MONTHS_ID = [
   "Jan",
@@ -73,6 +37,7 @@ const MONTHS_FULL_ID = [
 ];
 
 function parseDate(dateStr) {
+  if (!dateStr) return { day: 1, month: 1, year: 2026 };
   const [year, month, day] = dateStr.split("-").map(Number);
   return { day, month, year };
 }
@@ -81,7 +46,7 @@ function groupByMonth(list) {
   const groups = [];
   const seen = {};
   list.forEach((warta) => {
-    const { month, year } = parseDate(warta.date);
+    const { month, year } = parseDate(warta.date || warta.tanggal);
     const key = `${year}-${month}`;
     if (!seen[key]) {
       seen[key] = true;
@@ -89,12 +54,46 @@ function groupByMonth(list) {
     }
     groups.find((g) => g.key === key).items.push(warta);
   });
+
+  // Sort month groups from latest to oldest
+  groups.sort((a, b) => {
+    if (b.year !== a.year) return b.year - a.year;
+    return b.month - a.month;
+  });
+
+  // Sort items inside each month group from latest to oldest date
+  groups.forEach((group) => {
+    group.items.sort((a, b) => {
+      const dateA = new Date(a.date || a.tanggal || 0);
+      const dateB = new Date(b.date || b.tanggal || 0);
+      return dateB - dateA;
+    });
+  });
+
   return groups;
 }
 
 const WartaListPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [wartaList, setWartaList] = useState(initialWartaData);
+
+  useEffect(() => {
+    const fetchWartaData = async () => {
+      try {
+        const response = await fetch(createApiUrl("/api/warta"));
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setWartaList(data);
+          }
+        }
+      } catch {
+        // Fallback to initialWartaData
+      }
+    };
+    fetchWartaData();
+  }, []);
 
   const handleBackClick = () => {
     if (window.history.length > 1) {
@@ -104,12 +103,23 @@ const WartaListPage = () => {
     navigate("/");
   };
 
-  const filteredWarta = wartaList.filter(
-    (warta) =>
-      warta.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      warta.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      warta.date.includes(searchQuery)
-  );
+  const filteredWarta = [...wartaList]
+    .sort((a, b) => {
+      const dateA = new Date(a.date || a.tanggal || 0);
+      const dateB = new Date(b.date || b.tanggal || 0);
+      return dateB - dateA;
+    })
+    .filter((warta) => {
+      const title = warta.title || "";
+      const description = warta.description || "";
+      const date = warta.date || warta.tanggal || "";
+      const q = searchQuery.toLowerCase();
+      return (
+        title.toLowerCase().includes(q) ||
+        description.toLowerCase().includes(q) ||
+        date.includes(q)
+      );
+    });
 
   const groupedWarta = groupByMonth(filteredWarta);
 

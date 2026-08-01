@@ -35,7 +35,12 @@ const AgendaPage = () => {
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data) && data.length > 0) {
-            data.sort((a, b) => new Date(a.date) - new Date(b.date));
+            data.sort((a, b) => {
+              const dateA = new Date(a.date || 0);
+              const dateB = new Date(b.date || 0);
+              if (dateB - dateA !== 0) return dateB - dateA;
+              return String(b.id).localeCompare(String(a.id));
+            });
             setAgenda(data);
           }
         }

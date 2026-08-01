@@ -1,81 +1,11 @@
+import { useState, useEffect } from "react";
 import "./WartaReadPage.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
-
-const wartaList = [
-  {
-    id: 1,
-    title: "Warta Gereja Minggu, 1 Maret 2026",
-    date: "2026-03-01",
-    description:
-      "Warta jemaat minggu pertama bulan Maret 2026, memuat pengumuman kegiatan ibadah, pelayanan diakonia, dan agenda persekutuan doa bersama jemaat GKJ Kebonarum.",
-    content: [
-      "Selamat datang di ibadah minggu pertama bulan Maret 2026. Kiranya kasih dan damai sejahtera Tuhan menyertai kita semua dalam setiap langkah pelayanan.",
-      "Pengumuman kegiatan: Ibadah Pagi akan dilaksanakan pada pukul 07.30 WIB dan ibadah sore pada pukul 17.00 WIB. Diharapkan seluruh jemaat dapat hadir tepat waktu.",
-      "Pelayanan diakonia bulan ini akan difokuskan pada bantuan sembako bagi jemaat yang membutuhkan. Jemaat yang ingin berpartisipasi dapat menghubungi majelis gereja.",
-      "Persekutuan doa bersama akan diadakan setiap Rabu malam pukul 19.00 WIB di gedung gereja. Mari kita saling menguatkan dalam doa.",
-      "Untuk informasi lebih lanjut tentang kegiatan gereja, silakan menghubungi sekretariat GKJ Kebonarum.",
-    ],
-    googleDriveFiles: [],
-  },
-  {
-    id: 2,
-    title: "Warta Gereja Minggu, 22 Februari 2026",
-    date: "2026-02-22",
-    description:
-      "Informasi kegiatan ibadah, jadwal pelayanan, serta laporan perkembangan renovasi gedung gereja dan rencana kegiatan Paskah mendatang.",
-    content: [
-      "Salam sejahtera dalam kasih Kristus. Pada minggu ini kita kembali berhimpun untuk bersyukur atas anugerah Tuhan yang selalu menyertai kita.",
-      "Laporan renovasi gedung: Pekerjaan renovasi gedung gereja saat ini telah mencapai 60% dan diperkirakan akan selesai pada bulan April 2026. Ucapan terima kasih kami sampaikan kepada seluruh jemaat yang telah mendukung melalui doa dan persembahan.",
-      "Persiapan Paskah: Panitia Paskah 2026 telah dibentuk. Terdapat berbagai kegiatan yang akan dipersiapkan, mulai dari ibadah Kamis Putih, Jumat Agung, hingga Kebaktian Pagi Paskah.",
-      "Jadwal pelayanan bulan Maret akan segera diumumkan. Jemaat yang ingin terlibat dalam tim pelayanan dapat mendaftarkan diri kepada koordinator masing-masing bidang.",
-    ],
-    googleDriveFiles: [],
-  },
-  {
-    id: 3,
-    title: "Warta Gereja Minggu, 15 Februari 2026",
-    date: "2026-02-15",
-    description:
-      "Pengumuman pembentukan panitia hari jadi gereja, jadwal pemuda-pemudi, dan informasi terkait penerimaan anggota jemaat baru.",
-    content: [
-      "Puji syukur kepada Tuhan atas pertemuan kita kembali dalam ibadah hari ini. Kiranya firman Tuhan memperbarui semangat kita dalam melayani.",
-      "Hari Jadi Gereja: Dalam rangka memperingati hari jadi GKJ Kebonarum, telah dibentuk panitia perayaan. Jemaat yang ingin berpartisipasi dalam kepanitiaan dapat menghubungi sekretariat gereja.",
-      "Kegiatan Pemuda-Pemudi: Persekutuan Pemuda-Pemudi GKJ Kebonarum mengundang seluruh anak muda jemaat untuk hadir dalam pertemuan bulanan yang akan diadakan Sabtu ini pukul 16.00 WIB.",
-      "Penerimaan Anggota Jemaat Baru: Bagi keluarga atau perorangan yang ingin menjadi anggota jemaat GKJ Kebonarum, silakan menghubungi majelis gereja untuk mendapatkan informasi lebih lanjut mengenai proses dan persyaratan.",
-    ],
-    googleDriveFiles: [],
-  },
-  {
-    id: 4,
-    title: "Warta Gereja Minggu, 8 Februari 2026",
-    date: "2026-02-08",
-    description:
-      "Warta jemaat memuat agenda pendampingan pastoral, kegiatan sekolah minggu, serta pengumuman dari majelis gereja untuk bulan Februari.",
-    content: [
-      "Selamat beribadah, jemaat GKJ Kebonarum yang terkasih. Tuhan memberkati persekutuan kita hari ini.",
-      "Pendampingan Pastoral: Tim pastoral gereja akan mengadakan kunjungan ke rumah-rumah jemaat sepanjang bulan Februari. Jemaat yang ingin mendapatkan kunjungan dapat mendaftarkan diri melalui formulir yang tersedia di sekretariat.",
-      "Sekolah Minggu: Kelas Sekolah Minggu untuk anak-anak dibuka setiap minggu bersamaan dengan ibadah pagi. Orang tua diharapkan mendaftarkan anak-anak mereka kepada pengurus Sekolah Minggu.",
-      "Pengumuman Majelis: Rapat Majelis bulan Februari akan diadakan pada Selasa, 10 Februari 2026 pukul 19.00 WIB. Seluruh anggota majelis dimohon hadir tepat waktu.",
-    ],
-    googleDriveFiles: [],
-  },
-  {
-    id: 5,
-    title: "Warta Gereja Minggu, 1 Februari 2026",
-    date: "2026-02-01",
-    description:
-      "Laporan diakonia bulan Januari, informasi kunjungan majelis, jadwal ibadah rumah tangga, dan agenda persekutuan seluruh jemaat.",
-    content: [
-      "Memasuki bulan Februari, kita bersyukur atas penyertaan Tuhan sepanjang bulan Januari yang telah berlalu. Kiranya kasih dan damai-Nya terus menyertai perjalanan kita.",
-      "Laporan Diakonia Januari 2026: Sepanjang bulan Januari, tim diakonia telah menyalurkan bantuan kepada 12 keluarga jemaat yang membutuhkan. Terima kasih atas kepercayaan dan dukungan jemaat dalam pelayanan ini.",
-      "Ibadah Rumah Tangga: Jadwal ibadah rumah tangga bulan Februari telah tersedia dan dapat diambil di meja informasi gereja. Jemaat diundang untuk membuka pintu rumah sebagai tempat ibadah dan persekutuan.",
-      "Agenda Persekutuan: Persekutuan jemaat seluruh GKJ Kebonarum akan diadakan pada akhir bulan Februari. Informasi tempat dan waktu akan segera diumumkan. Mari hadir dan mempererat tali persaudaraan kita sebagai satu tubuh Kristus.",
-    ],
-    googleDriveFiles: [],
-  },
-];
+import { ArrowLeft, Download, FileText } from "lucide-react";
+import { createApiUrl } from "../../../utils/apiConfig";
+import { initialWartaData } from "../../../data/wartaData";
 
 const MONTHS_FULL_ID = [
   "Januari",
@@ -93,6 +23,7 @@ const MONTHS_FULL_ID = [
 ];
 
 function formatFullDate(dateStr) {
+  if (!dateStr) return "";
   const [year, month, day] = dateStr.split("-").map(Number);
   return `${day} ${MONTHS_FULL_ID[month - 1]} ${year}`;
 }
@@ -100,8 +31,29 @@ function formatFullDate(dateStr) {
 const WartaReadPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [warta, setWarta] = useState(null);
 
-  const warta = wartaList.find((w) => w.id === Number(id));
+  useEffect(() => {
+    const fetchSingleWarta = async () => {
+      try {
+        const response = await fetch(createApiUrl(`/api/warta/${id}`));
+        if (response.ok) {
+          const data = await response.json();
+          if (data && (data.title || data.id)) {
+            setWarta(data);
+            return;
+          }
+        }
+      } catch {
+        // Fallback below
+      }
+
+      const fallback = initialWartaData.find((w) => String(w.id) === String(id)) || initialWartaData[0];
+      setWarta(fallback);
+    };
+
+    fetchSingleWarta();
+  }, [id]);
 
   const handleBackClick = () => {
     if (window.history.length > 1) {
@@ -111,34 +63,36 @@ const WartaReadPage = () => {
     navigate("/pengumuman/warta-gereja");
   };
 
+  const getPdfUrl = () => {
+    if (!warta) return "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+    if (Array.isArray(warta.googleDriveFiles) && warta.googleDriveFiles.length > 0) {
+      return warta.googleDriveFiles[0];
+    }
+    if (typeof warta.googleDriveFiles === "string" && warta.googleDriveFiles.trim()) {
+      return warta.googleDriveFiles.trim().split("\n")[0];
+    }
+    return warta.pdfUrl || warta.fileUrl || "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+  };
+
+  const pdfDocumentUrl = getPdfUrl();
+
   return (
     <>
       <Navbar />
       <main className="warta-read-page">
+        {/* Center-aligned Hero Section */}
         <section className="warta-read-hero">
-          <div className="warta-read-hero-content">
+          <div className="warta-read-hero-content center-aligned">
             <button className="back-button" onClick={handleBackClick}>
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                width="16"
-                height="16"
-              >
-                <line x1="19" y1="12" x2="5" y2="12" />
-                <polyline points="12 19 5 12 12 5" />
-              </svg>
-              Kembali ke Daftar Warta
+              <ArrowLeft size={16} />
+              <span>Kembali ke Daftar Warta</span>
             </button>
 
             {warta ? (
               <>
-                <p className="warta-read-kicker">
+                <span className="warta-read-kicker">
                   {formatFullDate(warta.date)}
-                </p>
+                </span>
                 <h1 className="warta-read-hero-title">{warta.title}</h1>
                 <p className="warta-read-hero-lead">{warta.description}</p>
               </>
@@ -150,68 +104,57 @@ const WartaReadPage = () => {
 
         {warta ? (
           <article className="warta-read-article">
+            {/* 2 Paragraph Long Description */}
             <div className="warta-read-body">
-              {warta.content.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
+              {(() => {
+                const list = Array.isArray(warta.paragraphs)
+                  ? warta.paragraphs
+                  : Array.isArray(warta.content)
+                  ? warta.content
+                  : typeof warta.paragraphs === "string"
+                  ? warta.paragraphs.split("\n").filter(Boolean)
+                  : [];
+                return list.length > 0 ? (
+                  list.slice(0, 2).map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))
+                ) : (
+                  <p>{warta.description}</p>
+                );
+              })()}
             </div>
-            {warta.googleDriveFiles && warta.googleDriveFiles.length > 0 && (
-              <div className="warta-google-drive-section">
-                <h3 className="warta-google-drive-title">File Terlampir</h3>
-                <div className="warta-google-drive-files-list">
-                  {warta.googleDriveFiles.map((file, index) => (
-                    <a
-                      key={index}
-                      href={`https://drive.google.com/file/d/${file.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="warta-google-drive-file-link"
-                    >
-                      <div className="warta-google-drive-file-card">
-                        <div className="warta-google-drive-file-icon">
-                          <svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-                            <polyline points="13 2 13 9 20 9" />
-                          </svg>
-                        </div>
-                        <div className="warta-google-drive-file-details">
-                          <p className="warta-google-drive-file-name">
-                            {file.name}
-                          </p>
-                          <p className="warta-google-drive-file-source">
-                            Google Drive
-                          </p>
-                        </div>
-                        <div className="warta-google-drive-file-arrow">
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                            <polyline points="12 5 19 12 12 19" />
-                          </svg>
-                        </div>
-                      </div>
-                    </a>
-                  ))}
+
+            {/* Preview PDF Container */}
+            <div className="warta-pdf-preview-section">
+              <div className="warta-pdf-header">
+                <div className="warta-pdf-title-wrap">
+                  <FileText size={20} className="pdf-icon" />
+                  <h3>Pratinjau Dokumen Warta (PDF)</h3>
                 </div>
               </div>
-            )}
+
+              <div className="warta-pdf-frame-wrapper">
+                <iframe
+                  src={`${pdfDocumentUrl}#toolbar=0`}
+                  title={warta.title}
+                  className="warta-pdf-iframe"
+                />
+              </div>
+
+              {/* Align Right Download Button under PDF Preview */}
+              <div className="warta-pdf-actions-right">
+                <a
+                  href={pdfDocumentUrl}
+                  download={`${warta.title}.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="unduh-warta-btn"
+                >
+                  <Download size={18} />
+                  <span>Unduh Warta</span>
+                </a>
+              </div>
+            </div>
           </article>
         ) : (
           <div className="warta-not-found">

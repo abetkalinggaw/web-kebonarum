@@ -9,6 +9,13 @@ router.get('/', (req, res) => {
   res.json(readStore(STORE_NAME));
 });
 
+router.get('/:id', (req, res) => {
+  const items = readStore(STORE_NAME);
+  const item = items.find((a) => String(a.id) === String(req.params.id));
+  if (!item) return res.status(404).json({ message: 'Agenda not found' });
+  res.json(item);
+});
+
 router.post('/', authMiddleware, requireRole('Superadmin', 'Admin'), (req, res) => {
   const items = readStore(STORE_NAME);
   const newItem = { id: Date.now().toString(), ...req.body };

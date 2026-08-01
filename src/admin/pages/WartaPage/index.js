@@ -24,6 +24,7 @@ const WartaPage = () => {
   const [wartas, setWartas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState('date-desc'); // 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc'
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'table'
 
   const [showModal, setShowModal] = useState(false);
@@ -75,6 +76,7 @@ const WartaPage = () => {
         await apiCall(`/warta/${formData.id}`, { method: 'PUT', body: JSON.stringify(payload) });
         showToast(`Dokumen warta "${formData.title}" diperbarui`, 'success');
       } else {
+        delete payload.id;
         await apiCall('/warta', { method: 'POST', body: JSON.stringify(payload) });
         showToast(`Dokumen warta "${formData.title}" berhasil dipublikasikan`, 'success');
       }
@@ -127,11 +129,27 @@ const WartaPage = () => {
 
   const isReadOnly = (user?.role || '').toLowerCase() === 'users';
 
-  const filteredWartas = wartas.filter(item => {
-    if (!search) return true;
-    const q = search.toLowerCase();
-    return item.title?.toLowerCase().includes(q) || item.date?.toLowerCase().includes(q);
-  });
+  const filteredWartas = wartas
+    .filter((item) => {
+      if (!search) return true;
+      const q = search.toLowerCase();
+      return (
+        item.title?.toLowerCase().includes(q) ||
+        item.date?.toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.date || a.tanggal || 0);
+      const dateB = new Date(b.date || b.tanggal || 0);
+      const titleA = (a.title || '').toLowerCase();
+      const titleB = (b.title || '').toLowerCase();
+
+      if (sortBy === 'date-desc') return dateB - dateA;
+      if (sortBy === 'date-asc') return dateA - dateB;
+      if (sortBy === 'title-asc') return titleA.localeCompare(titleB);
+      if (sortBy === 'title-desc') return titleB.localeCompare(titleA);
+      return 0;
+    });
 
   return (
     <div className="warta-admin-page">
@@ -171,8 +189,17 @@ const WartaPage = () => {
 
         {/* Row 2: Filters & View Mode Toggle */}
         <div className="admin-filter-row-2">
-          <div style={{ fontSize: '0.85rem', color: 'var(--admin-text-muted)', fontFamily: 'var(--admin-font-mono)' }}>
-            Menampilkan {filteredWartas.length} dari {wartas.length} dokumen warta
+          <div className="admin-filter-dropdowns">
+            <select
+              className="admin-select admin-filter-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="date-desc">Terbaru (Tanggal)</option>
+              <option value="date-asc">Terlama (Tanggal)</option>
+              <option value="title-asc">Judul (A - Z)</option>
+              <option value="title-desc">Judul (Z - A)</option>
+            </select>
           </div>
 
           <div className="admin-view-toggle">
@@ -347,11 +374,13 @@ const WartaPage = () => {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div className="admin-input-group">
-                <label className="admin-input-label">Judul Warta Gereja</label>
+                <label className="admin-input-label">
+                  Judul Warta Gereja <span style={{ color: 'var(--admin-danger)' }}>*</span>
+                </label>
                 <input
                   type="text"
                   className="admin-input"
-                  placeholder="Contoh: Warta Minggu IV Tatalaksana Ibadah..."
+                  placeholder="Contoh: Warta Gereja Minggu, 1 Maret 2026..."
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
@@ -359,7 +388,9 @@ const WartaPage = () => {
               </div>
 
               <div className="admin-input-group">
-                <label className="admin-input-label">Tanggal Pelaksanaan</label>
+                <label className="admin-input-label">
+                  Tanggal Pelaksanaan / Terbit <span style={{ color: 'var(--admin-danger)' }}>*</span>
+                </label>
                 <input
                   type="date"
                   className="admin-input"
@@ -370,45 +401,65 @@ const WartaPage = () => {
               </div>
 
               <div className="admin-input-group">
-                <label className="admin-input-label">Deskripsi / Ringkasan Singkat</label>
+                <label className="admin-input-label">Ringkasan Hero (Lead Header)</label>
                 <textarea
                   className="admin-textarea"
                   rows="2"
-                  placeholder="Ringkasan warta untuk kartu pratinjau..."
+                  placeholder="Ringkasan singkat warta untuk bagian header..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 ></textarea>
               </div>
 
               <div className="admin-input-group">
-                <label className="admin-input-label">Paragraf / Isi Berita (Satu paragraf per baris)</label>
+                <label className="admin-input-label">Deskripsi Lengkap (2 Paragraf - Pisahkan dengan Enter)</label>
                 <textarea
                   className="admin-textarea"
-                  rows="5"
-                  placeholder="Ketik isi paragraf Warta Gereja..."
+                  rows="4"
+                  placeholder="Paragraf 1: Pengantar ibadah & persekutuan...&#10;Paragraf 2: Informasi pengumuman & pendampingan..."
                   value={formData.paragraphs}
                   onChange={(e) => setFormData({ ...formData, paragraphs: e.target.value })}
                 ></textarea>
               </div>
 
               <div className="admin-input-group">
-                <label className="admin-input-label">Link Berkas PDF Google Drive (Pisahkan dengan Enter)</label>
-                <textarea
-                  className="admin-textarea"
-                  rows="2"
-                  placeholder="https://drive.google.com/..."
+                <label className="admin-input-label">Link File PDF Warta (Untuk Pratinjau & Tombol Unduh)</label>
+                <input
+                  type="url"
+                  className="admin-input"
+                  placeholder="https://example.com/warta-1-maret-2026.pdf"
                   value={formData.googleDriveFiles}
                   onChange={(e) => setFormData({ ...formData, googleDriveFiles: e.target.value })}
-                ></textarea>
+                />
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
                 <button type="button" className="admin-btn secondary" onClick={() => setShowModal(false)} disabled={submitting}>
                   Batal
                 </button>
-                <button type="submit" className="admin-btn" disabled={submitting}>
-                  {submitting ? <Loader size={18} className="fa-spin" /> : <Save size={18} />} Simpan Warta
-                </button>
+                <div
+                  onClick={(e) => {
+                    if (!formData.title?.trim() || !formData.date?.trim()) {
+                      e.preventDefault();
+                      showToast('Harap lengkapi judul warta dan tanggal publikasi', 'warning');
+                    }
+                  }}
+                  style={{ display: 'inline-block' }}
+                >
+                  <button
+                    type="submit"
+                    className="admin-btn"
+                    disabled={submitting || !formData.title?.trim() || !formData.date?.trim()}
+                    style={{
+                      opacity: (!formData.title?.trim() || !formData.date?.trim()) ? 0.5 : 1,
+                      cursor: (!formData.title?.trim() || !formData.date?.trim()) ? 'not-allowed' : 'pointer',
+                      background: (!formData.title?.trim() || !formData.date?.trim()) ? '#9ca3af' : undefined,
+                      borderColor: (!formData.title?.trim() || !formData.date?.trim()) ? '#9ca3af' : undefined,
+                    }}
+                  >
+                    {submitting ? <Loader size={18} className="fa-spin" /> : <Save size={18} />} Simpan Warta
+                  </button>
+                </div>
               </div>
             </form>
           </div>

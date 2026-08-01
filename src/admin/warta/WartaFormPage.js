@@ -163,11 +163,11 @@ const WartaFormPage = () => {
 
                   <div className="warta-field-full">
                     <label className="warta-label warta-label-required">
-                      Deskripsi Singkat
+                      Ringkasan Subtitle Hero
                     </label>
                     <textarea
                       className="warta-textarea"
-                      placeholder="Ringkasan singkat isi warta gereja untuk ditampilkan di halaman daftar..."
+                      placeholder="Ringkasan warta gereja untuk judul header..."
                       value={form.description}
                       onChange={(e) =>
                         handleChange("description", e.target.value)
@@ -178,7 +178,7 @@ const WartaFormPage = () => {
 
                   <div className="warta-field-full">
                     <p className="warta-paragraphs-label">
-                      Isi Warta <span style={{ color: "#c0392b" }}>*</span>
+                      Isi Warta (2 Paragraf Utama) <span style={{ color: "#c0392b" }}>*</span>
                     </p>
                     <div className="warta-paragraphs">
                       {form.paragraphs.map((para, index) => (
@@ -218,26 +218,28 @@ const WartaFormPage = () => {
                           )}
                         </div>
                       ))}
-                      <button
-                        type="button"
-                        className="warta-add-paragraph-btn"
-                        onClick={addParagraph}
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                      {form.paragraphs.length < 2 && (
+                        <button
+                          type="button"
+                          className="warta-add-paragraph-btn"
+                          onClick={addParagraph}
                         >
-                          <line x1="12" y1="5" x2="12" y2="19" />
-                          <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        Tambah Paragraf
-                      </button>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                          </svg>
+                          Tambah Paragraf Ke-2
+                        </button>
+                      )}
                     </div>
                   </div>
 
