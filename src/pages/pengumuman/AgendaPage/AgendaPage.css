@@ -31,15 +31,15 @@
   inset: 0;
   background:
     radial-gradient(
-      ellipse 70% 60% at 50% 40%,
-      rgba(196, 136, 74, 0.15) 0%,
-      transparent 70%
+      ellipse 80% 65% at 50% 35%,
+      rgba(52, 78, 65, 0.25) 0%,
+      transparent 75%
     ),
     linear-gradient(
       180deg,
-      rgba(28, 22, 18, 0.45) 0%,
-      rgba(28, 22, 18, 0.75) 60%,
-      rgba(28, 22, 18, 0.95) 100%
+      rgba(26, 40, 33, 0.55) 0%,
+      rgba(26, 40, 33, 0.85) 65%,
+      rgba(26, 40, 33, 0.98) 100%
     );
   z-index: 1;
 }

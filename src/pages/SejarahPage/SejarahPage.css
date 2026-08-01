@@ -76,14 +76,17 @@
   inset: 0;
   background:
     radial-gradient(
-      ellipse 70% 60% at 50% 50%,
-      rgba(196, 136, 74, 0.12) 0%,
-      transparent 70%
+      ellipse 90% 75% at 50% 30%,
+      rgba(52, 78, 65, 0.35) 0%,
+      rgba(34, 52, 43, 0.15) 55%,
+      transparent 80%
     ),
     linear-gradient(
       180deg,
-      rgba(28, 22, 18, 0.45) 0%,
-      rgba(28, 22, 18, 0.75) 100%
+      rgba(26, 40, 33, 0.35) 0%,
+      rgba(34, 52, 43, 0.65) 40%,
+      rgba(26, 40, 33, 0.88) 75%,
+      rgba(26, 40, 33, 0.98) 100%
     );
   pointer-events: none;
 }

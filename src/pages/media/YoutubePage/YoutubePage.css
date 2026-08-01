@@ -23,22 +23,34 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(28, 22, 18, 0.45) 0%,
-    rgba(28, 22, 18, 0.72) 55%,
-    rgba(28, 22, 18, 0.9) 100%
-  );
+  background:
+    radial-gradient(
+      ellipse 80% 65% at 50% 35%,
+      rgba(52, 78, 65, 0.25) 0%,
+      transparent 75%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(26, 40, 33, 0.55) 0%,
+      rgba(26, 40, 33, 0.85) 65%,
+      rgba(26, 40, 33, 0.98) 100%
+    );
   z-index: 1;
 }
 
 .youtube-hero-has-live::before {
-  background: linear-gradient(
-    180deg,
-    rgba(28, 22, 18, 0.6) 0%,
-    rgba(28, 22, 18, 0.8) 60%,
-    rgba(28, 22, 18, 0.95) 100%
-  );
+  background:
+    radial-gradient(
+      ellipse 80% 65% at 50% 35%,
+      rgba(52, 78, 65, 0.35) 0%,
+      transparent 75%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(26, 40, 33, 0.65) 0%,
+      rgba(26, 40, 33, 0.88) 60%,
+      rgba(26, 40, 33, 0.98) 100%
+    );
 }
 
 .youtube-hero-content {
