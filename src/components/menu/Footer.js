@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
 import logo from "../../assets/logo.png";
+import { Camera, Mail, MessageCircle, Video } from 'lucide-react';
 
 const Footer = ({ isStatic = false }) => {
   const footerRef = useRef(null);
@@ -212,7 +213,7 @@ const Footer = ({ isStatic = false }) => {
                   className="footer-link"
                   style={{ marginBottom: 0 }}
                 >
-                  <i className="fab fa-whatsapp"></i> +62 812 345 678
+                  <MessageCircle size={18} /> +62 812 345 678
                 </a>
               </div>
 
@@ -232,7 +233,7 @@ const Footer = ({ isStatic = false }) => {
                   className="footer-link"
                   style={{ marginBottom: 0 }}
                 >
-                  <i className="far fa-envelope"></i>{" "}
+                  <Mail size={18} />{" "}
                   gkjkebonarumklaten@gmail.com
                 </a>
               </div>
@@ -248,7 +249,7 @@ const Footer = ({ isStatic = false }) => {
                   className="social-btn"
                   aria-label="YouTube"
                 >
-                  <i className="fab fa-youtube"></i>
+                  <Video size={18} />
                 </a>
                 <a
                   href="https://instagram.com/gkj_kebonarum"
@@ -257,7 +258,7 @@ const Footer = ({ isStatic = false }) => {
                   className="social-btn"
                   aria-label="Instagram GKJ"
                 >
-                  <i className="fab fa-instagram"></i>
+                  <Camera size={18} />
                 </a>
                 <a
                   href="https://instagram.com/multimedia.gkj.kebonarum"
@@ -266,7 +267,7 @@ const Footer = ({ isStatic = false }) => {
                   className="social-btn"
                   aria-label="Instagram Multimedia"
                 >
-                  <i className="fab fa-instagram"></i>
+                  <Camera size={18} />
                 </a>
               </div>
             </div>

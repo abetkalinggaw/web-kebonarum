@@ -1,10 +1,13 @@
-@import url("https://api.fontshare.com/v2/css?f[]=melodrama@300,400,500,600,700&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=clash-display@300,400,500,600,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ============================================================
@@ -15,10 +18,10 @@
 
 :root {
   /* --- Font Families --- */
-  --font-display: "Melodrama", "Georgia", serif;
+  --font-display: "Clash Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", "Courier New", monospace;
-  /* Heading alias — maps to Melodrama for consistent serif display headings across all pages */
+  /* Heading alias — maps to Clash Display for consistent sans-serif display headings across all pages */
   --font-heading: var(--font-display);
 
   /* --- Type Weights --- */
@@ -48,52 +51,68 @@
      COLOR PALETTE — Javanese Cultural Palette
      ============================================================ */
 
-  /* Wengè — near-black warm-brown base, like aged teak */
-  --color-wenge: #1C1612;
-  --color-wenge-light: #2A221C;
-  --color-wenge-muted: #3A2F27;
+  /* Primary Brunswick / Deep Sage Base — #344E41 */
+  --color-pine: #344E41;
+  --color-pine-dark: #22342B;
+  --color-pine-deep: #1A2821;
+  --color-pine-muted: #4A6B5B;
+  --color-pine-subtle: #5C7F6E;
+  --color-pine-pale: rgba(52, 78, 65, 0.08);
 
-  /* Gading — ivory/cream, batik cloth ground */
-  --color-gading: #F2EBE0;
-  --color-gading-warm: #EDE3D5;
-  --color-gading-deep: #E0D4C4;
+  /* Clean Minimal Surface & Backgrounds */
+  --color-surface-bg: #F4F6F4;
+  --color-surface-warm: #F9FAF9;
+  --color-surface-card: #FFFFFF;
+  --color-surface-muted: #EAEFEA;
+  --color-surface-border: #D8E0D8;
 
-  /* Soga — traditional Javanese batik dye, warm terracotta */
-  --color-soga: #8B4513;
-  --color-soga-light: #A85520;
-  --color-soga-pale: rgba(139, 69, 19, 0.12);
+  /* Accent & Warm Contrast — Warm Gold/Ochre & Subtle Sage */
+  --color-accent-gold: #A3B18A;
+  --color-accent-warm: #C5A059;
+  --color-accent-amber: #D4A373;
+  --color-accent-pale: rgba(197, 160, 89, 0.12);
 
-  /* Kunyit — turmeric gold, warmth and light */
-  --color-kunyit: #C4884A;
-  --color-kunyit-light: #D9A06A;
-  --color-kunyit-pale: rgba(196, 136, 74, 0.15);
+  /* Legacy & Cultural Named Mappings (Mapped to new scheme for full compatibility) */
+  --color-wenge: var(--color-pine-deep);
+  --color-wenge-light: var(--color-pine-dark);
+  --color-wenge-muted: var(--color-pine);
 
-  /* Daun — muted forest green, kept for context but subordinate */
-  --color-daun: #3D5247;
-  --color-daun-light: #4E6559;
-  --color-daun-pale: rgba(61, 82, 71, 0.08);
+  --color-gading: #F4F6F4;
+  --color-gading-warm: #EAEFEA;
+  --color-gading-deep: #D8E0D8;
 
-  /* Putih — clean white surfaces */
+  --color-soga: #344E41;
+  --color-soga-light: #4A6B5B;
+  --color-soga-pale: rgba(52, 78, 65, 0.10);
+
+  --color-kunyit: #C5A059;
+  --color-kunyit-light: #D4A373;
+  --color-kunyit-pale: rgba(197, 160, 89, 0.15);
+
+  --color-daun: #344E41;
+  --color-daun-light: #4A6B5B;
+  --color-daun-pale: rgba(52, 78, 65, 0.08);
+
   --color-putih: #FFFFFF;
-  --color-putih-warm: #FDFAF6;
-  --color-putih-soft: #F7F2EC;
+  --color-putih-warm: #F9FAF9;
+  --color-putih-soft: #F4F6F4;
 
   /* Semantic aliases — used in components */
-  --color-bg-base: var(--color-wenge);
-  --color-bg-surface: var(--color-putih-warm);
-  --color-bg-soft: var(--color-putih-soft);
-  --color-bg-dark: var(--color-wenge);
+  --color-bg-base: var(--color-pine-deep);
+  --color-bg-surface: var(--color-surface-warm);
+  --color-bg-soft: var(--color-surface-bg);
+  --color-bg-dark: var(--color-pine-deep);
 
-  --color-text-primary: var(--color-wenge);
-  --color-text-secondary: #5A4A3A;
-  --color-text-muted: #8A7A6A;
-  --color-text-on-dark: var(--color-gading);
-  --color-text-on-dark-muted: rgba(242, 235, 224, 0.65);
+  --color-text-primary: #1A2821;
+  --color-text-secondary: #3D4F46;
+  --color-text-muted: #6B7C72;
+  --color-text-on-dark: #F4F6F4;
+  --color-text-on-dark-muted: rgba(244, 246, 244, 0.70);
 
-  --color-accent: var(--color-kunyit);
-  --color-accent-hover: var(--color-kunyit-light);
-  --color-brand: var(--color-daun);
-  --color-brand-hover: var(--color-daun-light);
+  --color-accent: var(--color-accent-warm);
+  --color-accent-hover: var(--color-accent-amber);
+  --color-brand: var(--color-pine);
+  --color-brand-hover: var(--color-pine-dark);
 
   --color-border: rgba(28, 22, 18, 0.1);
   --color-border-on-dark: rgba(242, 235, 224, 0.12);
@@ -173,7 +192,7 @@ img, video {
    TYPE SCALE
    ============================================================ */
 
-/* Display — Melodrama, used for landmark headings */
+/* Display — Clash Display, used for landmark headings */
 h1 {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 5.5vw, 4.5rem);
@@ -391,6 +410,46 @@ button {
 
 .batik-rule.on-dark .batik-rule--icon {
   color: var(--color-kunyit);
+}
+
+/* ============================================================
+   DYNAMIC SCROLLBAR (Visible only when scrolling)
+   ============================================================ */
+
+/* Webkit scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 9999px;
+  transition: background-color 0.3s ease;
+}
+
+/* When active scrolling, reveal thumb in Brunswick #344E41 / Warm Gold palette */
+body.is-scrolling ::-webkit-scrollbar-thumb {
+  background-color: rgba(52, 78, 65, 0.55);
+}
+
+body.is-scrolling ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(197, 160, 89, 0.85);
+}
+
+/* Firefox scrollbar auto-hide */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.3s ease;
+}
+
+html.is-scrolling {
+  scrollbar-color: rgba(52, 78, 65, 0.55) transparent;
 }
 
 /* ============================================================

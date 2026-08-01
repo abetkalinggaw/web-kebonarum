@@ -115,16 +115,23 @@
 }
 
 .statistik-card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(196, 136, 74, 0.12);
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(196, 136, 74, 0.14);
   color: var(--color-kunyit);
+  border: 1px solid rgba(196, 136, 74, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
   margin-bottom: 1.25rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.statistik-card:hover .statistik-card-icon {
+  background: rgba(196, 136, 74, 0.22);
+  color: var(--color-soga);
+  transform: scale(1.06);
 }
 
 .statistik-card-value {

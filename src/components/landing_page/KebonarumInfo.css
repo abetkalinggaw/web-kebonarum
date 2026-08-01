@@ -52,8 +52,8 @@
 }
 
 .info-title {
-  /* Melodrama for this landmark heading */
-  font-family: var(--font-display, "Melodrama", serif);
+  /* Clash Display for this landmark heading */
+  font-family: var(--font-display, "Clash Display", sans-serif);
   font-size: clamp(2.25rem, 4vw, 3.25rem);
   font-weight: 500;
   color: var(--color-gading, #F2EBE0);

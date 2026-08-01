@@ -157,6 +157,19 @@ function AppContent() {
 
 function App() {
   useEffect(() => {
+    let scrollTimeout;
+
+    const handleScroll = () => {
+      document.documentElement.classList.add("is-scrolling");
+      document.body.classList.add("is-scrolling");
+
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        document.documentElement.classList.remove("is-scrolling");
+        document.body.classList.remove("is-scrolling");
+      }, 800);
+    };
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -169,6 +182,9 @@ function App() {
       infinite: false,
     });
 
+    lenis.on("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -177,6 +193,8 @@ function App() {
     requestAnimationFrame(raf);
 
     return () => {
+      clearTimeout(scrollTimeout);
+      window.removeEventListener("scroll", handleScroll);
       lenis.destroy();
     };
   }, []);

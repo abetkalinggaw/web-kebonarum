@@ -2,6 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiCall } from '../../adminApi';
 import './StatistikAdminPage.css';
+import {
+  AlertCircle,
+  ArrowRight,
+  ArrowUp,
+  Award,
+  BarChart,
+  Calendar,
+  Coins,
+  Contact,
+  Database,
+  DollarSign,
+  FileText,
+  Home,
+  Info,
+  LineChart,
+  Loader2,
+  Mail,
+  MapPin,
+  Package,
+  RefreshCw,
+  UserCheck,
+  Users,
+} from 'lucide-react';
 
 const formatRupiah = (val) =>
   new Intl.NumberFormat('id-ID', {
@@ -39,8 +62,8 @@ const StatistikPage = () => {
     return (
       <div className="statistik-admin-page">
         <div className="stats-loading">
-          <i className="fas fa-sync-alt fa-spin"></i>
-          <span>Menghitung statistik otomatis dari seluruh database...</span>
+          <RefreshCw size={24} className="fa-spin" style={{ color: 'var(--admin-accent)' }} />
+          <span>Menghitung statistik otomatis dari seluruh database jemaat...</span>
         </div>
       </div>
     );
@@ -50,10 +73,10 @@ const StatistikPage = () => {
     return (
       <div className="statistik-admin-page">
         <div className="admin-alert error">
-          <i className="fas fa-exclamation-circle"></i> {error || 'Data statistik tidak tersedia.'}
+          <AlertCircle size={18} /> {error || 'Data statistik tidak tersedia.'}
         </div>
         <button className="admin-btn secondary" onClick={loadStats} style={{ marginTop: '1rem' }}>
-          <i className="fas fa-sync-alt"></i> Coba Lagi
+          <RefreshCw size={18} /> Coba Lagi
         </button>
       </div>
     );
@@ -70,13 +93,13 @@ const StatistikPage = () => {
           <p>
             Semua data dihitung otomatis dari database jemaat, majelis, pendeta, keuangan, agenda, dan warta.{' '}
             <span className="auto-sync-badge">
-              <i className="fas fa-circle-notch"></i> Auto-Sync
+              <Loader2 size={14} className="fa-spin" /> Auto-Sync
             </span>
           </p>
         </div>
         <div className="stats-header-actions">
           <button className="admin-btn secondary refresh-btn" onClick={loadStats}>
-            <i className="fas fa-sync-alt"></i> Refresh Data
+            <RefreshCw size={16} /> Refresh Data
           </button>
           {lastRefreshed && (
             <span className="last-refreshed">
@@ -88,7 +111,7 @@ const StatistikPage = () => {
 
       {/* Auto-sync notice */}
       <div className="sync-notice-card">
-        <i className="fas fa-info-circle notice-icon"></i>
+        <Info size={20} className="notice-icon" />
         <div>
           <strong>Statistik Otomatis</strong> — Data di halaman ini dan website publik dihitung langsung dari{' '}
           <Link to="/admin/jemaat">Database Jemaat</Link> dan{' '}
@@ -99,52 +122,62 @@ const StatistikPage = () => {
 
       {/* Core Metrics */}
       <div className="stats-section-label">
-        <i className="fas fa-chart-bar"></i> Metrik Utama Jemaat
+        <BarChart size={18} /> Metrik Utama Jemaat
       </div>
       <div className="stats-metrics-grid">
-        {metrics.map((m) => (
-          <div key={m.id} className="stat-live-card">
-            <div className="stat-icon-wrap">
-              <i className={m.icon}></i>
+        {metrics.map((m) => {
+          const metricIcons = {
+            jemaat: Users,
+            kk: Home,
+            majelis: Award,
+            pendeta: UserCheck,
+          };
+          const MetricIcon = metricIcons[m.id] || Users;
+
+          return (
+            <div key={m.id} className="stat-live-card">
+              <div className="stat-icon-wrap">
+                <MetricIcon size={24} />
+              </div>
+              <div className="stat-live-info">
+                <div className="stat-live-value">{m.value}</div>
+                <div className="stat-live-label">{m.label}</div>
+                {m.trend && m.trend !== '0' && (
+                  <div className="stat-live-trend">
+                    <ArrowUp size={14} /> {m.trend} tahun ini
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="stat-live-info">
-              <div className="stat-live-value">{m.value}</div>
-              <div className="stat-live-label">{m.label}</div>
-              {m.trend && m.trend !== '0' && (
-                <div className="stat-live-trend">
-                  <i className="fas fa-arrow-up"></i> {m.trend} tahun ini
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Extended Summary */}
       {summary && (
         <>
           <div className="stats-section-label">
-            <i className="fas fa-database"></i> Ringkasan Seluruh Database
+            <Database size={18} /> Ringkasan Seluruh Database
           </div>
           <div className="extended-summary-grid">
-            <SummaryItem icon="fas fa-id-card" label="Total Jemaat Terdaftar" value={summary.totalJemaat} to="/admin/jemaat" color="gold" />
-            <SummaryItem icon="fas fa-home" label="Kepala Keluarga (KK)" value={summary.totalKK} to="/admin/jemaat" color="gold" />
-            <SummaryItem icon="fas fa-users" label="Majelis Aktif" value={summary.totalMajelis} to="/admin/jemaat" color="emerald" />
-            <SummaryItem icon="fas fa-user-tie" label="Pendeta Jemaat" value={summary.totalPendeta} to="/admin/jemaat" color="emerald" />
-            <SummaryItem icon="fas fa-map-marker-alt" label="Wilayah / Sektor" value={summary.totalWilayah} to="/admin/jemaat" color="amber" />
-            <SummaryItem icon="fas fa-calendar-alt" label="Agenda Kegiatan" value={summary.totalAgenda} to="/admin/agenda" color="amber" />
-            <SummaryItem icon="fas fa-newspaper" label="Warta Gereja" value={summary.totalWarta} to="/admin/warta" color="soga" />
-            <SummaryItem icon="fas fa-boxes" label="Inventaris Aset" value={summary.totalAset} to="/admin/keuangan-administrasi" color="soga" />
-            <SummaryItem icon="fas fa-hand-holding-usd" label="Total Persembahan" value={formatRupiah(summary.totalPersembahan)} to="/admin/keuangan-administrasi" color="green" isText />
-            <SummaryItem icon="fas fa-coins" label="Total Perpuluhan" value={formatRupiah(summary.totalPerpuluhan)} to="/admin/keuangan-administrasi" color="green" isText />
-            <SummaryItem icon="fas fa-envelope-open-text" label="Arsip Surat Menyurat" value={summary.totalSuratMenyurat} to="/admin/keuangan-administrasi" color="blue" />
+            <SummaryItem icon={Contact} label="Total Jemaat Terdaftar" value={summary.totalJemaat} to="/admin/jemaat" color="gold" />
+            <SummaryItem icon={Home} label="Kepala Keluarga (KK)" value={summary.totalKK} to="/admin/jemaat" color="gold" />
+            <SummaryItem icon={Award} label="Majelis Aktif" value={summary.totalMajelis} to="/admin/jemaat" color="emerald" />
+            <SummaryItem icon={UserCheck} label="Pendeta Jemaat" value={summary.totalPendeta} to="/admin/jemaat" color="emerald" />
+            <SummaryItem icon={MapPin} label="Wilayah / Sektor" value={summary.totalWilayah} to="/admin/jemaat" color="amber" />
+            <SummaryItem icon={Calendar} label="Agenda Kegiatan" value={summary.totalAgenda} to="/admin/agenda" color="amber" />
+            <SummaryItem icon={FileText} label="Warta Gereja" value={summary.totalWarta} to="/admin/warta" color="soga" />
+            <SummaryItem icon={Package} label="Inventaris Aset" value={summary.totalAset} to="/admin/keuangan-administrasi" color="soga" />
+            <SummaryItem icon={DollarSign} label="Total Persembahan" value={formatRupiah(summary.totalPersembahan)} to="/admin/keuangan-administrasi" color="green" isText />
+            <SummaryItem icon={Coins} label="Total Perpuluhan" value={formatRupiah(summary.totalPerpuluhan)} to="/admin/keuangan-administrasi" color="green" isText />
+            <SummaryItem icon={Mail} label="Arsip Surat Menyurat" value={summary.totalSuratMenyurat} to="/admin/keuangan-administrasi" color="blue" />
           </div>
         </>
       )}
 
       {/* Demographics */}
       <div className="stats-section-label">
-        <i className="fas fa-users"></i> Demografi Usia Jemaat (Berdasarkan Komisi)
+        <Users size={18} /> Demografi Usia Jemaat (Berdasarkan Komisi)
       </div>
       <div className="demo-chart-card">
         {demographics.map((item) => (
@@ -162,13 +195,13 @@ const StatistikPage = () => {
           </div>
         ))}
         <p className="demo-note">
-          <i className="fas fa-info-circle"></i> Persentase dihitung otomatis dari kolom Komisi di Database Jemaat.
+          <Info size={16} /> Persentase dihitung otomatis dari kolom Komisi di Database Jemaat.
         </p>
       </div>
 
       {/* Growth Chart */}
       <div className="stats-section-label">
-        <i className="fas fa-chart-line"></i> Tren Pertumbuhan (Proxy Warta per Tahun)
+        <LineChart size={18} /> Tren Pertumbuhan (Proxy Warta per Tahun)
       </div>
       <div className="growth-chart-card">
         <div className="growth-bars">
@@ -187,7 +220,7 @@ const StatistikPage = () => {
                     boxShadow: isLast ? '0 6px 20px rgba(196, 136, 74, 0.4)' : 'none',
                   }}
                 />
-                <div className="growth-year" style={{ color: isLast ? '#c4884a' : undefined, fontWeight: isLast ? 700 : undefined }}>
+                <div className="growth-year" style={{ color: isLast ? '#c4884a' : 'inherit', fontWeight: isLast ? 700 : 400 }}>
                   {g.year}
                 </div>
               </div>
@@ -195,21 +228,23 @@ const StatistikPage = () => {
           })}
         </div>
         <p className="demo-note">
-          <i className="fas fa-info-circle"></i> Grafik pertumbuhan berdasarkan jumlah Warta Gereja yang dipublikasikan per tahun.
+          <Info size={16} /> Grafik pertumbuhan berdasarkan jumlah Warta Gereja yang dipublikasikan per tahun.
         </p>
       </div>
     </div>
   );
 };
 
-const SummaryItem = ({ icon, label, value, to, color, isText }) => (
+const SummaryItem = ({ icon: IconComp, label, value, to, color, isText }) => (
   <Link to={to} className={`summary-item summary-item-${color}`} style={{ textDecoration: 'none' }}>
-    <i className={`${icon} summary-item-icon`}></i>
+    <div className="summary-icon-badge">
+      {IconComp && <IconComp size={18} />}
+    </div>
     <div className="summary-item-info">
       <div className={`summary-item-value ${isText ? 'summary-text-val' : ''}`}>{isText ? value : (value || 0)}</div>
       <div className="summary-item-label">{label}</div>
     </div>
-    <i className="fas fa-arrow-right summary-arrow"></i>
+    <ArrowRight size={16} className="summary-arrow" />
   </Link>
 );
 

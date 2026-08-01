@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./SorotanPelayanan.css";
 import { agendaData } from "../../data/agendaData";
 import { createApiUrl } from "../../utils/apiConfig";
+import { ArrowRight } from 'lucide-react';
 
 const SorotanPelayanan = () => {
   const [items, setItems] = useState([]);
@@ -77,7 +78,7 @@ const SorotanPelayanan = () => {
                     onClick={() => window.scrollTo(0, 0)}
                   >
                     <span>Baca Selengkapnya</span>
-                    <i className="fas fa-arrow-right"></i>
+                    <ArrowRight size={18} />
                   </Link>
                 </div>
               </div>

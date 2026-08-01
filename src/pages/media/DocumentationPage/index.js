@@ -4,6 +4,7 @@ import "./DocumentationPage.css";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
 import { getDocumentationItems } from "../../../services/documentationApi";
+import { Camera } from 'lucide-react';
 
 const ITEM_PAGE_SIZE = 12;
 
@@ -56,7 +57,7 @@ const DocumentationCard = ({ item, imageUrl, onClick }) => {
         />
         <div className="documentation-card-overlay" />
         <span className="documentation-card-tag">
-          <i className="fas fa-camera"></i>
+          <Camera size={18}></Camera>
           <span>Galeri Foto</span>
         </span>
       </div>

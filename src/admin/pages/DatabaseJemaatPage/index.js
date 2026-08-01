@@ -1,26 +1,54 @@
 import React, { useState, useEffect, useContext } from "react";
 import { apiCall } from "../../adminApi";
 import { AuthContext } from "../../auth/authContext";
+import { AdminToastContext } from "../../components/AdminLayout";
 import "./DatabaseJemaatPage.css";
+import {
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle,
+  Edit,
+  Grid,
+  IdCard,
+  List,
+  Loader,
+  Phone,
+  Printer,
+  Save,
+  Search,
+  Shield,
+  Trash2,
+  UserPlus,
+  X,
+  FileSpreadsheet,
+} from 'lucide-react';
 
 const DatabaseJemaatPage = () => {
   const { user } = useContext(AuthContext);
+  const { showToast } = useContext(AdminToastContext);
   const [jemaatList, setJemaatList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Search & Filter
+  // Search & Filters
   const [search, setSearch] = useState("");
   const [filterWilayah, setFilterWilayah] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [filterPeran, setFilterPeran] = useState("");
+  const [viewMode, setViewMode] = useState("table"); // 'table' | 'cards'
+
+  // Selected Items for Batch Action
+  const [selectedIds, setSelectedIds] = useState([]);
 
   // Modal Form State
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  const [activeTab, setActiveTab] = useState("pribadi"); // 'pribadi' | 'sakramen' | 'keluarga' | 'pelayanan'
+  const [activeTab, setActiveTab] = useState("pribadi");
   const [submitting, setSubmitting] = useState(false);
+
+  // Kartu Jemaat Modal State
+  const [cardItem, setCardItem] = useState(null);
 
   // Delete State
   const [deletingItem, setDeletingItem] = useState(null);
@@ -63,11 +91,9 @@ const DatabaseJemaatPage = () => {
     try {
       let query = "?";
       if (search) query += `search=${encodeURIComponent(search)}&`;
-      if (filterWilayah)
-        query += `wilayah=${encodeURIComponent(filterWilayah)}&`;
+      if (filterWilayah) query += `wilayah=${encodeURIComponent(filterWilayah)}&`;
       if (filterStatus) query += `status=${encodeURIComponent(filterStatus)}&`;
-      if (filterPeran)
-        query += `peranGereja=${encodeURIComponent(filterPeran)}&`;
+      if (filterPeran) query += `peranGereja=${encodeURIComponent(filterPeran)}&`;
 
       const data = await apiCall(`/jemaat${query}`);
       setJemaatList(Array.isArray(data) ? data : []);
@@ -146,17 +172,17 @@ const DatabaseJemaatPage = () => {
           method: "PUT",
           body: JSON.stringify(formData),
         });
-        setSuccess(
-          `Data jemaat "${formData.namaLengkap}" berhasil diperbarui.`,
-        );
+        const msg = `Data jemaat "${formData.namaLengkap}" berhasil diperbarui.`;
+        setSuccess(msg);
+        showToast(msg, "success");
       } else {
         await apiCall("/jemaat", {
           method: "POST",
           body: JSON.stringify(formData),
         });
-        setSuccess(
-          `Data jemaat "${formData.namaLengkap}" berhasil ditambahkan.`,
-        );
+        const msg = `Data jemaat "${formData.namaLengkap}" berhasil ditambahkan.`;
+        setSuccess(msg);
+        showToast(msg, "success");
       }
 
       setShowModal(false);
@@ -178,7 +204,9 @@ const DatabaseJemaatPage = () => {
       await apiCall(`/jemaat/${deletingItem.id}`, {
         method: "DELETE",
       });
-      setSuccess(`Data jemaat "${deletingItem.namaLengkap}" berhasil dihapus.`);
+      const msg = `Data jemaat "${deletingItem.namaLengkap}" berhasil dihapus.`;
+      setSuccess(msg);
+      showToast(msg, "success");
       setDeletingItem(null);
       fetchJemaat();
     } catch (err) {
@@ -188,43 +216,116 @@ const DatabaseJemaatPage = () => {
     }
   };
 
+  // Export CSV Helper
+  const exportToCSV = () => {
+    const dataToExport = selectedIds.length > 0
+      ? jemaatList.filter(j => selectedIds.includes(j.id))
+      : jemaatList;
+
+    if (dataToExport.length === 0) {
+      showToast("Tidak ada data untuk diekspor", "danger");
+      return;
+    }
+
+    const headers = [
+      "ID", "NIK", "Nama Lengkap", "Peran Gereja", "Sub Peran", "Wilayah", "Komisi",
+      "Status Keanggotaan", "Jenis Kelamin", "No HP", "Alamat", "Status Perkawinan"
+    ];
+
+    const rows = dataToExport.map(j => [
+      j.id,
+      `"${j.nik || ''}"`,
+      `"${j.namaLengkap || ''}"`,
+      `"${j.peranGereja || ''}"`,
+      `"${j.subPeran || ''}"`,
+      `"${j.wilayah || ''}"`,
+      `"${j.komisi || ''}"`,
+      `"${j.statusKeanggotaan || ''}"`,
+      `"${j.jenisKelamin || ''}"`,
+      `"${j.noHp || ''}"`,
+      `"${(j.alamat || '').replace(/"/g, '""')}"`,
+      `"${j.statusPerkawinan || ''}"`
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8,\uFEFF" +
+      [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Data_Jemaat_GKJ_Kebonarum_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    showToast(`Berhasil mengekspor ${dataToExport.length} data jemaat ke CSV`, "success");
+  };
+
   const isReadOnly = (user?.role || "").toLowerCase() === "users";
+
+  const getPeranBadgeClass = (peran) => {
+    const p = (peran || "").toLowerCase();
+    if (p.includes("pendeta")) return "peran-pendeta";
+    if (p.includes("penatua")) return "peran-penatua";
+    if (p.includes("diaken")) return "peran-diaken";
+    if (p.includes("majelis")) return "peran-majelis";
+    return "peran-jemaat";
+  };
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedIds(jemaatList.map(j => j.id));
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const handleSelectOne = (id) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
 
   return (
     <div className="database-jemaat-page">
       {/* Header */}
       <div className="jemaat-header">
         <div className="header-title-group">
-          <h2>Database &bull; DataJemaat</h2>
+          <h2>Database &bull; Digital Jemaat</h2>
           <p>
-            Pengelolaan data pribadi, sakramen, keluarga, dan keterlibatan
-            pelayanan jemaat GKJ Kebonarum.
+            Pengelolaan data pribadi, sakramen, keluarga, dan komisi pelayanan jemaat GKJ Kebonarum.
           </p>
         </div>
-        {!isReadOnly && (
-          <button className="admin-btn" onClick={openAddModal}>
-            <i className="fas fa-user-plus"></i> Tambah Data Jemaat
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button className="admin-btn secondary" onClick={exportToCSV} title="Ekspor Data ke CSV">
+            <FileSpreadsheet size={17} /> Ekspor CSV ({selectedIds.length > 0 ? selectedIds.length : 'Semua'})
           </button>
-        )}
+          {!isReadOnly && (
+            <button className="admin-btn" onClick={openAddModal}>
+              <UserPlus size={18} /> Tambah Data Jemaat
+            </button>
+          )}
+        </div>
       </div>
 
       {error && (
         <div className="admin-alert error">
-          <i className="fas fa-exclamation-circle"></i> {error}
+          <AlertCircle size={18} /> {error}
         </div>
       )}
 
       {success && (
         <div className="admin-alert success">
-          <i className="fas fa-check-circle"></i> {success}
+          <CheckCircle size={18} /> {success}
         </div>
       )}
 
-      {/* Filter & Search Bar */}
-      <div className="jemaat-filter-card">
-        <form onSubmit={handleSearchSubmit} className="search-form">
+      {/* 2-Row Filter Card */}
+      <div className="admin-filter-card">
+        {/* Row 1: Search input bar and search button */}
+        <form onSubmit={handleSearchSubmit} className="admin-filter-row-1">
           <div className="search-input-wrap">
-            <i className="fas fa-search search-icon"></i>
+            <Search size={18} className="search-icon" />
             <input
               type="text"
               className="admin-input search-input"
@@ -234,64 +335,94 @@ const DatabaseJemaatPage = () => {
             />
           </div>
           <button type="submit" className="admin-btn search-btn">
-            Cari
+            <Search size={16} /> Cari
           </button>
         </form>
 
-        <div className="filter-dropdowns">
-          <select
-            className="admin-select filter-select"
-            value={filterPeran}
-            onChange={(e) => setFilterPeran(e.target.value)}
-          >
-            <option value="">Semua Peran</option>
-            <option value="Majelis">Majelis (Diaken & Penatua)</option>
-            <option value="Jemaat">Jemaat</option>
-          </select>
+        {/* Row 2: Filters and view mode toggle */}
+        <div className="admin-filter-row-2">
+          <div className="admin-filter-dropdowns">
+            <select
+              className="admin-select admin-filter-select"
+              value={filterPeran}
+              onChange={(e) => setFilterPeran(e.target.value)}
+            >
+              <option value="">Semua Peran</option>
+              <option value="Majelis">Majelis (Diaken & Penatua)</option>
+              <option value="Jemaat">Jemaat</option>
+            </select>
 
-          <select
-            className="admin-select filter-select"
-            value={filterWilayah}
-            onChange={(e) => setFilterWilayah(e.target.value)}
-          >
-            <option value="">Semua Wilayah</option>
-            <option value="Sumberejo">Sumberejo</option>
-            <option value="Krosok">Krosok</option>
-            <option value="Pluneng">Pluneng</option>
-            <option value="Ngrundul">Ngrundul</option>
-            <option value="Prayan">Prayan</option>
-          </select>
+            <select
+              className="admin-select admin-filter-select"
+              value={filterWilayah}
+              onChange={(e) => setFilterWilayah(e.target.value)}
+            >
+              <option value="">Semua Wilayah</option>
+              <option value="Sumberejo">Sumberejo</option>
+              <option value="Krosok">Krosok</option>
+              <option value="Pluneng">Pluneng</option>
+              <option value="Ngrundul">Ngrundul</option>
+              <option value="Prayan">Prayan</option>
+            </select>
 
-          <select
-            className="admin-select filter-select"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
-            <option value="">Semua Status</option>
-            <option value="Aktif">Aktif</option>
-            <option value="Pindah">Pindah</option>
-            <option value="Meninggal">Meninggal</option>
-          </select>
+            <select
+              className="admin-select admin-filter-select"
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+            >
+              <option value="">Semua Status</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Pindah">Pindah</option>
+              <option value="Meninggal">Meninggal</option>
+            </select>
+          </div>
+
+          <div className="admin-view-toggle">
+            <button
+              type="button"
+              className={`admin-view-toggle-btn ${viewMode === 'table' ? 'active' : ''}`}
+              onClick={() => setViewMode('table')}
+              title="Tampilan Tabel"
+            >
+              <List size={15} /> <span>Tabel</span>
+            </button>
+            <button
+              type="button"
+              className={`admin-view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
+              onClick={() => setViewMode('cards')}
+              title="Tampilan Kartu"
+            >
+              <Grid size={15} /> <span>Kartu</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Jemaat Table */}
+      {/* Jemaat Table / Card Grid */}
       <div className="jemaat-table-card">
         {loading ? (
           <div className="jemaat-loading">
-            <i className="fas fa-spinner fa-spin"></i> Memuat database jemaat...
+            <Loader size={20} className="fa-spin" style={{ color: 'var(--admin-accent)', marginRight: '8px' }} />
+            Memuat database jemaat...
           </div>
-        ) : (
+        ) : viewMode === 'table' ? (
           <div className="table-responsive">
             <table className="jemaat-table">
               <thead>
                 <tr>
+                  <th style={{ width: '40px' }}>
+                    <input
+                      type="checkbox"
+                      onChange={handleSelectAll}
+                      checked={selectedIds.length > 0 && selectedIds.length === jemaatList.length}
+                    />
+                  </th>
                   <th>Peran Gereja</th>
                   <th>Nama & NIK</th>
                   <th>Wilayah & Komisi</th>
                   <th>Kontak & Alamat</th>
                   <th>Status</th>
-                  {!isReadOnly && <th style={{ textAlign: "right" }}>Aksi</th>}
+                  <th style={{ textAlign: "right" }}>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -299,108 +430,88 @@ const DatabaseJemaatPage = () => {
                   jemaatList.map((item) => (
                     <tr key={item.id}>
                       <td>
-                        {/* Peran Gereja Role Pill */}
-                        {(() => {
-                          const peran = item.peranGereja || "Jemaat";
-                          const sub = item.subPeran;
-                          if (peran === "Pendeta")
-                            return (
-                              <span className="peran-pill peran-pendeta">
-                                <i className="fas fa-cross"></i> Pendeta
-                              </span>
-                            );
-                          if (peran === "Majelis" && sub === "Penatua")
-                            return (
-                              <span className="peran-pill peran-penatua">
-                                <i className="fas fa-star"></i> Majelis ·
-                                Penatua
-                              </span>
-                            );
-                          if (peran === "Majelis" && sub === "Diaken")
-                            return (
-                              <span className="peran-pill peran-diaken">
-                                <i className="fas fa-hands-helping"></i> Majelis
-                                · Diaken
-                              </span>
-                            );
-                          if (peran === "Majelis")
-                            return (
-                              <span className="peran-pill peran-majelis">
-                                <i className="fas fa-shield-alt"></i> Majelis
-                              </span>
-                            );
-                          return (
-                            <span className="peran-pill peran-jemaat">
-                              <i className="fas fa-user"></i> Jemaat
-                            </span>
-                          );
-                        })()}
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(item.id)}
+                          onChange={() => handleSelectOne(item.id)}
+                        />
+                      </td>
+                      <td>
+                        <span className={`peran-pill ${getPeranBadgeClass(item.peranGereja)}`}>
+                          <Shield size={13} />
+                          {item.subPeran || item.peranGereja || 'Jemaat'}
+                        </span>
                       </td>
                       <td>
                         <div className="jemaat-nama-cell">
-                          <span className="jemaat-name">
-                            {item.namaLengkap}
-                          </span>
-                          <span className="jemaat-nik">
-                            NIK: {item.nik || "—"}
-                          </span>
-                          <span className="jemaat-sub-meta">
-                            {item.jenisKelamin} &bull; {item.statusPerkawinan || 'Belum Menikah'} &bull; {item.pekerjaan || 'Lainnya'}
-                          </span>
+                          <span className="jemaat-name">{item.namaLengkap}</span>
+                          <span className="jemaat-nik">NIK: {item.nik || '-'}</span>
+                          {item.tanggalLahir && (
+                            <span className="jemaat-sub-meta">
+                              {item.tempatLahir ? `${item.tempatLahir}, ` : ''}{item.tanggalLahir}
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td>
                         <div className="jemaat-wilayah-cell">
-                          <span className="wilayah-badge">
-                            <i className="fas fa-church"></i>{" "}
-                            {item.wilayah || "Kebonarum"}
-                          </span>
-                          <span className="komisi-tag">
-                            {item.jabatanPelayanan || item.komisi || "Jemaat"}
-                          </span>
+                          <span className="wilayah-badge">{item.wilayah || 'Sumberejo'}</span>
+                          <span className="komisi-tag">{item.komisi || 'Komisi Dewasa'}</span>
                         </div>
                       </td>
                       <td>
                         <div className="jemaat-kontak-cell">
-                          <span className="hp-text">
-                            <i className="fas fa-phone-alt"></i>{" "}
-                            {item.noHp || "—"}
-                          </span>
-                          <span className="alamat-text">
-                            {item.alamat || "—"}
-                          </span>
+                          {item.noHp && (
+                            <span className="hp-text">
+                              <Phone size={14} /> {item.noHp}
+                            </span>
+                          )}
+                          <span className="alamat-text">{item.alamat || '-'}</span>
                         </div>
                       </td>
                       <td>
                         <span
-                          className={`status-pill status-${(item.statusKeanggotaan || "aktif").toLowerCase()}`}
+                          className={`status-pill status-${(
+                            item.statusKeanggotaan || 'Aktif'
+                          ).toLowerCase()}`}
                         >
-                          {item.statusKeanggotaan || "Aktif"}
+                          {item.statusKeanggotaan || 'Aktif'}
                         </span>
                       </td>
-                      {!isReadOnly && (
-                        <td className="jemaat-actions-cell">
+                      <td>
+                        <div className="jemaat-actions-cell">
                           <button
-                            className="action-btn edit-btn"
-                            onClick={() => openEditModal(item)}
-                            title="Edit Data Jemaat"
+                            className="admin-btn secondary sm"
+                            onClick={() => setCardItem(item)}
+                            title="Kartu Anggota"
                           >
-                            <i className="fas fa-edit"></i> Edit
+                            <IdCard size={15} />
                           </button>
-                          <button
-                            className="action-btn delete-btn"
-                            onClick={() => setDeletingItem(item)}
-                            title="Hapus Data Jemaat"
-                          >
-                            <i className="fas fa-trash-alt"></i> Hapus
-                          </button>
-                        </td>
-                      )}
+                          {!isReadOnly && (
+                            <>
+                              <button
+                                className="admin-btn secondary sm"
+                                onClick={() => openEditModal(item)}
+                                title="Edit Data"
+                              >
+                                <Edit size={15} />
+                              </button>
+                              <button
+                                className="admin-btn danger sm"
+                                onClick={() => setDeletingItem(item)}
+                                title="Hapus Data"
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={isReadOnly ? 5 : 6} className="table-empty">
+                    <td colSpan="7" className="table-empty">
                       Tidak ada data jemaat yang ditemukan.
                     </td>
                   </tr>
@@ -408,35 +519,111 @@ const DatabaseJemaatPage = () => {
               </tbody>
             </table>
           </div>
+        ) : (
+          /* Cards Grid Mode */
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem', padding: '1.5rem' }}>
+            {jemaatList.map((item) => (
+              <div key={item.id} className="admin-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', position: 'relative' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className={`peran-pill ${getPeranBadgeClass(item.peranGereja)}`}>
+                    <Shield size={13} /> {item.subPeran || item.peranGereja || 'Jemaat'}
+                  </span>
+                  <span className={`status-pill status-${(item.statusKeanggotaan || 'Aktif').toLowerCase()}`}>
+                    {item.statusKeanggotaan || 'Aktif'}
+                  </span>
+                </div>
+                <div>
+                  <h4 style={{ margin: '0 0 0.2rem', fontFamily: 'var(--admin-font-heading)', fontSize: '1.1rem' }}>{item.namaLengkap}</h4>
+                  <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--admin-accent)', fontFamily: 'var(--admin-font-mono)' }}>NIK: {item.nik || '-'}</p>
+                </div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--admin-text-secondary)', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                  <div><strong>Wilayah:</strong> {item.wilayah || 'Sumberejo'}</div>
+                  <div><strong>Komisi:</strong> {item.komisi || 'Komisi Dewasa'}</div>
+                  {item.noHp && <div><strong>HP:</strong> {item.noHp}</div>}
+                  {item.alamat && <div><strong>Alamat:</strong> {item.alamat}</div>}
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto', paddingTop: '0.75rem', borderTop: '1px solid var(--admin-border)' }}>
+                  <button className="admin-btn secondary sm" style={{ flex: 1 }} onClick={() => setCardItem(item)}>
+                    <IdCard size={14} /> Kartu
+                  </button>
+                  {!isReadOnly && (
+                    <>
+                      <button className="admin-btn secondary sm" onClick={() => openEditModal(item)}>
+                        <Edit size={14} />
+                      </button>
+                      <button className="admin-btn danger sm" onClick={() => setDeletingItem(item)}>
+                        <Trash2 size={14} />
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
 
-      {/* Add / Edit Tabbed Modal */}
+      {/* Kartu Anggota Jemaat Modal */}
+      {cardItem && (
+        <div className="admin-modal-overlay" onClick={() => setCardItem(null)}>
+          <div className="admin-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px', padding: '0', overflow: 'hidden' }}>
+            <div style={{ background: '#1A2821', color: '#F4F6F4', padding: '1.5rem', position: 'relative' }}>
+              <button onClick={() => setCardItem(null)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+                <X size={20} />
+              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div style={{ width: '54px', height: '54px', borderRadius: '50%', background: 'var(--admin-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', color: '#fff', fontWeight: 700 }}>
+                  {cardItem.namaLengkap?.charAt(0) || 'J'}
+                </div>
+                <div>
+                  <h3 style={{ margin: 0, color: '#fff', fontSize: '1.2rem', fontFamily: 'var(--admin-font-heading)' }}>Gereja Kristen Jawa Kebonarum</h3>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--admin-accent)', fontFamily: 'var(--admin-font-mono)' }}>KARTU TANDA ANGGOTA JEMAAT</span>
+                </div>
+              </div>
+            </div>
+            <div style={{ padding: '1.5rem', background: '#fff', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontSize: '0.88rem' }}>
+                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>NAMA LENGKAP</span><strong>{cardItem.namaLengkap}</strong></div>
+                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>NIK</span><strong style={{ fontFamily: 'var(--admin-font-mono)', color: 'var(--admin-accent)' }}>{cardItem.nik || '-'}</strong></div>
+                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>WILAYAH</span><strong>{cardItem.wilayah || 'Sumberejo'}</strong></div>
+                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>KOMISI</span><strong>{cardItem.komisi || 'Komisi Dewasa'}</strong></div>
+                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>PERAN GEREJA</span><strong>{cardItem.subPeran || cardItem.peranGereja || 'Jemaat'}</strong></div>
+                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>STATUS</span><strong>{cardItem.statusKeanggotaan || 'Aktif'}</strong></div>
+              </div>
+              <div style={{ borderTop: '1px dashed var(--admin-border)', paddingTop: '0.75rem', marginTop: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>GKJ Kebonarum &bull; Klaten, Jawa Tengah</span>
+                <button className="admin-btn sm" onClick={() => window.print()}>
+                  <Printer size={14} /> Cetak
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add / Edit Form Modal */}
       {showModal && (
-        <div
-          className="admin-modal-overlay"
-          onClick={() => setShowModal(false)}
-        >
+        <div className="admin-modal-overlay" onClick={() => setShowModal(false)}>
           <div
-            className="admin-modal-panel jemaat-modal-panel"
+            className="admin-modal-content jemaat-modal-panel"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="admin-modal-header">
-              <h3>
-                <i className="fas fa-user-edit modal-icon"></i>
+            <div className="admin-modal-header" style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--admin-border)' }}>
+              <h3 style={{ margin: 0, fontSize: '1.2rem' }}>
                 {editingItem
-                  ? `Edit Data Jemaat: ${editingItem.namaLengkap}`
+                  ? `Edit Jemaat: ${editingItem.namaLengkap}`
                   : "Tambah Data Jemaat Baru"}
               </h3>
               <button
                 className="admin-modal-close"
                 onClick={() => setShowModal(false)}
+                style={{ background: 'none', border: 'none', fontSize: '1.4rem', cursor: 'pointer' }}
               >
                 &times;
               </button>
             </div>
 
-            {/* Modal Tabs Navigation */}
+            {/* Modal Tabs */}
             <div className="modal-tabs">
               <button
                 type="button"
@@ -450,14 +637,14 @@ const DatabaseJemaatPage = () => {
                 className={`tab-btn ${activeTab === "sakramen" ? "active" : ""}`}
                 onClick={() => setActiveTab("sakramen")}
               >
-                2. Sakramen & Status
+                2. Data Sakramen
               </button>
               <button
                 type="button"
                 className={`tab-btn ${activeTab === "keluarga" ? "active" : ""}`}
                 onClick={() => setActiveTab("keluarga")}
               >
-                3. Data Keluarga
+                3. Keluarga & Wilayah
               </button>
               <button
                 type="button"
@@ -468,81 +655,44 @@ const DatabaseJemaatPage = () => {
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="admin-modal-body">
+            <form onSubmit={handleFormSubmit} style={{ padding: '1.5rem' }}>
               {/* Tab 1: Data Pribadi */}
               {activeTab === "pribadi" && (
                 <div className="tab-pane">
+                  <div className="form-group">
+                    <label className="admin-input-label">Nama Lengkap (dengan Gelar jika ada)</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      placeholder="Contoh: Bpk. Sugeng Wibowo, S.Th."
+                      value={formData.namaLengkap}
+                      onChange={(e) =>
+                        setFormData({ ...formData, namaLengkap: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label>Nama Lengkap *</label>
+                      <label className="admin-input-label">NIK (16 Digit)</label>
                       <input
                         type="text"
                         className="admin-input"
-                        placeholder="Nama lengkap jemaat"
-                        value={formData.namaLengkap}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            namaLengkap: e.target.value,
-                          })
-                        }
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>NIK (Nomor Induk Kependudukan)</label>
-                      <input
-                        type="text"
-                        className="admin-input"
-                        placeholder="16 digit NIK"
+                        placeholder="3310..."
                         value={formData.nik}
                         onChange={(e) =>
                           setFormData({ ...formData, nik: e.target.value })
                         }
                       />
                     </div>
-                  </div>
-
-                  <div className="form-row-3">
                     <div className="form-group">
-                      <label>Tempat Lahir</label>
-                      <input
-                        type="text"
-                        className="admin-input"
-                        placeholder="Kota / Tempat lahir"
-                        value={formData.tempatLahir}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            tempatLahir: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Tanggal Lahir</label>
-                      <input
-                        type="date"
-                        className="admin-input"
-                        value={formData.tanggalLahir}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            tanggalLahir: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Jenis Kelamin</label>
+                      <label className="admin-input-label">Jenis Kelamin</label>
                       <select
                         className="admin-select"
                         value={formData.jenisKelamin}
                         onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            jenisKelamin: e.target.value,
-                          })
+                          setFormData({ ...formData, jenisKelamin: e.target.value })
                         }
                       >
                         <option value="Laki-laki">Laki-laki</option>
@@ -551,22 +701,116 @@ const DatabaseJemaatPage = () => {
                     </div>
                   </div>
 
+                  <div className="form-row-2">
+                    <div className="form-group">
+                      <label className="admin-input-label">Tempat Lahir</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="Klaten"
+                        value={formData.tempatLahir}
+                        onChange={(e) =>
+                          setFormData({ ...formData, tempatLahir: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="admin-input-label">Tanggal Lahir</label>
+                      <input
+                        type="date"
+                        className="admin-input"
+                        value={formData.tanggalLahir}
+                        onChange={(e) =>
+                          setFormData({ ...formData, tanggalLahir: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row-2">
+                    <div className="form-group">
+                      <label className="admin-input-label">No. Telepon / WhatsApp</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="0812..."
+                        value={formData.noHp}
+                        onChange={(e) =>
+                          setFormData({ ...formData, noHp: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="admin-input-label">Pekerjaan</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="PNS / Swasta / Guru"
+                        value={formData.pekerjaan}
+                        onChange={(e) =>
+                          setFormData({ ...formData, pekerjaan: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+
                   <div className="form-group">
-                    <label>Alamat Lengkap</label>
+                    <label className="admin-input-label">Alamat Tempat Tinggal</label>
                     <textarea
                       className="admin-textarea"
                       rows="2"
-                      placeholder="Alamat tempat tinggal saat ini"
+                      placeholder="Dukuh, RT/RW, Desa, Kebonarum, Klaten"
                       value={formData.alamat}
                       onChange={(e) =>
                         setFormData({ ...formData, alamat: e.target.value })
                       }
                     />
                   </div>
+                </div>
+              )}
 
-                  <div className="form-row-3">
+              {/* Tab 2: Data Sakramen */}
+              {activeTab === "sakramen" && (
+                <div className="tab-pane">
+                  <div className="form-row-2">
                     <div className="form-group">
-                      <label>Status Perkawinan</label>
+                      <label className="admin-input-label">Tanggal Baptis</label>
+                      <input
+                        type="date"
+                        className="admin-input"
+                        value={formData.tanggalBaptis}
+                        onChange={(e) =>
+                          setFormData({ ...formData, tanggalBaptis: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="admin-input-label">Tanggal Sidi</label>
+                      <input
+                        type="date"
+                        className="admin-input"
+                        value={formData.tanggalSidi}
+                        onChange={(e) =>
+                          setFormData({ ...formData, tanggalSidi: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row-2">
+                    <div className="form-group">
+                      <label className="admin-input-label">Tanggal Pernikahan Gerejawi</label>
+                      <input
+                        type="date"
+                        className="admin-input"
+                        value={formData.tanggalNikah}
+                        onChange={(e) =>
+                          setFormData({ ...formData, tanggalNikah: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="admin-input-label">Status Perkawinan</label>
                       <select
                         className="admin-select"
                         value={formData.statusPerkawinan}
@@ -579,109 +823,13 @@ const DatabaseJemaatPage = () => {
                       >
                         <option value="Belum Menikah">Belum Menikah</option>
                         <option value="Menikah">Menikah</option>
-                        <option value="Janda / Duda">Janda / Duda</option>
-                      </select>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Pekerjaan / Profesi</label>
-                      <input
-                        type="text"
-                        className="admin-input"
-                        placeholder="Contoh: Karyawan Swasta, PNS, Wiraswasta"
-                        value={formData.pekerjaan}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            pekerjaan: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Kewarganegaraan</label>
-                      <select
-                        className="admin-select"
-                        value={formData.kewarganegaraan}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            kewarganegaraan: e.target.value,
-                          })
-                        }
-                      >
-                        <option value="WNI">WNI</option>
-                        <option value="WNA">WNA</option>
+                        <option value="Janda/Duda">Janda/Duda</option>
                       </select>
                     </div>
                   </div>
 
                   <div className="form-group">
-                    <label>No. Handphone / WhatsApp</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      placeholder="Contoh: 081234567890"
-                      value={formData.noHp}
-                      onChange={(e) =>
-                        setFormData({ ...formData, noHp: e.target.value })
-                      }
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Tab 2: Sakramen & Keanggotaan */}
-              {activeTab === "sakramen" && (
-                <div className="tab-pane">
-                  <div className="form-row-3">
-                    <div className="form-group">
-                      <label>Tanggal Baptis</label>
-                      <input
-                        type="date"
-                        className="admin-input"
-                        value={formData.tanggalBaptis}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            tanggalBaptis: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Tanggal Sidi</label>
-                      <input
-                        type="date"
-                        className="admin-input"
-                        value={formData.tanggalSidi}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            tanggalSidi: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Tanggal Pernikahan</label>
-                      <input
-                        type="date"
-                        className="admin-input"
-                        value={formData.tanggalNikah}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            tanggalNikah: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Status Keanggotaan *</label>
+                    <label className="admin-input-label">Status Keanggotaan Gereja</label>
                     <select
                       className="admin-select"
                       value={formData.statusKeanggotaan}
@@ -693,75 +841,19 @@ const DatabaseJemaatPage = () => {
                       }
                     >
                       <option value="Aktif">Aktif</option>
-                      <option value="Pindah">Pindah</option>
-                      <option value="Meninggal">Meninggal</option>
+                      <option value="Pindah">Pindah Gereja</option>
+                      <option value="Meninggal">Meninggal Dunia</option>
                     </select>
                   </div>
                 </div>
               )}
 
-              {/* Tab 3: Data Keluarga */}
+              {/* Tab 3: Keluarga & Wilayah */}
               {activeTab === "keluarga" && (
                 <div className="tab-pane">
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label>Nama Kepala Keluarga</label>
-                      <input
-                        type="text"
-                        className="admin-input"
-                        placeholder="Nama kepala keluarga"
-                        value={formData.namaKepalaKeluarga}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            namaKepalaKeluarga: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>No. Kartu Keluarga (KK)</label>
-                      <input
-                        type="text"
-                        className="admin-input"
-                        placeholder="16 digit Nomor KK"
-                        value={formData.noKK}
-                        onChange={(e) =>
-                          setFormData({ ...formData, noKK: e.target.value })
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Status Hubungan dalam Keluarga</label>
-                    <select
-                      className="admin-select"
-                      value={formData.statusKeluarga}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          statusKeluarga: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="Kepala Keluarga">Kepala Keluarga</option>
-                      <option value="Istri">Istri</option>
-                      <option value="Anak">Anak</option>
-                      <option value="Orang Tua">Orang Tua</option>
-                      <option value="Mertua">Mertua</option>
-                      <option value="Lainnya">Lainnya</option>
-                    </select>
-                  </div>
-                </div>
-              )}
-
-              {/* Tab 4: Pelayanan & Keterlibatan */}
-              {activeTab === "pelayanan" && (
-                <div className="tab-pane">
-                  <div className="form-row-2">
-                    <div className="form-group">
-                      <label>Wilayah / Sektor *</label>
+                      <label className="admin-input-label">Wilayah / Sektor Jemaat</label>
                       <select
                         className="admin-select"
                         value={formData.wilayah}
@@ -776,9 +868,8 @@ const DatabaseJemaatPage = () => {
                         <option value="Prayan">Prayan</option>
                       </select>
                     </div>
-
                     <div className="form-group">
-                      <label>Komisi / Kategori Jemaat</label>
+                      <label className="admin-input-label">Komisi Jemaat</label>
                       <select
                         className="admin-select"
                         value={formData.komisi}
@@ -786,44 +877,85 @@ const DatabaseJemaatPage = () => {
                           setFormData({ ...formData, komisi: e.target.value })
                         }
                       >
-                        <option value="Komisi Anak">
-                          Komisi Anak (Sekolah Minggu)
-                        </option>
-                        <option value="Komisi Remaja">Komisi Remaja</option>
-                        <option value="Komisi Pemuda">Komisi Pemuda</option>
+                        <option value="Anak (Sekolah Minggu)">Anak (Sekolah Minggu)</option>
+                        <option value="Remaja">Komisi Remaja</option>
+                        <option value="Pemuda">Komisi Pemuda</option>
                         <option value="Komisi Dewasa">Komisi Dewasa</option>
-                        <option value="Komisi Wanita / PWG">
-                          Komisi Wanita / PWG
-                        </option>
-                        <option value="Komisi Adiyuswa">
-                          Komisi Adiyuswa (Lansia)
-                        </option>
+                        <option value="Komisi Lansia (Adi Yuswa)">Komisi Lansia (Adi Yuswa)</option>
+                        <option value="Komisi Perempuann (PWG)">Komisi Perempuan (PWG)</option>
                       </select>
                     </div>
                   </div>
 
-                  <div className="form-group">
-                    <label>Jabatan / Keterlibatan Pelayanan</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      placeholder="Contoh: Penatua, Diaken, Pengajar Sekolah Minggu, Tim Musisi"
-                      value={formData.jabatanPelayanan}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          jabatanPelayanan: e.target.value,
-                        })
-                      }
-                    />
+                  <div className="form-row-2">
+                    <div className="form-group">
+                      <label className="admin-input-label">Nama Kepala Keluarga (KK)</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="Nama KK"
+                        value={formData.namaKepalaKeluarga}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            namaKepalaKeluarga: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="admin-input-label">No. Kartu Keluarga (KK)</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="3310..."
+                        value={formData.noKK}
+                        onChange={(e) =>
+                          setFormData({ ...formData, noKK: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 4: Pelayanan & Talenta */}
+              {activeTab === "pelayanan" && (
+                <div className="tab-pane">
+                  <div className="form-row-2">
+                    <div className="form-group">
+                      <label className="admin-input-label">Peran Utama Gereja</label>
+                      <select
+                        className="admin-select"
+                        value={formData.peranGereja}
+                        onChange={(e) =>
+                          setFormData({ ...formData, peranGereja: e.target.value })
+                        }
+                      >
+                        <option value="Jemaat">Jemaat Umum</option>
+                        <option value="Majelis">Majelis Gereja</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label className="admin-input-label">Sub Peran (Diaken / Penatua / Pendeta)</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="Contoh: Penatua Wilayah Sumberejo"
+                        value={formData.subPeran}
+                        onChange={(e) =>
+                          setFormData({ ...formData, subPeran: e.target.value })
+                        }
+                      />
+                    </div>
                   </div>
 
                   <div className="form-group">
-                    <label>Talenta / Keahlian Khusus</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      placeholder="Contoh: Musik / Gitar, IT / Streaming, Dekorasi, Masak"
+                    <label className="admin-input-label">Talenta & Keahlian Khusus</label>
+                    <textarea
+                      className="admin-textarea"
+                      rows="2"
+                      placeholder="Contoh: Musik (Organ/Gitar), Sound System, Multimedia, Mengajar..."
                       value={formData.talentaKeahlian}
                       onChange={(e) =>
                         setFormData({
@@ -833,88 +965,10 @@ const DatabaseJemaatPage = () => {
                       }
                     />
                   </div>
-
-                  {/* Peran Gereja */}
-                  <div className="form-section-divider">
-                    <span>Peran dalam Gereja</span>
-                  </div>
-
-                  <div className="form-row-2">
-                    <div className="form-group">
-                      <label>Peran Gereja *</label>
-                      <select
-                        className="admin-select"
-                        value={formData.peranGereja}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setFormData({
-                            ...formData,
-                            peranGereja: val,
-                            subPeran: val === "Jemaat" ? "" : formData.subPeran,
-                          });
-                        }}
-                      >
-                        <option value="Jemaat">Jemaat (Anggota Biasa)</option>
-                        <option value="Majelis">Majelis</option>
-                      </select>
-                    </div>
-
-                    {formData.peranGereja === "Majelis" && (
-                      <div className="form-group">
-                        <label>Sub-Peran Majelis *</label>
-                        <select
-                          className="admin-select"
-                          value={formData.subPeran}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              subPeran: e.target.value,
-                            })
-                          }
-                        >
-                          <option value="">Pilih Sub-Peran...</option>
-                          <option value="Penatua">Penatua</option>
-                          <option value="Diaken">Diaken</option>
-                        </select>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Majelis Extra Fields */}
-                  {formData.peranGereja === "Majelis" && (
-                    <div className="form-group">
-                      <label>Periode Jabatan</label>
-                      <input
-                        type="text"
-                        className="admin-input"
-                        placeholder="Contoh: 2023 – 2026"
-                        value={formData.periodeJabatan}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            periodeJabatan: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  )}
-
-                  <div className="form-group">
-                    <label>URL Foto / Profil</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      placeholder="https://... atau kosongkan"
-                      value={formData.imageUrl}
-                      onChange={(e) =>
-                        setFormData({ ...formData, imageUrl: e.target.value })
-                      }
-                    />
-                  </div>
                 </div>
               )}
 
-              <div className="admin-modal-footer">
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--admin-border)' }}>
                 <button
                   type="button"
                   className="admin-btn secondary"
@@ -923,19 +977,11 @@ const DatabaseJemaatPage = () => {
                 >
                   Batal
                 </button>
-                <button
-                  type="submit"
-                  className="admin-btn"
-                  disabled={submitting}
-                >
+                <button type="submit" className="admin-btn" disabled={submitting}>
                   {submitting ? (
-                    <>
-                      <i className="fas fa-spinner fa-spin"></i> Menyimpan...
-                    </>
+                    <><Loader size={18} className="fa-spin" /> Menyimpan...</>
                   ) : (
-                    <>
-                      <i className="fas fa-save"></i> Simpan Data Jemaat
-                    </>
+                    <><Save size={18} /> Simpan Data Jemaat</>
                   )}
                 </button>
               </div>
@@ -946,57 +992,21 @@ const DatabaseJemaatPage = () => {
 
       {/* Delete Confirmation Modal */}
       {deletingItem && (
-        <div
-          className="admin-modal-overlay"
-          onClick={() => setDeletingItem(null)}
-        >
-          <div
-            className="admin-modal-panel confirm-dialog"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="admin-modal-header danger-header">
-              <h3>
-                <i className="fas fa-exclamation-triangle"></i> Hapus Data
-                Jemaat
-              </h3>
-              <button
-                className="admin-modal-close"
-                onClick={() => setDeletingItem(null)}
-              >
-                &times;
+        <div className="admin-modal-overlay" onClick={() => setDeletingItem(null)}>
+          <div className="admin-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '450px', padding: '1.5rem' }}>
+            <h3 style={{ margin: '0 0 0.75rem', color: 'var(--admin-danger)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <AlertTriangle size={20} /> Konfirmasi Hapus Data
+            </h3>
+            <p style={{ margin: '0 0 1.25rem', fontSize: '0.92rem', color: 'var(--admin-text-secondary)' }}>
+              Apakah Anda yakin ingin menghapus data jemaat <strong>{deletingItem.namaLengkap}</strong>? Data yang dihapus tidak dapat dikembalikan.
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+              <button className="admin-btn secondary" onClick={() => setDeletingItem(null)} disabled={submitting}>
+                Batal
               </button>
-            </div>
-            <div className="admin-modal-body">
-              <p>
-                Apakah Anda yakin ingin menghapus data jemaat{" "}
-                <strong>{deletingItem.namaLengkap}</strong>?
-              </p>
-              <div className="admin-modal-footer">
-                <button
-                  type="button"
-                  className="admin-btn secondary"
-                  onClick={() => setDeletingItem(null)}
-                  disabled={submitting}
-                >
-                  Batal
-                </button>
-                <button
-                  type="button"
-                  className="admin-btn danger"
-                  onClick={handleDeleteItem}
-                  disabled={submitting}
-                >
-                  {submitting ? (
-                    <>
-                      <i className="fas fa-spinner fa-spin"></i> Menghapus...
-                    </>
-                  ) : (
-                    <>
-                      <i className="fas fa-trash-alt"></i> Hapus
-                    </>
-                  )}
-                </button>
-              </div>
+              <button className="admin-btn danger" onClick={handleDeleteItem} disabled={submitting}>
+                {submitting ? <Loader size={18} className="fa-spin" /> : <Trash2 size={18} />} Hapus
+              </button>
             </div>
           </div>
         </div>

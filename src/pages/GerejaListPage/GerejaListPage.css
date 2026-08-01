@@ -383,12 +383,24 @@
 
 @media (max-width: 1024px) {
   .gereja-list-hero {
-    min-height: 55vh;
-    padding: 4rem 0 2.5rem;
+    min-height: 45vh;
+    padding: 7rem 0 3.5rem;
   }
 
   .gereja-list-title {
-    font-size: 2.3rem;
+    font-size: 2.2rem;
+  }
+
+  .gereja-list-section {
+    padding: 3rem 0 4rem;
+  }
+
+  .gereja-list-inner {
+    padding: 0 var(--container-pad-tablet, 1.5rem);
+  }
+
+  .gereja-list-grid {
+    gap: 2rem;
   }
 
   .gereja-item {
@@ -404,6 +416,110 @@
   }
 
   .gereja-item-image {
-    height: 280px;
+    height: 260px;
+    min-height: auto;
+  }
+
+  /* Fix gradient overlay on mobile/stacked view */
+  .gereja-item-overlay,
+  .gereja-item--reverse .gereja-item-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(28, 22, 18, 0.25) 0%,
+      rgba(28, 22, 18, 0.05) 50%,
+      rgba(28, 22, 18, 0.6) 100%
+    );
+  }
+
+  .gereja-item-content {
+    padding: 1.75rem 1.5rem;
+  }
+
+  .gereja-item-title {
+    font-size: 1.75rem;
+  }
+
+  .gereja-item-action {
+    justify-content: stretch;
+  }
+
+  .gereja-maps-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .gereja-list-hero {
+    min-height: 40vh;
+    padding: 6.5rem 0 2.5rem;
+  }
+
+  .gereja-list-hero-content {
+    padding: 0 var(--container-pad-mobile, 1.25rem);
+  }
+
+  .gereja-list-title {
+    font-size: 1.75rem;
+  }
+
+  .gereja-list-lead {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .gereja-list-inner {
+    padding: 0 var(--container-pad-mobile, 1rem);
+  }
+
+  .gereja-item-image {
+    height: 210px;
+  }
+
+  .gereja-item-tag {
+    top: 0.85rem;
+    left: 0.85rem;
+    font-size: 0.65rem;
+    padding: 0.35rem 0.75rem;
+  }
+
+  .gereja-item-content {
+    padding: 1.35rem 1.15rem;
+  }
+
+  .gereja-item-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .gereja-item-address {
+    font-size: 0.88rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .schedule-pill-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .schedule-pill {
+    width: 100%;
+    justify-content: flex-start;
+    font-size: 0.82rem;
+  }
+
+  .contact-list {
+    font-size: 0.86rem;
+    gap: 0.5rem;
+  }
+
+  .contact-list li {
+    flex-wrap: wrap;
+    row-gap: 0.15rem;
+    word-break: break-word;
+  }
+
+  .gereja-item-action {
+    margin-top: 1.25rem;
   }
 }

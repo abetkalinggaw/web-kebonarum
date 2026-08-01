@@ -64,10 +64,10 @@
   margin: 0;
   padding: 0.5rem 0;
   min-width: 200px;
-  background-color: var(--color-wenge, #1C1612);
-  border: 1px solid rgba(242, 235, 224, 0.08);
+  background-color: var(--color-pine-deep, #1A2821);
+  border: 1px solid rgba(244, 246, 244, 0.10);
   border-radius: var(--radius-md, 12px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
   z-index: 220;
   pointer-events: none;
 }
@@ -124,22 +124,22 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   white-space: nowrap;
-  color: rgba(242, 235, 224, 0.85);
+  color: rgba(244, 246, 244, 0.85);
   text-decoration: none;
   transition: background-color 0.15s ease, color 0.15s ease;
   border-radius: var(--radius-sm, 6px);
 }
 
 .navbar-dropdown a:hover {
-  background-color: rgba(242, 235, 224, 0.06);
-  color: var(--color-gading, #F2EBE0);
+  background-color: rgba(244, 246, 244, 0.08);
+  color: var(--color-accent-warm, #C5A059);
   text-decoration: none;
 }
 
 /* Nav links */
 .navbar-menu-list a {
   text-decoration: none;
-  color: var(--color-gading, #F2EBE0);
+  color: var(--color-gading, #F4F6F4);
   font-family: var(--font-body);
   font-size: 0.8125rem;
   font-weight: var(--weight-semibold);
@@ -151,14 +151,14 @@
 }
 
 .navbar-menu-list a:hover {
-  color: var(--color-kunyit, #C4884A);
+  color: var(--color-accent-warm, #C5A059);
   text-decoration: none;
 }
 
 .dropdown-toggle-btn {
   background: none;
   border: none;
-  color: var(--color-gading, #F2EBE0);
+  color: var(--color-gading, #F4F6F4);
   font-family: var(--font-body);
   font-size: 0.8125rem;
   font-weight: var(--weight-semibold);
@@ -172,7 +172,7 @@
 }
 
 .dropdown-toggle-btn:hover {
-  color: var(--color-kunyit, #C4884A);
+  color: var(--color-accent-warm, #C5A059);
 }
 
 .dropdown-trigger {
@@ -207,7 +207,7 @@
 .hamburger span {
   width: 24px;
   height: 2px;
-  background-color: var(--color-gading, #F2EBE0);
+  background-color: var(--color-gading, #F4F6F4);
   transition: all 0.3s ease;
 }
 
@@ -234,15 +234,15 @@
 }
 
 .navbar-state-scrolled {
-  background-color: rgba(28, 22, 18, 0.92);
+  background-color: rgba(26, 40, 33, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(242, 235, 224, 0.06);
+  border-bottom: 1px solid rgba(244, 246, 244, 0.08);
 }
 
 .navbar-state-hidden {
   transform: translateY(-110%);
-  background-color: rgba(28, 22, 18, 0.92);
+  background-color: rgba(26, 40, 33, 0.92);
   transition:
     transform 0.34s cubic-bezier(0.55, 0, 0.45, 1),
     background-color 0.18s ease-in;

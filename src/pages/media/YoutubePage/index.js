@@ -3,6 +3,7 @@ import "./YoutubePage.css";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
 import { getYoutubeVideos } from "../../../services/youtubeApi";
+import { Video } from 'lucide-react';
 
 const YOUTUBE_CACHE_KEY = "youtube-page-content-cache";
 const YOUTUBE_CACHE_TTL_MS = 60 * 60 * 1000;
@@ -90,7 +91,7 @@ const VideoModal = ({ item, onClose }) => {
         <div className="youtube-modal-header">
           <div className="youtube-modal-header-info">
             <span className="youtube-modal-badge">
-              <i className="fab fa-youtube"></i> LIVE & MEDIA
+              <Video size={18}  /> LIVE & MEDIA
             </span>
             <h2 className="youtube-modal-title">{item.title}</h2>
           </div>

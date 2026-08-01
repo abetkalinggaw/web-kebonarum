@@ -1,14 +1,34 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { apiCall } from '../../adminApi';
 import { AuthContext } from '../../auth/authContext';
+import { AdminToastContext } from '../../components/AdminLayout';
 import './UserListPage.css';
+import {
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle,
+  Edit,
+  Loader,
+  Save,
+  Search,
+  ShieldCheck,
+  Trash2,
+  User,
+  UserCheck,
+  UserCircle,
+  UserMinus,
+  UserPlus,
+} from 'lucide-react';
 
 const UserListPage = () => {
   const { user: currentUser } = useContext(AuthContext);
+  const { showToast } = useContext(AdminToastContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [search, setSearch] = useState('');
+  const [filterRole, setFilterRole] = useState('');
 
   // Modal State
   const [showModal, setShowModal] = useState(false);
@@ -56,7 +76,7 @@ const UserListPage = () => {
     setFormData({
       username: userItem.username,
       name: userItem.name || userItem.username,
-      password: '', // Leave blank to keep existing password
+      password: '',
       role: userItem.role || 'Users',
     });
     setError('');
@@ -72,7 +92,6 @@ const UserListPage = () => {
 
     try {
       if (editingUser) {
-        // Update user
         const payload = {
           name: formData.name,
           role: formData.role,
@@ -86,9 +105,10 @@ const UserListPage = () => {
           body: JSON.stringify(payload),
         });
 
-        setSuccess(`Akun "${editingUser.username}" berhasil diperbarui.`);
+        const msg = `Akun "${editingUser.username}" berhasil diperbarui.`;
+        setSuccess(msg);
+        showToast(msg, 'success');
       } else {
-        // Create user
         await apiCall('/auth/users', {
           method: 'POST',
           body: JSON.stringify({
@@ -99,7 +119,9 @@ const UserListPage = () => {
           }),
         });
 
-        setSuccess(`User baru "${formData.username}" berhasil dibuat.`);
+        const msg = `User baru "${formData.username}" berhasil dibuat.`;
+        setSuccess(msg);
+        showToast(msg, 'success');
       }
 
       setShowModal(false);
@@ -121,7 +143,9 @@ const UserListPage = () => {
       await apiCall(`/auth/users/${deletingUser.id}`, {
         method: 'DELETE',
       });
-      setSuccess(`User "${deletingUser.username}" berhasil dihapus.`);
+      const msg = `User "${deletingUser.username}" berhasil dihapus.`;
+      setSuccess(msg);
+      showToast(msg, 'success');
       setDeletingUser(null);
       fetchUsers();
     } catch (err) {
@@ -135,7 +159,7 @@ const UserListPage = () => {
     return (
       <div className="user-list-forbidden">
         <div className="forbidden-card">
-          <i className="fas fa-user-lock forbidden-icon"></i>
+          <UserMinus size={36} className="forbidden-icon" />
           <h2>Akses Terbatas</h2>
           <p>
             Halaman Kelola User (User List) hanya dapat diakses oleh peran <strong>Superadmin</strong>.
@@ -146,6 +170,12 @@ const UserListPage = () => {
     );
   }
 
+  const filteredUsers = users.filter((u) => {
+    const matchesSearch = !search || u.username?.toLowerCase().includes(search.toLowerCase()) || u.name?.toLowerCase().includes(search.toLowerCase());
+    const matchesRole = !filterRole || (u.role || '').toLowerCase() === filterRole.toLowerCase();
+    return matchesSearch && matchesRole;
+  });
+
   return (
     <div className="user-list-page">
       <div className="user-list-header">
@@ -154,27 +184,68 @@ const UserListPage = () => {
           <p>Superadmin Control Center &bull; Tambah, edit, dan atur peran akun pengelola website.</p>
         </div>
         <button className="admin-btn add-user-btn" onClick={openAddModal}>
-          <i className="fas fa-user-plus"></i> Tambah User Baru
+          <UserPlus size={18} /> Tambah User Baru
         </button>
       </div>
 
       {error && (
         <div className="admin-alert error">
-          <i className="fas fa-exclamation-circle"></i> {error}
+          <AlertCircle size={18} /> {error}
         </div>
       )}
 
       {success && (
         <div className="admin-alert success">
-          <i className="fas fa-check-circle"></i> {success}
+          <CheckCircle size={18} /> {success}
         </div>
       )}
+
+      {/* 2-Row Filter Card */}
+      <div className="admin-filter-card">
+        {/* Row 1: Search Bar & Search Button */}
+        <form onSubmit={(e) => e.preventDefault()} className="admin-filter-row-1">
+          <div className="search-input-wrap">
+            <Search size={18} className="search-icon" />
+            <input
+              type="text"
+              className="admin-input search-input"
+              placeholder="Cari username atau nama pengelola..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <button type="submit" className="admin-btn search-btn">
+            <Search size={16} /> Cari
+          </button>
+        </form>
+
+        {/* Row 2: Role Filter */}
+        <div className="admin-filter-row-2">
+          <div className="admin-filter-dropdowns">
+            <select
+              className="admin-select admin-filter-select"
+              value={filterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+            >
+              <option value="">Semua Peran (Role)</option>
+              <option value="superadmin">Superadmin</option>
+              <option value="admin">Admin</option>
+              <option value="users">Users</option>
+            </select>
+          </div>
+
+          <div style={{ fontSize: '0.85rem', color: 'var(--admin-text-muted)', fontFamily: 'var(--admin-font-mono)' }}>
+            Menampilkan {filteredUsers.length} dari {users.length} pengguna
+          </div>
+        </div>
+      </div>
 
       {/* User Table Card */}
       <div className="user-table-card">
         {loading ? (
           <div className="user-table-loading">
-            <i className="fas fa-spinner fa-spin"></i> Memuat daftar pengguna...
+            <Loader size={20} className="fa-spin" style={{ color: 'var(--admin-accent)', marginRight: '8px' }} />
+            Memuat daftar pengguna...
           </div>
         ) : (
           <div className="table-responsive">
@@ -189,7 +260,7 @@ const UserListPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((u) => {
+                {filteredUsers.map((u) => {
                   const roleLower = (u.role || '').toLowerCase();
                   const isSelf = u.username === currentUser?.username;
 
@@ -197,7 +268,7 @@ const UserListPage = () => {
                     <tr key={u.id}>
                       <td className="user-cell-main">
                         <div className="user-avatar-wrap">
-                          <i className="fas fa-user-circle"></i>
+                          <UserCircle size={22} />
                         </div>
                         <div className="user-name-group">
                           <span className="user-username">@{u.username}</span>
@@ -208,15 +279,15 @@ const UserListPage = () => {
                       <td>
                         {roleLower === 'superadmin' ? (
                           <span className="role-pill role-superadmin">
-                            <i className="fas fa-user-shield"></i> Superadmin
+                            <ShieldCheck size={14} /> Superadmin
                           </span>
                         ) : roleLower === 'admin' ? (
                           <span className="role-pill role-admin">
-                            <i className="fas fa-user-tie"></i> Admin
+                            <UserCheck size={14} /> Admin
                           </span>
                         ) : (
                           <span className="role-pill role-users">
-                            <i className="fas fa-user"></i> Users
+                            <User size={14} /> Users
                           </span>
                         )}
                       </td>
@@ -233,7 +304,7 @@ const UserListPage = () => {
                           onClick={() => openEditModal(u)}
                           title="Edit Pengguna"
                         >
-                          <i className="fas fa-edit"></i> Edit
+                          <Edit size={14} /> Edit
                         </button>
                         {!isSelf && (
                           <button
@@ -241,7 +312,7 @@ const UserListPage = () => {
                             onClick={() => setDeletingUser(u)}
                             title="Hapus Pengguna"
                           >
-                            <i className="fas fa-trash-alt"></i> Hapus
+                            <Trash2 size={14} /> Hapus
                           </button>
                         )}
                       </td>
@@ -257,19 +328,20 @@ const UserListPage = () => {
       {/* Add / Edit Modal */}
       {showModal && (
         <div className="admin-modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="admin-modal-panel" onClick={(e) => e.stopPropagation()}>
-            <div className="admin-modal-header">
-              <h3>
-                <i className={`fas ${editingUser ? 'fa-user-edit' : 'fa-user-plus'} modal-icon`}></i>
+          <div className="admin-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '520px', padding: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.2rem', fontFamily: 'var(--admin-font-heading)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {editingUser ? <Edit size={18} /> : <UserPlus size={18} />}
                 {editingUser ? `Edit User @${editingUser.username}` : 'Tambah User Baru'}
               </h3>
-              <button className="admin-modal-close" onClick={() => setShowModal(false)}>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', fontSize: '1.4rem', cursor: 'pointer' }}>
                 &times;
               </button>
             </div>
-            <form onSubmit={handleFormSubmit} className="admin-modal-body">
-              <div className="form-group">
-                <label>Username</label>
+
+            <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div className="admin-input-group">
+                <label className="admin-input-label">Username</label>
                 <input
                   type="text"
                   className="admin-input"
@@ -281,8 +353,8 @@ const UserListPage = () => {
                 />
               </div>
 
-              <div className="form-group">
-                <label>Nama Lengkap</label>
+              <div className="admin-input-group">
+                <label className="admin-input-label">Nama Lengkap</label>
                 <input
                   type="text"
                   className="admin-input"
@@ -293,8 +365,8 @@ const UserListPage = () => {
                 />
               </div>
 
-              <div className="form-group">
-                <label>Peran (Database Role)</label>
+              <div className="admin-input-group">
+                <label className="admin-input-label">Peran (Database Role)</label>
                 <select
                   className="admin-select"
                   value={formData.role}
@@ -306,8 +378,8 @@ const UserListPage = () => {
                 </select>
               </div>
 
-              <div className="form-group">
-                <label>
+              <div className="admin-input-group">
+                <label className="admin-input-label">
                   {editingUser ? 'Password Baru (Biarkan kosong jika tidak diubah)' : 'Password'}
                 </label>
                 <input
@@ -320,7 +392,7 @@ const UserListPage = () => {
                 />
               </div>
 
-              <div className="admin-modal-footer">
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
                 <button
                   type="button"
                   className="admin-btn secondary"
@@ -330,11 +402,7 @@ const UserListPage = () => {
                   Batal
                 </button>
                 <button type="submit" className="admin-btn" disabled={submitting}>
-                  {submitting ? (
-                    <><i className="fas fa-spinner fa-spin"></i> Menyimpan...</>
-                  ) : (
-                    <><i className="fas fa-save"></i> Simpan User</>
-                  )}
+                  {submitting ? <Loader size={18} className="fa-spin" /> : <Save size={18} />} Simpan User
                 </button>
               </div>
             </form>
@@ -345,34 +413,31 @@ const UserListPage = () => {
       {/* Delete Confirmation Modal */}
       {deletingUser && (
         <div className="admin-modal-overlay" onClick={() => setDeletingUser(null)}>
-          <div className="admin-modal-panel confirm-dialog" onClick={(e) => e.stopPropagation()}>
-            <div className="admin-modal-header danger-header">
-              <h3><i className="fas fa-exclamation-triangle"></i> Konfirmasi Hapus User</h3>
-              <button className="admin-modal-close" onClick={() => setDeletingUser(null)}>&times;</button>
-            </div>
-            <div className="admin-modal-body">
-              <p>
-                Apakah Anda yakin ingin menghapus akun user <strong>@{deletingUser.username}</strong> ({deletingUser.name})?
-              </p>
-              <p className="danger-note">Tindakan ini tidak dapat dibatalkan.</p>
-              <div className="admin-modal-footer">
-                <button
-                  type="button"
-                  className="admin-btn secondary"
-                  onClick={() => setDeletingUser(null)}
-                  disabled={submitting}
-                >
-                  Batal
-                </button>
-                <button
-                  type="button"
-                  className="admin-btn danger"
-                  onClick={handleDeleteUser}
-                  disabled={submitting}
-                >
-                  {submitting ? <><i className="fas fa-spinner fa-spin"></i> Menghapus...</> : <><i className="fas fa-trash-alt"></i> Hapus Akun</>}
-                </button>
-              </div>
+          <div className="admin-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '450px', padding: '1.5rem' }}>
+            <h3 style={{ margin: '0 0 0.75rem', color: 'var(--admin-danger)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <AlertTriangle size={20} /> Konfirmasi Hapus User
+            </h3>
+            <p style={{ margin: '0 0 1.25rem', fontSize: '0.92rem', color: 'var(--admin-text-secondary)' }}>
+              Apakah Anda yakin ingin menghapus akun user <strong>@{deletingUser.username}</strong> ({deletingUser.name})?
+            </p>
+            <p className="danger-note">Tindakan ini tidak dapat dibatalkan.</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
+              <button
+                type="button"
+                className="admin-btn secondary"
+                onClick={() => setDeletingUser(null)}
+                disabled={submitting}
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                className="admin-btn danger"
+                onClick={handleDeleteUser}
+                disabled={submitting}
+              >
+                {submitting ? <Loader size={18} className="fa-spin" /> : <Trash2 size={18} />} Hapus Akun
+              </button>
             </div>
           </div>
         </div>

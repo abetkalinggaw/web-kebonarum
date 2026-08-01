@@ -5,8 +5,8 @@
   justify-content: center;
   background: var(--admin-brand-900);
   background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(52, 78, 65, 0.6) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(74, 107, 88, 0.3) 0%, transparent 50%);
+    radial-gradient(ellipse at 20% 50%, rgba(196, 136, 74, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(61, 82, 71, 0.4) 0%, transparent 50%);
   padding: 2rem;
   font-family: var(--admin-font-body);
 }

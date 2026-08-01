@@ -1,5 +1,6 @@
 .admin-dashboard {
-  max-width: 1280px;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 2.25rem;
@@ -70,7 +71,7 @@
 }
 
 .hero-content h2 {
-  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-family: var(--font-heading, "Clash Display", sans-serif);
   font-size: 2.2rem;
   font-weight: 600;
   color: #ffffff;
@@ -90,7 +91,7 @@
 .hero-actions {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
   margin-top: 0.75rem;
   flex-wrap: wrap;
 }
@@ -98,6 +99,7 @@
 .hero-btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
   padding: 0.65rem 1.4rem;
   border-radius: 50px;
@@ -135,7 +137,7 @@
 }
 
 .admin-section-title-group h3 {
-  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-family: var(--font-heading, "Clash Display", sans-serif);
   font-size: 1.35rem;
   font-weight: 600;
   color: var(--admin-text-primary, #1c1612);
@@ -181,6 +183,7 @@
   justify-content: space-between;
 }
 
+/* Icon Badges */
 .admin-stat-icon {
   width: 48px;
   height: 48px;
@@ -188,32 +191,51 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
   flex-shrink: 0;
+  transition: all 0.25s ease;
 }
 
 .admin-stat-icon.badge-gold {
   background: rgba(196, 136, 74, 0.14);
   color: #c4884a;
-  border: 1px solid rgba(196, 136, 74, 0.3);
+  border: 1px solid rgba(196, 136, 74, 0.32);
 }
 
 .admin-stat-icon.badge-emerald {
   background: rgba(34, 197, 94, 0.12);
   color: #16a34a;
-  border: 1px solid rgba(34, 197, 94, 0.3);
+  border: 1px solid rgba(34, 197, 94, 0.32);
 }
 
 .admin-stat-icon.badge-amber {
   background: rgba(217, 119, 6, 0.12);
   color: #d97706;
-  border: 1px solid rgba(217, 119, 6, 0.3);
+  border: 1px solid rgba(217, 119, 6, 0.32);
 }
 
 .admin-stat-icon.badge-soga {
   background: rgba(122, 77, 36, 0.14);
   color: #7a4d24;
-  border: 1px solid rgba(122, 77, 36, 0.3);
+  border: 1px solid rgba(122, 77, 36, 0.32);
+}
+
+.quick-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: rgba(196, 136, 74, 0.14);
+  color: var(--color-kunyit, #c4884a);
+  border: 1px solid rgba(196, 136, 74, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.admin-quick-item:hover .quick-icon-badge {
+  background: rgba(196, 136, 74, 0.22);
+  color: var(--color-soga, #8b4513);
+  transform: scale(1.06);
 }
 
 .stat-arrow {
@@ -234,7 +256,7 @@
 }
 
 .admin-stat-value {
-  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-family: var(--font-heading, "Clash Display", sans-serif);
   font-size: 2.25rem;
   font-weight: 700;
   color: var(--admin-text-primary, #1c1612);
@@ -281,7 +303,7 @@
 }
 
 .panel-header h3 {
-  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-family: var(--font-heading, "Clash Display", sans-serif);
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--admin-text-primary, #1c1612);
@@ -400,29 +422,29 @@
 .admin-quick-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.15rem;
+  gap: 1.25rem;
   margin-top: 1rem;
 }
 
 .admin-quick-item {
-  background: #ffffff;
+  background: var(--color-putih-soft, #f7f2ec);
   border: 1px solid rgba(196, 136, 74, 0.22);
-  border-radius: 16px;
-  padding: 1.35rem 1.4rem;
+  border-radius: 18px;
+  padding: 1.4rem 1.45rem;
   text-decoration: none;
   color: var(--admin-text-primary, #1c1612);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 16px rgba(28, 22, 18, 0.03);
+  box-shadow: 0 6px 20px rgba(28, 22, 18, 0.04);
 }
 
 .admin-quick-item:hover {
   border-color: rgba(196, 136, 74, 0.55);
   background: #ffffff;
-  box-shadow: 0 14px 32px rgba(196, 136, 74, 0.16);
-  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(196, 136, 74, 0.16);
+  transform: translateY(-5px);
 }
 
 .quick-item-top {
@@ -432,41 +454,49 @@
 }
 
 .quick-item-top i {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(196, 136, 74, 0.12);
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: rgba(196, 136, 74, 0.14);
   color: var(--color-kunyit, #c4884a);
+  border: 1px solid rgba(196, 136, 74, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  transition: all 0.25s ease;
+}
+
+.admin-quick-item:hover .quick-item-top i {
+  background: rgba(196, 136, 74, 0.22);
+  color: var(--color-soga, #8b4513);
+  transform: scale(1.05);
 }
 
 .quick-arrow {
-  font-size: 1.1rem;
-  color: rgba(196, 136, 74, 0.5);
+  font-size: 0.95rem;
+  color: rgba(196, 136, 74, 0.6);
   transition: transform 0.25s ease, color 0.25s ease;
 }
 
 .admin-quick-item:hover .quick-arrow {
-  transform: translate(3px, -3px);
+  transform: translate(4px, -4px);
   color: var(--color-kunyit, #c4884a);
 }
 
 .quick-title {
-  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
-  font-size: 1.05rem;
+  font-family: var(--font-heading, "Clash Display", sans-serif);
+  font-size: 1.08rem;
   font-weight: 600;
   color: var(--admin-text-primary, #1c1612);
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
 }
 
 .quick-desc {
   font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: var(--admin-text-muted, #8a7a6a);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 /* Responsive Breakpoints */
@@ -480,22 +510,78 @@
 }
 
 @media (max-width: 860px) {
+  .admin-dashboard {
+    gap: 1.5rem;
+  }
+
   .dashboard-two-col {
     grid-template-columns: 1fr;
   }
+
   .admin-dashboard-hero {
     padding: 1.75rem 1.5rem;
+    border-radius: 18px;
   }
+
   .hero-content h2 {
-    font-size: 1.75rem;
+    font-size: 1.7rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .hero-btn-primary {
+    width: 100%;
+  }
+
+  .dashboard-card-panel {
+    padding: 1.35rem 1.25rem;
+    border-radius: 16px;
   }
 }
 
 @media (max-width: 600px) {
   .admin-stats-grid {
     grid-template-columns: 1fr;
+    gap: 0.9rem;
   }
+
   .admin-quick-grid {
     grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .admin-dashboard-hero {
+    padding: 1.35rem 1.15rem;
+  }
+
+  .hero-content h2 {
+    font-size: 1.45rem;
+  }
+
+  .hero-content p {
+    font-size: 0.9rem;
+  }
+
+  .admin-stat-card {
+    padding: 1.2rem 1.15rem;
+    border-radius: 14px;
+  }
+
+  .admin-stat-value {
+    font-size: 1.8rem;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .activity-item {
+    padding: 0.65rem 0.75rem;
   }
 }

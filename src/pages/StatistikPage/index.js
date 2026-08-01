@@ -4,6 +4,7 @@ import Footer from "../../components/menu/Footer";
 import "./StatistikPage.css";
 import { getStatistikData } from "../../services/statistikApi";
 import AnimatedNumber from "../../components/common/AnimatedNumber";
+import { ArrowUp, Award, Home, UserCheck, Users } from 'lucide-react';
 
 const StatistikPage = () => {
   const [data, setData] = useState(null);
@@ -31,19 +32,10 @@ const StatistikPage = () => {
     return (
       <>
         <Navbar />
-        <main
-          className="statistik-page"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "60vh",
-          }}
-        >
-          <div style={{ color: "var(--color-text-600)", fontSize: "1.1rem" }}>
-            Memuat data statistik...
-          </div>
-        </main>
+        <div className="statistik-loading">
+          <div className="loading-spinner"></div>
+          <p>Memuat Data Statistik...</p>
+        </div>
         <Footer />
       </>
     );
@@ -53,23 +45,20 @@ const StatistikPage = () => {
     return (
       <>
         <Navbar />
-        <main
-          className="statistik-page"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "60vh",
-          }}
-        >
-          <div style={{ color: "#dc2626", fontSize: "1.1rem" }}>
-            Terjadi kesalahan: {error || "Data tidak ditemukan"}
-          </div>
-        </main>
+        <div className="statistik-error">
+          <p>Gagal memuat data statistik. Silakan coba lagi nanti.</p>
+        </div>
         <Footer />
       </>
     );
   }
+
+  const metricIconMap = {
+    jemaat: Users,
+    kk: Home,
+    majelis: Award,
+    pendeta: UserCheck,
+  };
 
   return (
     <>
@@ -89,25 +78,28 @@ const StatistikPage = () => {
 
         <section className="statistik-content">
           <div className="statistik-grid">
-            {data.metrics.map((metric, idx) => (
-              <div key={idx} className="statistik-card">
-                <div className="statistik-card-icon">
-                  <i className={metric.icon}></i>
+            {data.metrics.map((metric, idx) => {
+              const MetricIcon = metricIconMap[metric.id] || Users;
+              return (
+                <div key={idx} className="statistik-card">
+                  <div className="statistik-card-icon">
+                    <MetricIcon size={22} />
+                  </div>
+                  <div className="statistik-card-info">
+                    <h3 className="statistik-card-value">
+                      <AnimatedNumber
+                        targetValue={metric.value}
+                        startAnimating={showCharts}
+                      />
+                    </h3>
+                    <p className="statistik-card-label">{metric.label}</p>
+                  </div>
+                  <div className="statistik-card-trend">
+                    <ArrowUp size={14} /> {metric.trend} tahun ini
+                  </div>
                 </div>
-                <div className="statistik-card-info">
-                  <h3 className="statistik-card-value">
-                    <AnimatedNumber
-                      targetValue={metric.value}
-                      startAnimating={showCharts}
-                    />
-                  </h3>
-                  <p className="statistik-card-label">{metric.label}</p>
-                </div>
-                <div className="statistik-card-trend">
-                  <i className="fas fa-arrow-up"></i> {metric.trend} tahun ini
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="statistik-charts">
@@ -159,7 +151,7 @@ const StatistikPage = () => {
                           boxShadow:
                             isLast && showCharts
                               ? "0 10px 20px -5px rgba(196, 136, 74, 0.35)"
-                              : undefined,
+                              : "none",
                         }}
                       >
                         <span
@@ -167,8 +159,8 @@ const StatistikPage = () => {
                           style={{
                             color: isLast
                               ? "var(--color-kunyit)"
-                              : undefined,
-                            fontWeight: isLast ? 700 : undefined,
+                              : "inherit",
+                            fontWeight: isLast ? 700 : 400,
                             opacity: showCharts ? 1 : 0,
                             transition: "opacity 0.5s ease 1s",
                           }}

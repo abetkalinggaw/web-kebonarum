@@ -15,7 +15,7 @@ const AboutPage = () => {
 
   useEffect(() => {
     if (!isVideoOpen) {
-      return undefined;
+      return;
     }
 
     const handleKeyDown = (event) => {

@@ -6,12 +6,13 @@ import sejarah2 from "../../assets/sejarah/2.jpg";
 import sejarah3 from "../../assets/sejarah/3.jpg";
 import sejarah4 from "../../assets/sejarah/4.jpg";
 import sejarah5 from "../../assets/sejarah/5.jpg";
+import { Camera, Church, Clock, Contact, Mail, Map, MapPin, MessageCircle, Phone, Sun } from 'lucide-react';
 
 const GerejaListPage = () => {
   const gerejaList = [
     {
       id: 1,
-      name: "SUMBEREJO",
+      name: "INDUK SUMBEREJO",
       address:
         "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: [
@@ -30,7 +31,7 @@ const GerejaListPage = () => {
     },
     {
       id: 2,
-      name: "KROSOK",
+      name: "PEPANTHAN KROSOK",
       address:
         "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: ["07.00 WIB"],
@@ -45,7 +46,7 @@ const GerejaListPage = () => {
     },
     {
       id: 3,
-      name: "PLUNENG",
+      name: "PEPANTHAN PLUNENG",
       address:
         "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: ["07.00 WIB"],
@@ -60,7 +61,7 @@ const GerejaListPage = () => {
     },
     {
       id: 4,
-      name: "NGRUNDUL",
+      name: "PEPANTHAN NGRUNDUL",
       address:
         "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: ["07.00 WIB"],
@@ -75,7 +76,7 @@ const GerejaListPage = () => {
     },
     {
       id: 5,
-      name: "PRAYAN",
+      name: "PEPANTHAN PRAYAN",
       address:
         "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
       schedule: ["07.00 WIB"],
@@ -97,11 +98,10 @@ const GerejaListPage = () => {
         <section className="gereja-list-hero">
           <div className="gereja-list-hero-content">
             <span className="section-tag light">WILAYAH PELAYANAN</span>
-            <h1 className="gereja-list-title">
-              Gereja GKJ Kebonarum
-            </h1>
+            <h1 className="gereja-list-title">Gereja GKJ Kebonarum</h1>
             <p className="gereja-list-lead">
-              Gereja-gereja wilayah GKJ Kebonarum yang tersebar di Kabupaten Klaten, siap melayani ibadah dan persekutuan jemaat.
+              Gereja-gereja wilayah GKJ Kebonarum yang tersebar di Kabupaten
+              Klaten, siap melayani ibadah dan persekutuan jemaat.
             </p>
           </div>
         </section>
@@ -117,26 +117,32 @@ const GerejaListPage = () => {
                   <div className="gereja-item-image">
                     <img src={gereja.image} alt={gereja.name} />
                     <span className="gereja-item-tag">
-                      <i className="fas fa-church"></i> WILAYAH {gereja.name}
+                      <Church size={18} /> WILAYAH {gereja.name}
                     </span>
                     <div className="gereja-item-overlay" />
                   </div>
                   <div className="gereja-item-content">
-                    <h2 className="gereja-item-title">GKJ Kebonarum {gereja.name}</h2>
+                    <h2 className="gereja-item-title">
+                      {gereja.name
+                        .toLowerCase()
+                        .split(" ")
+                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(" ")}
+                    </h2>
                     <p className="gereja-item-address">
-                      <i className="fas fa-map-marker-alt address-icon"></i>
+                      <MapPin size={18} className="address-icon" />
                       {gereja.address}
                     </p>
 
                     <div className="gereja-item-details">
                       <div className="gereja-item-schedule">
                         <h4 className="schedule-label">
-                          <i className="far fa-clock"></i> {gereja.ibadahLabel}
+                          <Clock size={18} /> {gereja.ibadahLabel}
                         </h4>
                         <div className="schedule-pill-group">
                           {gereja.schedule.map((jadwal, idx) => (
                             <span key={idx} className="schedule-pill">
-                              <i className="fas fa-sun"></i> {jadwal}
+                              <Sun size={18} /> {jadwal}
                             </span>
                           ))}
                         </div>
@@ -144,15 +150,16 @@ const GerejaListPage = () => {
 
                       <div className="gereja-item-contact">
                         <h4 className="schedule-label">
-                          <i className="far fa-address-book"></i> Kontak & Informasi
+                          <Contact size={18} /> Kontak &
+                          Informasi
                         </h4>
                         <ul className="contact-list">
                           <li>
-                            <i className="fas fa-phone-alt contact-icon"></i>
+                            <Phone size={18} className="contact-icon" />
                             <span>Telepon:</span> {gereja.contact.phone}
                           </li>
                           <li>
-                            <i className="fab fa-whatsapp contact-icon wa-color"></i>
+                            <MessageCircle size={18} className="contact-icon wa-color" />
                             <span>WhatsApp:</span>{" "}
                             <a
                               href={`https://wa.me/${gereja.contact.whatsappNumber.replace(/\D/g, "")}`}
@@ -163,14 +170,14 @@ const GerejaListPage = () => {
                             </a>
                           </li>
                           <li>
-                            <i className="far fa-envelope contact-icon"></i>
+                            <Mail size={18} className="contact-icon" />
                             <span>Email:</span>{" "}
                             <a href={`mailto:${gereja.contact.email}`}>
                               {gereja.contact.email}
                             </a>
                           </li>
                           <li>
-                            <i className="fab fa-instagram contact-icon ig-color"></i>
+                            <Camera size={18} className="contact-icon ig-color" />
                             <span>Instagram:</span>{" "}
                             <a
                               href={`https://instagram.com/${gereja.contact.instagram.replace("@", "")}`}
@@ -190,7 +197,7 @@ const GerejaListPage = () => {
                           rel="noopener noreferrer"
                           className="gereja-maps-btn"
                         >
-                          <i className="fas fa-directions"></i>
+                          <Map size={18}></Map>
                           <span>Petunjuk Arah (Maps)</span>
                         </a>
                       </div>

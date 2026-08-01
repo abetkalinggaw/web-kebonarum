@@ -4,6 +4,7 @@ import "./GalleryPage.css";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
 import GalleryError from "../../../components/media/GalleryError";
+import { Camera, Cloud, Download, Folder, FolderOpen } from 'lucide-react';
 import {
   getDocumentationImagesById,
   getDocumentationItemById,
@@ -134,7 +135,7 @@ const LazyGalleryImage = ({ src, imageObj, isVideo, alt, onClick, delay = 0 }) =
     const element = imageRef.current;
 
     if (!element) {
-      return undefined;
+      return;
     }
 
     let isCancelled = false;
@@ -163,7 +164,7 @@ const LazyGalleryImage = ({ src, imageObj, isVideo, alt, onClick, delay = 0 }) =
 
   useEffect(() => {
     if (!isInView) {
-      return undefined;
+      return;
     }
 
     const timeoutId = window.setTimeout(() => {
@@ -269,7 +270,7 @@ const GalleryFolderCard = ({ folder, onClick }) => {
         )}
         <div className="gallery-folder-card-overlay" />
         <span className="gallery-folder-card-tag">
-          <i className="fas fa-folder-open"></i>
+          <FolderOpen size={18}></FolderOpen>
           <span>Sub-Folder</span>
         </span>
       </div>
@@ -396,7 +397,7 @@ const GalleryModal = ({
                 className="gallery-modal-action-btn"
                 title="Buka di Google Drive"
               >
-                <i className="fab fa-google-drive"></i>
+                <Cloud size={18}></Cloud>
                 <span>Drive</span>
               </a>
             )}
@@ -409,7 +410,7 @@ const GalleryModal = ({
                 className="gallery-modal-action-btn primary"
                 title="Unduh Foto"
               >
-                <i className="fas fa-download"></i>
+                <Download size={18}></Download>
                 <span>Unduh</span>
               </a>
             )}
@@ -971,7 +972,7 @@ const GalleryPage = () => {
                     </div>
                   )}
                   <div className="gallery-hero-card-tag">
-                    <i className="fas fa-folder-open"></i>
+                    <FolderOpen size={18}></FolderOpen>
                     <span>SUB-FOLDER</span>
                   </div>
                 </div>
@@ -983,12 +984,12 @@ const GalleryPage = () => {
                   <div className="gallery-hero-card-stats">
                     {galleryImages.length > 0 && (
                       <span className="hero-stat-pill">
-                        <i className="fas fa-camera"></i> {galleryImages.length} Foto & Media
+                        <Camera size={18}></Camera> {galleryImages.length} Foto & Media
                       </span>
                     )}
                     {childFolders.length > 0 && (
                       <span className="hero-stat-pill">
-                        <i className="fas fa-folder"></i> {childFolders.length} Sub-folder
+                        <Folder size={18}></Folder> {childFolders.length} Sub-folder
                       </span>
                     )}
                   </div>
