@@ -18,7 +18,11 @@ const LandingPage = () => {
     <>
       <Navbar />
       <main
-        style={{ position: "relative", zIndex: 1, backgroundColor: "var(--color-putih-warm, #FDFAF6)" }}
+        style={{
+          position: "relative",
+          zIndex: 1,
+          backgroundColor: "var(--color-putih-warm, #FDFAF6)",
+        }}
       >
         <div className="landing-page">
           <video className="video-background" autoPlay muted loop playsInline>
@@ -29,7 +33,6 @@ const LandingPage = () => {
           <div className="video-overlay"></div>
 
           <div className="landing-content">
-            <div className="welcome-badge">GKJ KEBONARUM KLATEN</div>
             <picture className="welcome-title">
               <source media="(max-width: 768px)" srcSet={sugenRawuhSmall} />
               <img
