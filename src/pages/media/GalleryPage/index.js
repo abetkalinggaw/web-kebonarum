@@ -4,7 +4,7 @@ import "./GalleryPage.css";
 import Navbar from "../../../components/menu/Navbar";
 import Footer from "../../../components/menu/Footer";
 import GalleryError from "../../../components/media/GalleryError";
-import { Camera, Cloud, Download, Folder, FolderOpen } from 'lucide-react';
+import { FolderOpen } from 'lucide-react';
 import {
   getDocumentationImagesById,
   getDocumentationItemById,
@@ -354,10 +354,7 @@ const GalleryModal = ({
 }) => {
   if (!image) return null;
 
-  const isVideo = typeof image !== "string" && image?.mimeType?.includes("video");
   const fileName = typeof image !== "string" ? image?.name : "";
-  const driveId = typeof image !== "string" ? image?.id : "";
-  const webContentLink = typeof image !== "string" ? image?.webContentLink : "";
 
   return (
     <div
@@ -370,62 +367,16 @@ const GalleryModal = ({
         className="gallery-modal-container"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="gallery-modal-header">
-          <div className="gallery-modal-header-info">
-            <span className={`gallery-modal-badge ${isVideo ? "video" : "photo"}`}>
-              <i className={isVideo ? "fas fa-play-circle" : "fas fa-camera"}></i>
-              {isVideo ? "Video" : "Foto"}
-            </span>
-            <div className="gallery-modal-title-group">
-              <h3 className="gallery-modal-title">
-                {fileName || albumTitle || "Dokumentasi Media"}
-              </h3>
-              {hasMultiple && totalCount > 1 && (
-                <span className="gallery-modal-counter">
-                  {currentIndex + 1} / {totalCount}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="gallery-modal-actions">
-            {driveId && (
-              <a
-                href={`https://drive.google.com/file/d/${driveId}/view`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="gallery-modal-action-btn"
-                title="Buka di Google Drive"
-              >
-                <Cloud size={18}></Cloud>
-                <span>Drive</span>
-              </a>
-            )}
-            {webContentLink && !isVideo && (
-              <a
-                href={webContentLink}
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-                className="gallery-modal-action-btn primary"
-                title="Unduh Foto"
-              >
-                <Download size={18}></Download>
-                <span>Unduh</span>
-              </a>
-            )}
-            <button
-              className="gallery-modal-close-btn"
-              onClick={onClose}
-              aria-label="Tutup preview"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-          </div>
-        </div>
+        <button
+          className="gallery-modal-close-btn"
+          onClick={onClose}
+          aria-label="Tutup preview"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
 
         <div className="gallery-modal-body">
           {hasMultiple && totalCount > 1 && (
@@ -870,15 +821,6 @@ const GalleryPage = () => {
   };
 
   const displayDescription = item?.description || "";
-  const isSubfolder = cleanTitlePath.length > 0 || Boolean(parentFolderName);
-  const heroTitle = [...cleanTitlePath, resolvedTitle].filter(Boolean).join(" / ");
-  const heroCoverUrl =
-    item?.imageUrl ||
-    item?.images?.[0] ||
-    (typeof driveImages[0] === "string"
-      ? driveImages[0]
-      : driveImages[0]?.url) ||
-    "";
 
   const handleFolderClick = (folder) => {
     const safeTitle = !isIdStringHelper(resolvedTitle) ? resolvedTitle : parentFolderName || "";
@@ -952,121 +894,56 @@ const GalleryPage = () => {
               </nav>
             </div>
 
-            {isSubfolder ? (
-              <div className="gallery-hero-card">
-                <div className="gallery-hero-card-media">
-                  {heroCoverUrl ? (
-                    <img src={heroCoverUrl} alt={resolvedTitle} />
-                  ) : (
-                    <div className="gallery-hero-card-media-placeholder">
-                      <svg
-                        width="48"
-                        height="48"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                      >
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                      </svg>
-                    </div>
-                  )}
-                  <div className="gallery-hero-card-tag">
-                    <FolderOpen size={18}></FolderOpen>
-                    <span>SUB-FOLDER</span>
-                  </div>
-                </div>
-
-                <div className="gallery-hero-card-info">
-                  <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
-                  <h1 className="gallery-hero-card-title">{resolvedTitle}</h1>
-
-                  <div className="gallery-hero-card-stats">
-                    {galleryImages.length > 0 && (
-                      <span className="hero-stat-pill">
-                        <Camera size={18}></Camera> {galleryImages.length} Foto & Media
-                      </span>
-                    )}
-                    {childFolders.length > 0 && (
-                      <span className="hero-stat-pill">
-                        <Folder size={18}></Folder> {childFolders.length} Sub-folder
-                      </span>
-                    )}
-                  </div>
-
-                  {displayDescription && (
-                    <p className="gallery-hero-card-desc">{displayDescription}</p>
-                  )}
-
-                  {item?.driveFolderId && (
-                    <a
-                      href={`https://drive.google.com/drive/folders/${item.driveFolderId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="gallery-drive-button"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                        <path
-                          d="M3 9h18v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V9z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M3 9l2.5-5c.3-.6.9-1 1.5-1h9c.6 0 1.2.4 1.5 1l2.5 5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      Buka di Google Drive
-                    </a>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className="gallery-hero-standard">
-                <p className="gallery-kicker">
-                  <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
-                </p>
-                <h1 className="gallery-title">
-                  Dokumentasi
-                  <br />
-                  {heroTitle}
-                </h1>
-                {item?.driveFolderId && (
-                  <a
-                    href={`https://drive.google.com/drive/folders/${item.driveFolderId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="gallery-drive-button"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M3 9h18v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V9z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M3 9l2.5-5c.3-.6.9-1 1.5-1h9c.6 0 1.2.4 1.5 1l2.5 5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    Buka di Google Drive
-                  </a>
+            <div className="gallery-hero-standard">
+              <p className="gallery-kicker">
+                <span className="section-tag light">GKJ KEBONARUM KLATEN</span>
+              </p>
+              <h1 className="gallery-title">
+                {parentFolderName ? (
+                  <>
+                    <span style={{ fontSize: "0.6em", opacity: 0.85, fontWeight: 400, display: "block", marginBottom: "0.3rem" }}>
+                      {parentFolderName}
+                    </span>
+                    {resolvedTitle}
+                  </>
+                ) : (
+                  <>
+                    Dokumentasi
+                    <br />
+                    {resolvedTitle}
+                  </>
                 )}
-                {displayDescription && (
-                  <p className="gallery-description">{displayDescription}</p>
-                )}
-              </div>
-            )}
+              </h1>
+              {item?.driveFolderId && (
+                <a
+                  href={`https://drive.google.com/drive/folders/${item.driveFolderId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="gallery-drive-button"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M3 9h18v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V9z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M3 9l2.5-5c.3-.6.9-1 1.5-1h9c.6 0 1.2.4 1.5 1l2.5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Buka di Google Drive
+                </a>
+              )}
+              {displayDescription && (
+                <p className="gallery-description">{displayDescription}</p>
+              )}
+            </div>
           </div>
         </section>
 

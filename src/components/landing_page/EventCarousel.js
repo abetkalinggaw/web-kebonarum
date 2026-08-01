@@ -9,12 +9,14 @@ import event5 from "../../assets/events/event5.jpg";
 
 import { agendaData } from "../../data/agendaData";
 import { createApiUrl } from "../../utils/apiConfig";
+import { Clock, MapPin, ArrowRight, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 
 const EventCarousel = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
   const [events, setEvents] = useState(agendaData);
+  const [isHovered, setIsHovered] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -61,6 +63,15 @@ const EventCarousel = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? maxIndex : prevIndex - 1));
   };
 
+  useEffect(() => {
+    if (isHovered || maxIndex <= 0) return;
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHovered, maxIndex, currentIndex]);
+
   const handleTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].screenX;
   };
@@ -83,33 +94,39 @@ const EventCarousel = () => {
   return (
     <section className="events-section">
       <div className="events-container">
-        <div className="section-header-minimal">
-          <span className="section-tag">AGENDA & KEGIATAN</span>
-          <h2 className="section-title-minimal">Kegiatan Gereja</h2>
-          <p className="section-subtitle-minimal">
-            Jadwal ibadah, persekutuan doa, dan kegiatan pelayanan jemaat GKJ Kebonarum mendatang.
-          </p>
+        <div className="events-header">
+          <div className="events-header-info">
+            <span className="section-tag accent">AGENDA & KEGIATAN</span>
+            <h2 className="section-title-minimal">Kegiatan Gereja</h2>
+            <p className="section-subtitle-minimal">
+              Jadwal ibadah, persekutuan doa, dan kegiatan pelayanan jemaat GKJ Kebonarum mendatang.
+            </p>
+          </div>
+
+          <div className="events-header-actions">
+            <button
+              className="minimal-outline-btn"
+              onClick={handleNavigateAll}
+              type="button"
+            >
+              <span>Lihat Semua Agenda</span>
+              <ArrowRight size={16} />
+            </button>
+          </div>
         </div>
 
-        <div className="carousel-wrapper">
+        <div 
+          className="carousel-wrapper"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <button
-            className="carousel-button prev"
+            className="events-nav-btn prev"
             onClick={prevSlide}
             aria-label="Previous event"
             type="button"
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M15 18L9 12L15 6" />
-            </svg>
+            <ChevronLeft size={20} />
           </button>
 
           <div
@@ -156,10 +173,11 @@ const EventCarousel = () => {
                               event.type || ""
                             ).toLowerCase()}`}
                           >
-                            {event.type}
+                            {event.type || "Kegiatan"}
                           </span>
 
                           <div className="agenda-date-pill">
+                            <Calendar size={14} className="date-icon" />
                             <span className="date-day">
                               {day < 10 ? `0${day}` : day}
                             </span>
@@ -173,58 +191,26 @@ const EventCarousel = () => {
                       <div className="agenda-card-body">
                         <h3 className="agenda-card-title">{event.title}</h3>
                         <div className="agenda-card-meta">
-                          <span className="meta-item">
-                            <svg
-                              width="15"
-                              height="15"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <circle cx="12" cy="12" r="10" />
-                              <polyline points="12 6 12 12 16 14" />
-                            </svg>
-                            {event.time}
-                          </span>
-                          <span className="meta-item">
-                            <svg
-                              width="15"
-                              height="15"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                              <circle cx="12" cy="10" r="3" />
-                            </svg>
-                            {event.location}
-                          </span>
+                          {event.time && (
+                            <span className="meta-item">
+                              <Clock size={15} />
+                              {event.time}
+                            </span>
+                          )}
+                          {event.location && (
+                            <span className="meta-item">
+                              <MapPin size={15} />
+                              {event.location}
+                            </span>
+                          )}
                         </div>
                         <p className="agenda-card-desc">{event.description}</p>
                       </div>
 
                       <div className="agenda-card-footer">
                         <span className="agenda-detail-btn">
-                          Informasi Kegiatan
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            width="16"
-                            height="16"
-                          >
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                            <polyline points="12 5 19 12 12 19" />
-                          </svg>
+                          <span>Informasi Kegiatan</span>
+                          <ArrowRight size={16} />
                         </span>
                       </div>
                     </article>
@@ -235,56 +221,27 @@ const EventCarousel = () => {
           </div>
 
           <button
-            className="carousel-button next"
+            className="events-nav-btn next"
             onClick={nextSlide}
             aria-label="Next event"
             type="button"
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 18L15 12L9 6" />
-            </svg>
+            <ChevronRight size={20} />
           </button>
         </div>
 
-        <div className="carousel-dots">
-          {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
-            <button
-              key={idx}
-              type="button"
-              className={`carousel-dot ${currentIndex === idx ? "active" : ""}`}
-              onClick={() => setCurrentIndex(idx)}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-
-        <div className="custom-button-container">
-          <button
-            className="minimal-outline-btn"
-            onClick={handleNavigateAll}
-            type="button"
-          >
-            Lihat Semua Agenda
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </button>
+        <div className="events-bottom-bar">
+          <div className="events-dots-wrapper">
+            {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className={`events-dot ${currentIndex === idx ? "active" : ""}`}
+                onClick={() => setCurrentIndex(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

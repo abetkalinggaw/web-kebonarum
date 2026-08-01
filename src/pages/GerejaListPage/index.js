@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import "./GerejaListPage.css";
 import Navbar from "../../components/menu/Navbar";
 import Footer from "../../components/menu/Footer";
@@ -6,20 +7,128 @@ import sejarah2 from "../../assets/sejarah/2.jpg";
 import sejarah3 from "../../assets/sejarah/3.jpg";
 import sejarah4 from "../../assets/sejarah/4.jpg";
 import sejarah5 from "../../assets/sejarah/5.jpg";
-import { Camera, Church, Clock, Contact, Mail, Map, MapPin, MessageCircle, Phone, Sun } from 'lucide-react';
+import {
+  Camera,
+  Clock,
+  Contact,
+  Mail,
+  Map,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Sun,
+  Sunset,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+
+const ImageCarousel = ({ images, name }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const touchStartX = useRef(null);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [images.length, isHovered]);
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length,
+    );
+  };
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diffX = touchStartX.current - touchEndX;
+    if (Math.abs(diffX) > 40) {
+      if (diffX > 0) {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      } else {
+        setCurrentIndex(
+          (prevIndex) => (prevIndex - 1 + images.length) % images.length,
+        );
+      }
+    }
+    touchStartX.current = null;
+  };
+
+  return (
+    <div
+      className="gereja-carousel-container"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <div className="gereja-carousel-slides">
+        {images.map((imgSrc, idx) => (
+          <div
+            key={idx}
+            className={`gereja-carousel-slide ${idx === currentIndex ? "active" : ""}`}
+          >
+            <img src={imgSrc} alt={`${name} - foto ${idx + 1}`} />
+          </div>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        className="carousel-btn carousel-btn--prev"
+        onClick={handlePrev}
+        aria-label="Previous image"
+      >
+        <ChevronLeft size={20} />
+      </button>
+      <button
+        type="button"
+        className="carousel-btn carousel-btn--next"
+        onClick={handleNext}
+        aria-label="Next image"
+      >
+        <ChevronRight size={20} />
+      </button>
+
+      <div className="carousel-dots">
+        {images.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            className={`carousel-dot ${idx === currentIndex ? "active" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentIndex(idx);
+            }}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const GerejaListPage = () => {
   const gerejaList = [
     {
       id: 1,
-      name: "INDUK SUMBEREJO",
+      name: "Induk Sumberejo",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
-      schedule: [
-        "06.00 WIB - Bahasa Indonesia",
-        "08.00 WIB - Bahasa Jawa",
-        "17.00 WIB - Bahasa Indonesia",
-      ],
+        "Dk. Bendogantungan II No. 001/007, Desa Sumberejo, Kec. Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
+      schedule: ["07.00 WIB", "17.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {
         phone: "+62 812 345 678",
@@ -27,13 +136,13 @@ const GerejaListPage = () => {
         email: "sumberejo@gkjkebonarum.com",
         instagram: "@gkj_sumberejo",
       },
-      image: sejarah1,
+      images: [sejarah1, sejarah2, sejarah3, sejarah4, sejarah5],
     },
     {
       id: 2,
-      name: "PEPANTHAN KROSOK",
+      name: "Pepanthan Krosok",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
+        "Dk. Krosok, Desa Ngrundul, Kec. Kebonarum, Kabupaten Klaten, Jawa Tengah 57486",
       schedule: ["07.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {
@@ -42,13 +151,13 @@ const GerejaListPage = () => {
         email: "krosok@gkjkebonarum.com",
         instagram: "@gkj_krosok",
       },
-      image: sejarah2,
+      images: [sejarah2, sejarah3, sejarah4, sejarah5, sejarah1],
     },
     {
       id: 3,
-      name: "PEPANTHAN PLUNENG",
+      name: "Pepanthan Pluneng",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
+        "Desa Pluneng, Kec. Kebonarum, Kabupaten Klaten, Jawa Tengah 57486",
       schedule: ["07.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {
@@ -57,13 +166,13 @@ const GerejaListPage = () => {
         email: "pluneng@gkjkebonarum.com",
         instagram: "@gkj_pluneng",
       },
-      image: sejarah3,
+      images: [sejarah3, sejarah4, sejarah5, sejarah1, sejarah2],
     },
     {
       id: 4,
-      name: "PEPANTHAN NGRUNDUL",
+      name: "Pepanthan Ngrundul",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
+        "Desa Ngrundul, Kec. Kebonarum, Kabupaten Klaten, Jawa Tengah 57486",
       schedule: ["07.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {
@@ -72,13 +181,13 @@ const GerejaListPage = () => {
         email: "ngrundul@gkjkebonarum.com",
         instagram: "@gkj_ngrundul",
       },
-      image: sejarah4,
+      images: [sejarah4, sejarah5, sejarah1, sejarah2, sejarah3],
     },
     {
       id: 5,
-      name: "PEPANTHAN PRAYAN",
+      name: "Pepanthan Prayan",
       address:
-        "Jl Pengkol, Bendogantungan II No.001/007, Bendogantungan, Sumberejo, Klaten Selatan, Kabupaten Klaten, Jawa Tengah 57426",
+        "Dk. Prayan, Desa Kebonarum, Kec. Kebonarum, Kabupaten Klaten, Jawa Tengah 57486",
       schedule: ["07.00 WIB"],
       ibadahLabel: "Jadwal Ibadah",
       contact: {
@@ -87,7 +196,7 @@ const GerejaListPage = () => {
         email: "prayan@gkjkebonarum.com",
         instagram: "@gkj_prayan",
       },
-      image: sejarah5,
+      images: [sejarah5, sejarah1, sejarah2, sejarah3, sejarah4],
     },
   ];
 
@@ -115,24 +224,26 @@ const GerejaListPage = () => {
                   className={`gereja-item${index % 2 === 1 ? " gereja-item--reverse" : ""}`}
                 >
                   <div className="gereja-item-image">
-                    <img src={gereja.image} alt={gereja.name} />
-                    <span className="gereja-item-tag">
-                      <Church size={18} /> WILAYAH {gereja.name}
-                    </span>
+                    <ImageCarousel images={gereja.images} name={gereja.name} />
                     <div className="gereja-item-overlay" />
                   </div>
                   <div className="gereja-item-content">
-                    <h2 className="gereja-item-title">
-                      {gereja.name
-                        .toLowerCase()
-                        .split(" ")
-                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(" ")}
-                    </h2>
+                    <h2 className="gereja-item-title">{gereja.name}</h2>
                     <p className="gereja-item-address">
                       <MapPin size={18} className="address-icon" />
                       {gereja.address}
                     </p>
+                    <div className="gereja-item-action">
+                      <a
+                        href={`https://maps.google.com/?q=${encodeURIComponent(`GKJ Kebonarum ${gereja.name}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="gereja-maps-btn"
+                      >
+                        <Map size={18}></Map>
+                        <span>Petunjuk Arah (Maps)</span>
+                      </a>
+                    </div>
 
                     <div className="gereja-item-details">
                       <div className="gereja-item-schedule">
@@ -142,7 +253,12 @@ const GerejaListPage = () => {
                         <div className="schedule-pill-group">
                           {gereja.schedule.map((jadwal, idx) => (
                             <span key={idx} className="schedule-pill">
-                              <Sun size={18} /> {jadwal}
+                              {jadwal.includes("17.00") ? (
+                                <Sunset size={18} />
+                              ) : (
+                                <Sun size={18} />
+                              )}
+                              {jadwal}
                             </span>
                           ))}
                         </div>
@@ -150,8 +266,7 @@ const GerejaListPage = () => {
 
                       <div className="gereja-item-contact">
                         <h4 className="schedule-label">
-                          <Contact size={18} /> Kontak &
-                          Informasi
+                          <Contact size={18} /> Kontak & Informasi
                         </h4>
                         <ul className="contact-list">
                           <li>
@@ -159,7 +274,7 @@ const GerejaListPage = () => {
                             <span>Telepon:</span> {gereja.contact.phone}
                           </li>
                           <li>
-                            <MessageCircle size={18} className="contact-icon wa-color" />
+                            <MessageCircle size={18} className="contact-icon" />
                             <span>WhatsApp:</span>{" "}
                             <a
                               href={`https://wa.me/${gereja.contact.whatsappNumber.replace(/\D/g, "")}`}
@@ -177,7 +292,7 @@ const GerejaListPage = () => {
                             </a>
                           </li>
                           <li>
-                            <Camera size={18} className="contact-icon ig-color" />
+                            <Camera size={18} className="contact-icon" />
                             <span>Instagram:</span>{" "}
                             <a
                               href={`https://instagram.com/${gereja.contact.instagram.replace("@", "")}`}
@@ -188,18 +303,6 @@ const GerejaListPage = () => {
                             </a>
                           </li>
                         </ul>
-                      </div>
-
-                      <div className="gereja-item-action">
-                        <a
-                          href={`https://maps.google.com/?q=${encodeURIComponent(`GKJ Kebonarum Wilayah ${gereja.name}`)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="gereja-maps-btn"
-                        >
-                          <Map size={18}></Map>
-                          <span>Petunjuk Arah (Maps)</span>
-                        </a>
                       </div>
                     </div>
                   </div>

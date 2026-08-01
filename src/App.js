@@ -41,8 +41,8 @@ const routeNameOverrides = {
   tentang: "Tentang",
   youtube: "YouTube",
   instagram: "Instagram",
-  documentation: "Dokumentasi",
-  gallery: "Galeri",
+  documentation: "Dokumentasi Kegiatan",
+  gallery: "Gallery",
   events: "Agenda",
   "warta-gereja": "Warta Gereja",
   "diaken-ibadah": "Diaken & Ibadah",
@@ -52,10 +52,16 @@ const routeNameOverrides = {
 
 const getRouteName = (pathname) => {
   if (pathname === "/") return "Beranda";
+  if (pathname.includes("/documentation/gallery/")) return "Gallery";
+
   const parts = pathname.split("/").filter(Boolean);
   if (parts.length === 0) return "Beranda";
 
   let targetPart = parts[parts.length - 1];
+  if (routeNameOverrides[targetPart]) {
+    return routeNameOverrides[targetPart];
+  }
+
   if (!isNaN(targetPart) && parts.length > 1) {
     targetPart = parts[parts.length - 2];
   }

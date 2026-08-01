@@ -8,11 +8,28 @@ import img4 from "../../assets/sejarah/4.jpg";
 import img5 from "../../assets/sejarah/5.jpg";
 
 const SEJARAH_PHOTOS = [
-  { img: img1, caption: "Awal Perintisan Injil di Bendogantungan & Klaten (1910-1916)" },
-  { img: img2, caption: "Dr. Scheurer Hospitaal RS Tegalyoso & Benih Iman di Mayungan (1927)" },
-  { img: img3, caption: "Ibadah Pendewasaan GKJ Kebonarum di SD Kristen 2 Gudang (1971)" },
-  { img: img4, caption: "Penahbisan Pendeta Pertama Pdt. Christian Sutopo, DPS (1972)" },
-  { img: img5, caption: "Perjalanan Iman & Syukur HUT ke-55 Kemandirian Gereja (1971-2026)" },
+  {
+    img: img1,
+    caption: "Awal Perintisan Injil di Bendogantungan & Klaten (1910-1916)",
+  },
+  {
+    img: img2,
+    caption:
+      "Dr. Scheurer Hospitaal RS Tegalyoso & Benih Iman di Mayungan (1927)",
+  },
+  {
+    img: img3,
+    caption: "Ibadah Pendewasaan GKJ Kebonarum di SD Kristen 2 Gudang (1971)",
+  },
+  {
+    img: img4,
+    caption: "Penahbisan Pendeta Pertama Pdt. Christian Sutopo, DPS (1972)",
+  },
+  {
+    img: img5,
+    caption:
+      "Perjalanan Iman & Syukur HUT ke-55 Kemandirian Gereja (1971-2026)",
+  },
 ];
 
 const SejarahBriefGKJ = () => {
@@ -46,12 +63,20 @@ const SejarahBriefGKJ = () => {
           {/* Left Column: Clean Text Only */}
           <div className="about-sejarah-brief-text">
             <span className="section-tag accent">REKAM JEJAK IMAN</span>
-            <h2 className="about-sejarah-brief-title">Sejarah Ringkas GKJ Kebonarum</h2>
+            <h2 className="about-sejarah-brief-title">
+              Sejarah Singkat GKJ Kebonarum
+            </h2>
             <p className="about-sejarah-brief-lead">
-              Perjalanan iman GKJ Kebonarum berakar dari pekabaran Injil awal di wilayah Surakarta dan Klaten pada tahun 1910, hingga bertumbuh menjadi persekutuan yang mandiri dan diberkati.
+              Perjalanan iman GKJ Kebonarum berakar dari pekabaran Injil awal di
+              wilayah Surakarta dan Klaten pada tahun 1910, hingga bertumbuh
+              menjadi persekutuan yang mandiri dan diberkati.
             </p>
             <p className="about-sejarah-brief-desc">
-              Dari perintisan di Bendogantungan oleh Guru Injil Stefanus Arun (1916), momentum pelayanan di RS Tegalyoso (1927), hingga peresmian pendewasaan gereja pada 9 Juli 1971 di SD Kristen 2 Gudang, Tuhan senantiasa memelihara persekutuan jemaat ini menapaki masa demi masa.
+              Dari perintisan di Bendogantungan oleh Guru Injil Stefanus Arun
+              (1916), momentum pelayanan di RS Tegalyoso (1927), hingga
+              peresmian pendewasaan gereja pada 9 Juli 1971 di SD Kristen 2
+              Gudang, Tuhan senantiasa memelihara persekutuan jemaat ini
+              menapaki masa demi masa.
             </p>
 
             <div className="about-sejarah-btn-wrap">
@@ -70,8 +95,12 @@ const SejarahBriefGKJ = () => {
             {/* Minimal Caption & Dots Bar (Aligned Right) */}
             <div className="about-sejarah-caption-bar">
               <div className="sejarah-caption-info">
-                <span className="sejarah-caption-tag">ARSIP FOTO BERSEJARAH</span>
-                <p className="sejarah-caption-text">{SEJARAH_PHOTOS[currentSlide].caption}</p>
+                <span className="sejarah-caption-tag">
+                  ARSIP FOTO BERSEJARAH
+                </span>
+                <p className="sejarah-caption-text">
+                  {SEJARAH_PHOTOS[currentSlide].caption}
+                </p>
               </div>
 
               <div className="sejarah-carousel-dots">

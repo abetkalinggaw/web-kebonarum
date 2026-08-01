@@ -1,149 +1,291 @@
+/* ============================================================
+   SOROTAN PELAYANAN — 2 COLUMN LAYOUT (LEFT IMAGE, RIGHT WHITE CONTENT)
+   ============================================================ */
+
 .sorotan-pelayanan {
-  padding: 5.5rem var(--container-pad-desktop) 6rem;
-  background-color: var(--color-putih-warm, #FDFAF6);
   position: relative;
+  width: 100%;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  padding: 5.5rem 0;
   overflow: hidden;
+  background-color: var(--color-putih, #ffffff);
+}
+
+/* Left side background image container */
+.sorotan-bg-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 58%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.sorotan-bg-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.05);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 7s ease-out;
+  pointer-events: none;
+}
+
+.sorotan-bg-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Seamless gradient overlay fading left image into solid white right */
+.sorotan-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(
+      270deg,
+      #ffffff 0%,
+      rgba(255, 255, 255, 0.98) 25%,
+      rgba(255, 255, 255, 0.75) 55%,
+      rgba(255, 255, 255, 0.35) 85%,
+      rgba(255, 255, 255, 0.1) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.6) 100%
+    );
+  pointer-events: none;
 }
 
 .sorotan-container {
-  max-width: var(--container-max, 1280px);
+  position: relative;
+  z-index: 3;
+  max-width: 1300px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0 var(--container-pad-desktop, 2.5rem);
 }
 
-.sorotan-header {
-  text-align: center;
-  margin-bottom: 3.5rem;
-}
-
-.sorotan-grid {
+.sorotan-2col-layout {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.75rem;
+  grid-template-columns: 45% 55%;
+  align-items: center;
 }
 
-.sorotan-card {
-  background: var(--color-putih, #FFFFFF);
-  border: 1px solid rgba(28, 22, 18, 0.08);
-  border-radius: var(--radius-lg, 20px);
-  padding: 1.75rem;
+.sorotan-col-left-spacer {
+  min-height: 400px;
+}
+
+.sorotan-col-right-content {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  box-shadow: var(--shadow-sm, 0 2px 8px rgba(28, 22, 18, 0.06));
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.35s ease;
-  position: relative;
+  align-items: flex-start;
+  max-width: 640px;
+  margin-left: auto;
 }
 
-.sorotan-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg, 0 16px 40px rgba(28, 22, 18, 0.12));
-  border-color: rgba(196, 136, 74, 0.35);
+.sorotan-header-text {
+  margin-bottom: 1.5rem;
 }
 
-.sorotan-card-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 0.72rem;
+.sorotan-header-text .section-title-minimal {
+  font-family: var(--font-display, "Playfair Display", Georgia, serif);
+  font-size: clamp(2.2rem, 3.8vw, 3.1rem);
   font-weight: 500;
-  color: var(--color-soga, #8B4513);
-  background: rgba(139, 69, 19, 0.08);
-  padding: 0.35rem 0.85rem;
-  border-radius: var(--radius-pill, 100px);
-  align-self: flex-start;
+  color: var(--color-wenge, #1c1612);
+  margin: 0.5rem 0 0;
+  line-height: 1.15;
+}
+
+.sorotan-card-active {
+  background: var(--color-putih, #ffffff);
+  border: 1px solid rgba(196, 136, 74, 0.25);
+  border-radius: var(--radius-lg, 20px);
+  padding: 2rem 2.25rem;
+  width: 100%;
+  box-shadow: 0 12px 36px rgba(28, 22, 18, 0.06);
+  margin-bottom: 2rem;
+  transition: all 0.4s ease;
+}
+
+.sorotan-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 1.25rem;
 }
 
-.sorotan-card-badge i {
-  color: var(--color-kunyit, #C4884A);
-  font-size: 0.8rem;
+.sorotan-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(196, 136, 74, 0.12);
+  border: 1px solid rgba(196, 136, 74, 0.25);
+  color: var(--color-kunyit, #c4884a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.sorotan-card-body {
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
-}
-
-.sorotan-meta {
+.sorotan-meta-tags {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  flex-wrap: wrap;
+}
+
+.sorotan-cat-badge {
+  font-family: var(--font-mono, monospace);
   font-size: 0.7rem;
-  color: var(--color-text-muted, #8A7A6A);
-  margin-bottom: 0.75rem;
-}
-
-.sorotan-bullet {
-  opacity: 0.5;
-}
-
-.sorotan-card-title {
-  font-family: var(--font-body, sans-serif);
-  font-size: 1.15rem;
   font-weight: 600;
-  color: var(--color-wenge, #1C1612);
-  line-height: 1.35;
+  color: var(--color-kunyit, #c4884a);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sorotan-tag-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill, 100px);
+  background: rgba(28, 22, 18, 0.05);
+  color: var(--color-wenge, #1c1612);
+}
+
+.sorotan-active-title {
+  font-family: var(--font-display, "Playfair Display", Georgia, serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-wenge, #1c1612);
+  line-height: 1.3;
   margin: 0 0 0.75rem 0;
 }
 
-.sorotan-card-desc {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary, #5A4A3A);
-  line-height: 1.65;
-  margin: 0;
+.sorotan-active-desc {
+  font-family: var(--font-body, sans-serif);
+  font-size: 1.02rem;
+  color: var(--color-text-secondary, #5a4a3a);
+  line-height: 1.7;
+  margin: 0 0 1.25rem 0;
 }
 
-.sorotan-card-footer {
+.sorotan-footer-bar {
   padding-top: 1rem;
-  border-top: 1px solid rgba(28, 22, 18, 0.06);
+  border-top: 1px solid rgba(28, 22, 18, 0.08);
 }
 
-.sorotan-link {
+.sorotan-badge-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
   font-family: var(--font-body, sans-serif);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: var(--color-kunyit, #C4884A);
-  text-decoration: none;
-  transition: color 0.25s ease, gap 0.25s ease;
+  color: var(--color-soga, #8b4513);
+  background: rgba(139, 69, 19, 0.08);
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-pill, 100px);
 }
 
-.sorotan-link i {
-  font-size: 0.8rem;
-  transition: transform 0.25s ease;
+/* Controls & Indicators */
+.sorotan-controls-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
 }
 
-.sorotan-card:hover .sorotan-link {
-  color: var(--color-soga, #8B4513);
+.sorotan-dots-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.sorotan-card:hover .sorotan-link i {
-  transform: translateX(4px);
+.sorotan-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(28, 22, 18, 0.18);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Responsive Breakpoints */
-@media (max-width: 1100px) {
-  .sorotan-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+.sorotan-dot.active {
+  width: 28px;
+  border-radius: 50px;
+  background: var(--color-kunyit, #c4884a);
+}
+
+.sorotan-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sorotan-arrow-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(28, 22, 18, 0.04);
+  border: 1px solid rgba(28, 22, 18, 0.12);
+  color: var(--color-wenge, #1c1612);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sorotan-arrow-btn:hover {
+  background: var(--color-kunyit, #c4884a);
+  color: #ffffff;
+  border-color: var(--color-kunyit, #c4884a);
+  transform: scale(1.08);
+}
+
+@media (max-width: 1024px) {
+  .sorotan-bg-left {
+    width: 100%;
   }
-}
 
-@media (max-width: 768px) {
-  .sorotan-pelayanan {
-    padding: 4rem var(--container-pad-mobile, 1.25rem) 4.5rem;
+  .sorotan-gradient-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.92) 0%,
+        rgba(255, 255, 255, 0.96) 50%,
+        rgba(255, 255, 255, 0.98) 100%
+      );
   }
-  .sorotan-header {
-    margin-bottom: 2.5rem;
-  }
-  .sorotan-grid {
+
+  .sorotan-2col-layout {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+  }
+
+  .sorotan-col-left-spacer {
+    display: none;
+  }
+
+  .sorotan-col-right-content {
+    max-width: 100%;
+    margin-left: 0;
   }
 }
