@@ -98,7 +98,7 @@
 /* Search Box */
 .documentation-search {
   position: relative;
-  width: min(100%, 540px);
+  width: min(100%, 940px);
 }
 
 .documentation-search-input {

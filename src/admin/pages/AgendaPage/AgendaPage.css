@@ -15,15 +15,15 @@
 }
 
 .agenda-filter-card {
-  background: #ffffff;
-  border: 1px solid rgba(196, 136, 74, 0.22);
-  border-radius: 18px;
-  padding: 1.25rem 1.5rem;
+  background: var(--admin-surface, #ffffff);
+  border: 1px solid rgba(52, 78, 65, 0.16);
+  border-radius: var(--admin-radius-lg, 16px);
+  padding: 1.15rem 1.35rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.25rem;
-  box-shadow: 0 4px 16px rgba(28, 22, 18, 0.03);
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba(26, 40, 33, 0.04);
   flex-wrap: wrap;
 }
 
