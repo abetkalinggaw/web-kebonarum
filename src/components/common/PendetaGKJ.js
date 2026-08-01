@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./PendetaGKJ.css";
 import pendeta1 from "../../assets/pdt/pendeta1.jpeg";
-
 import { createApiUrl } from "../../utils/apiConfig";
 import { pendetaDataList } from "../../data/pendetaData";
 
@@ -186,20 +185,6 @@ const PendetaGKJ = () => {
                   </p>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        {isCarousel && maxIndex > 0 && (
-          <div className="carousel-dots">
-            {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                className={`carousel-dot ${currentIndex === idx ? "active" : ""}`}
-                onClick={() => setCurrentIndex(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
             ))}
           </div>
         )}

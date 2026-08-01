@@ -2,7 +2,7 @@ import "./LandingPage.css";
 import Navbar from "../../components/menu/Navbar";
 import EventCarousel from "../../components/landing_page/EventCarousel";
 import StatistikSection from "../../components/landing_page/StatistikSection";
-import PendetaGKJ from "../../components/landing_page/PendetaGKJ";
+import PendetaGKJ from "../../components/common/PendetaGKJ";
 import Separator from "../../components/landing_page/Separator";
 import KebonarumInfo from "../../components/landing_page/KebonarumInfo";
 import VisiMisi from "../../components/landing_page/VisiMisi";

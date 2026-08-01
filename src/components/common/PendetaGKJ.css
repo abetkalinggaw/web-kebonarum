@@ -1,5 +1,5 @@
 /* ============================================================
-   PENDETA GKJ KEBONARUM — LANDING PAGE
+   PENDETA GKJ KEBONARUM — COMMON COMPONENT
    Grid on Desktop, Smooth Carousel on Mobile/Tablet
    ============================================================ */
 
@@ -25,21 +25,22 @@
   background: var(--color-putih-soft);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid rgba(28, 22, 18, 0.06);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(196, 136, 74, 0.22);
+  box-shadow: 0 6px 20px rgba(28, 22, 18, 0.05);
   transition:
-    transform 0.35s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.35s ease,
-    border-color 0.35s ease;
+    border-color 0.35s ease,
+    background 0.35s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
 .pendeta-gkj-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(196, 136, 74, 0.25);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(196, 136, 74, 0.16);
+  border-color: rgba(196, 136, 74, 0.55);
   background: var(--color-putih);
 }
 
@@ -49,11 +50,12 @@
   background-size: cover;
   background-position: center top;
   position: relative;
-  transition: transform 0.5s ease;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .pendeta-gkj-card:hover .pendeta-gkj-image {
-  transform: scale(1.02);
+  transform: scale(1.05);
 }
 
 .pendeta-gkj-overlay {
@@ -61,13 +63,19 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(28, 22, 18, 0) 50%,
-    rgba(28, 22, 18, 0.35) 100%
+    rgba(28, 22, 18, 0) 40%,
+    rgba(28, 22, 18, 0.6) 100%
   );
+  opacity: 0.75;
+  transition: opacity 0.35s ease;
+}
+
+.pendeta-gkj-card:hover .pendeta-gkj-overlay {
+  opacity: 0.9;
 }
 
 .pendeta-gkj-info {
-  padding: 1.5rem 1.75rem;
+  padding: 1.5rem 1.5rem 1.65rem;
   background: var(--color-putih);
   display: flex;
   flex-direction: column;
@@ -78,12 +86,13 @@
 .pendeta-role-badge {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  font-weight: 400;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--color-kunyit);
-  background: var(--color-kunyit-pale);
-  padding: 0.25rem 0.75rem;
+  background: rgba(196, 136, 74, 0.12);
+  border: 1px solid rgba(196, 136, 74, 0.28);
+  padding: 0.28rem 0.8rem;
   border-radius: var(--radius-pill);
   margin-bottom: 0.75rem;
 }
@@ -92,8 +101,13 @@
   margin: 0 0 0.4rem 0;
   font-family: var(--font-display);
   font-size: 1.35rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-wenge);
+  transition: color 0.25s ease;
+}
+
+.pendeta-gkj-card:hover .pendeta-gkj-name {
+  color: var(--color-soga);
 }
 
 .pendeta-gkj-subtitle {
@@ -156,30 +170,6 @@
   border-color: var(--color-wenge);
   transform: scale(1.06);
   box-shadow: var(--shadow-md);
-}
-
-.pendeta-gkj-kebonarum .carousel-dots {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 2.25rem;
-}
-
-.pendeta-gkj-kebonarum .carousel-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 100px;
-  background: var(--color-gading-deep);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 0;
-}
-
-.pendeta-gkj-kebonarum .carousel-dot.active {
-  width: 26px;
-  background: var(--color-kunyit);
 }
 
 /* Responsive */

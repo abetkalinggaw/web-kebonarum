@@ -5,7 +5,7 @@ import Footer from "../../components/menu/Footer";
 import VisiMisi from "../../components/landing_page/VisiMisi";
 import SejarahBriefGKJ from "../../components/about_page/SejarahBriefGKJ";
 import StrukturOrganisasiGKJ from "../../components/about_page/StrukturOrganisasiGKJ";
-import PendetaGKJ from "../../components/about_page/PendetaGKJ";
+import PendetaGKJ from "../../components/common/PendetaGKJ";
 import MajelisGKJ from "../../components/about_page/MajelisGKJ";
 import Separator from "../../components/landing_page/Separator";
 import backgroundVideo from "../../assets/videos/background-video.mp4";
