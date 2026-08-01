@@ -18,9 +18,14 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const prevTitle = document.title;
+    document.title = 'Dashboard GKJ Kebonarum';
     document.body.classList.add('admin-body');
     if (isAuthenticated) navigate('/admin');
-    return () => document.body.classList.remove('admin-body');
+    return () => {
+      document.title = prevTitle;
+      document.body.classList.remove('admin-body');
+    };
   }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e) => {

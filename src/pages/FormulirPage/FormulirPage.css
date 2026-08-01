@@ -199,27 +199,27 @@
 }
 
 .formulir-download-btn {
-  background: var(--color-wenge);
-  color: var(--color-gading);
-  border: 1px solid var(--color-wenge);
+  background: var(--color-pine, #344E41);
+  color: #FFFFFF;
+  border: 1px solid var(--color-pine, #344E41);
   padding: 0.7rem 1.4rem;
   border-radius: var(--radius-pill);
   font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .formulir-download-btn:hover {
-  background: var(--color-kunyit);
-  color: var(--color-wenge);
-  border-color: var(--color-kunyit);
+  background: var(--color-accent-warm, #C5A059);
+  color: #1A2821;
+  border-color: var(--color-accent-warm, #C5A059);
   transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(196, 136, 74, 0.25);
+  box-shadow: 0 6px 18px rgba(197, 160, 89, 0.3);
 }
 
 @media (max-width: 768px) {

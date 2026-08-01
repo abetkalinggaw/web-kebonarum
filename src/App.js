@@ -133,6 +133,9 @@ function AppContent() {
         <Route path="/pengumuman/warta-gereja/:id" element={<WartaReadPage />} />
         <Route path="/formulir" element={<FormulirPage />} />
         <Route path="/persembahan" element={<PersembahanPage />} />
+        <Route path="/komisi/diaken-ibadah" element={<MajelisListPage />} />
+        <Route path="/komisi/penatalayanan" element={<MajelisListPage />} />
+        <Route path="/komisi/pwg" element={<MajelisListPage />} />
 
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLoginPage />} />

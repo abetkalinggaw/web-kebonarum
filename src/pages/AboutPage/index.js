@@ -3,6 +3,8 @@ import "./AboutPage.css";
 import Navbar from "../../components/menu/Navbar";
 import Footer from "../../components/menu/Footer";
 import VisiMisi from "../../components/landing_page/VisiMisi";
+import SejarahBriefGKJ from "../../components/about_page/SejarahBriefGKJ";
+import StrukturOrganisasiGKJ from "../../components/about_page/StrukturOrganisasiGKJ";
 import PendetaGKJ from "../../components/about_page/PendetaGKJ";
 import MajelisGKJ from "../../components/about_page/MajelisGKJ";
 import Separator from "../../components/landing_page/Separator";
@@ -47,9 +49,7 @@ const AboutPage = () => {
 
           <div className="about-hero-content">
             <span className="section-tag light">PROFIL GEREJA</span>
-            <h1 className="about-title">
-              Tentang GKJ Kebonarum
-            </h1>
+            <h1 className="about-title">Tentang GKJ Kebonarum</h1>
             <p className="about-lead">
               GKJ Kebonarum adalah gereja yang melayani jemaat dan masyarakat
               dengan kasih, pengajaran firman, dan pelayanan yang berdampak.
@@ -60,7 +60,14 @@ const AboutPage = () => {
                 onClick={() => setIsVideoOpen(true)}
                 type="button"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
                 Video Profil GKJ Kebonarum
               </button>
             </div>
@@ -68,8 +75,10 @@ const AboutPage = () => {
         </section>
         <Separator />
         <VisiMisi />
+        <StrukturOrganisasiGKJ />
         <PendetaGKJ />
         <MajelisGKJ />
+        <SejarahBriefGKJ />
       </main>
       {isVideoOpen && (
         <div

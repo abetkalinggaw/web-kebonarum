@@ -42,8 +42,13 @@ const AdminLayout = () => {
   const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
+    const prevTitle = document.title;
+    document.title = "Dashboard GKJ Kebonarum";
     document.body.classList.add("admin-body");
-    return () => document.body.classList.remove("admin-body");
+    return () => {
+      document.title = prevTitle;
+      document.body.classList.remove("admin-body");
+    };
   }, []);
 
   // Close mobile sidebar on route change

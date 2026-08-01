@@ -6,15 +6,15 @@ const FormulirPage = () => {
   const formulirSections = [
     {
       sectionId: 1,
-      sectionTitle: "Administrasi Umum",
+      sectionTitle: "Administrasi umum & Keanggotaan",
       sectionDescription:
-        "Formulir untuk keperluan administrasi umum seperti pembaptisan, pernikahan, dan lainnya",
+        "Dokumen dan permohonan pelayanan administrasi jemaat, pendataan warga, serta perpindahan keanggotaan gereja.",
       formulirs: [
         {
           id: 1,
           name: "Formulir Laporan Kelahiran",
           description:
-            "Formulir untuk permohonan pembaptisan di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+            "Formulir resmi laporan kelahiran anak bagi jemaat GKJ Kebonarum untuk dicatat dalam buku induk warga gereja.",
           downloadUrl:
             "https://docs.google.com/document/d/1ZaVf-uRmkAK-DWvYXSyly6bLTc1KJ7Pk/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
@@ -22,7 +22,7 @@ const FormulirPage = () => {
           id: 2,
           name: "Formulir Permohonan Pembaptisan Anak",
           description:
-            "Formulir untuk permohonan pembaptisan di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+            "Formulir pendaftaran dan persetujuan orang tua untuk pelaksanaan Sakramen Baptis Anak di GKJ Kebonarum.",
           downloadUrl:
             "https://docs.google.com/document/d/1dySZVgSXhS89E5R0OCYrRBMuh2lZ0pn-/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
@@ -30,7 +30,7 @@ const FormulirPage = () => {
           id: 3,
           name: "Formulir Permohonan Pembaptisan Dewasa",
           description:
-            "Formulir untuk permohonan pembaptisan dewasa di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+            "Formulir permohonan pelaksanaan Sakramen Baptis Dewasa bagi warga yang telah menerima pembinaan katekisasi.",
           downloadUrl:
             "https://docs.google.com/document/d/1zwdKhYZqPQGLacllU_TeQJFI-WYtN7C1/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
@@ -38,7 +38,7 @@ const FormulirPage = () => {
           id: 4,
           name: "Formulir Permohonan SIDI",
           description:
-            "Formulir untuk permohonan sidi di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+            "Formulir permohonan Pengakuan Iman (Sidi) bagi pemuda/warga gereja setelah menyelesaikan kelas pembinaan sidi.",
           downloadUrl:
             "https://docs.google.com/document/d/1AxaOJ1piUS3u_wWQinAPpO_d6Llxa4tA/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
@@ -46,7 +46,7 @@ const FormulirPage = () => {
           id: 5,
           name: "Formulir Permohonan Pindah Warga",
           description:
-            "Formulir untuk permohonan pindah warga di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+            "Formulir permohonan surat atestasi pindah keanggotaan gereja bagi warga yang berpindah domisili.",
           downloadUrl:
             "https://docs.google.com/document/d/1y1cHT4pBe5PiV7aTXdXG99hALmU5Op9Q/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
@@ -56,13 +56,13 @@ const FormulirPage = () => {
       sectionId: 2,
       sectionTitle: "Pernikahan & Pertunangan",
       sectionDescription:
-        "Formulir terkait dengan pernikahan, pertunangan, dan administrasi keluarga lainnya",
+        "Formulir pendaftaran pertunangan, perkawinan gerejawi, serta berkas administrasi calon mempelai.",
       formulirs: [
         {
           id: 6,
           name: "Formulir Permohonan Pertunangan",
           description:
-            "Formulir pendaftaran untuk jemaat baru yang ingin bergabung dengan GKJ Kebonarum.",
+            "Formulir pendaftaran permohonan ibadah pengukuhan pertunangan bagi pasangan calon mempelai.",
           downloadUrl:
             "https://docs.google.com/document/d/1snvTLbetGnvkauGLEC7FkrOL-K9xzBc3/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
@@ -70,7 +70,7 @@ const FormulirPage = () => {
           id: 7,
           name: "Formulir Laporan Pertunangan",
           description:
-            "Formulir untuk meminta doa bersama dari gereja untuk kebutuhan khusus anda.",
+            "Formulir verifikasi data dan pengumuman warta pertunangan sebelum memasuki tahap pastoral pernikahan.",
           downloadUrl:
             "https://docs.google.com/document/d/1wMQun2ocq4Q0dXiszY94eneb_XSp3VR6/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },
@@ -78,7 +78,7 @@ const FormulirPage = () => {
           id: 8,
           name: "Formulir Pengajuan Pernikahan",
           description:
-            "Formulir permintaan surat keterangan sebagai anggota jemaat GKJ Kebonarum.",
+            "Formulir permohonan pemberkatan dan peneguhan Pernikahan Gerejawi di GKJ Kebonarum.",
           downloadUrl:
             "https://docs.google.com/document/d/1CjlwyyTGfQC2b3ata3fEUkIrbiTPSwlg/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true#",
         },
@@ -88,13 +88,13 @@ const FormulirPage = () => {
       sectionId: 3,
       sectionTitle: "Sakramen & Pembinaan Iman",
       sectionDescription:
-        "Formulir untuk keperluan sakramen seperti komuni, penguatan iman, dan lainnya",
+        "Formulir permohonan pelayanan pembinaan kerohanian, pertobatan, dan pemulihan keanggotaan gereja.",
       formulirs: [
         {
-          id: 8,
+          id: 9,
           name: "Formulir Permohonan Pertobatan",
           description:
-            "Formulir untuk permohonan pertobatan di GKJ Kebonarum. Harap isi dengan lengkap dan tanda tangan.",
+            "Formulir permohonan pelayanan pastoral pengakuan pertobatan dan pemulihan persekutuan jemaat di GKJ Kebonarum.",
           downloadUrl:
             "https://docs.google.com/document/d/14k4I-QH59FrbAeEtUidRXJqM1HjC0Fth/edit?usp=sharing&ouid=110664307198940283519&rtpof=true&sd=true",
         },

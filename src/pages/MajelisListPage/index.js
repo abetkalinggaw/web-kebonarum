@@ -366,6 +366,28 @@ const MajelisListPage = () => {
                 )}
               </>
             )}
+
+            {/* Bottom Back Button Container */}
+            <div className="majelis-cta-container">
+              <button
+                className="majelis-cta-btn"
+                onClick={handleBackClick}
+                type="button"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ transform: "rotate(180deg)" }}
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+                Kembali Ke Tentang GKJ Kebonarum
+              </button>
+            </div>
           </div>
         </section>
       </main>

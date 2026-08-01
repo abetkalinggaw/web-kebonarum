@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
 import logo from "../../assets/logo.png";
-import { Camera, Mail, MessageCircle, Video } from 'lucide-react';
+import { Camera, Mail, MessageCircle, Video } from "lucide-react";
 
 const Footer = ({ isStatic = false }) => {
   const footerRef = useRef(null);
@@ -233,8 +233,7 @@ const Footer = ({ isStatic = false }) => {
                   className="footer-link"
                   style={{ marginBottom: 0 }}
                 >
-                  <Mail size={18} />{" "}
-                  gkjkebonarumklaten@gmail.com
+                  <Mail size={18} /> gkjkebonarumklaten@gmail.com
                 </a>
               </div>
 
@@ -257,15 +256,6 @@ const Footer = ({ isStatic = false }) => {
                   rel="noopener noreferrer"
                   className="social-btn"
                   aria-label="Instagram GKJ"
-                >
-                  <Camera size={18} />
-                </a>
-                <a
-                  href="https://instagram.com/multimedia.gkj.kebonarum"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-btn"
-                  aria-label="Instagram Multimedia"
                 >
                   <Camera size={18} />
                 </a>

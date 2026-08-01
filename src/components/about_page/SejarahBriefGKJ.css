@@ -1,0 +1,210 @@
+/* ============================================================
+   SEJARAH GEREJA BRIEF SECTION — 2 COLUMN RIGHT IMAGE WITH GRADIENT TO GREEN
+   ============================================================ */
+
+.about-sejarah-brief-section {
+  position: relative;
+  width: 100%;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  padding: 5.5rem 0;
+  overflow: hidden;
+  background-color: var(--color-pine-deep, #1A2821);
+}
+
+/* Right half image background container */
+.about-sejarah-bg-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 60%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.sejarah-section-bg-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.05);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 7s ease-out;
+  pointer-events: none;
+}
+
+.sejarah-section-bg-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Seamless gradient overlay from right image into solid green left */
+.about-sejarah-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(
+      90deg,
+      #1A2821 0%,
+      rgba(26, 40, 33, 0.98) 25%,
+      rgba(26, 40, 33, 0.75) 55%,
+      rgba(26, 40, 33, 0.35) 85%,
+      rgba(26, 40, 33, 0.1) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(26, 40, 33, 0.4) 0%,
+      transparent 50%,
+      rgba(26, 40, 33, 0.6) 100%
+    );
+  pointer-events: none;
+}
+
+.about-sejarah-brief-inner {
+  position: relative;
+  z-index: 3;
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--container-pad-desktop);
+}
+
+.about-sejarah-2col-layout {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  align-items: center;
+}
+
+.about-sejarah-brief-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 640px;
+}
+
+.about-sejarah-brief-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 3.8vw, 3.1rem);
+  font-weight: 500;
+  color: var(--color-gading, #F4F6F4);
+  margin: 0.5rem 0 1rem;
+  line-height: 1.15;
+}
+
+.about-sejarah-brief-lead {
+  font-family: var(--font-body);
+  font-size: 1.12rem;
+  line-height: 1.7;
+  color: var(--color-accent-warm, #C5A059);
+  font-weight: 500;
+  margin: 0 0 1rem;
+}
+
+.about-sejarah-brief-desc {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  line-height: 1.75;
+  color: rgba(244, 246, 244, 0.82);
+  margin: 0 0 1.75rem;
+}
+
+.about-sejarah-btn-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.about-sejarah-caption-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-top: 2.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(244, 246, 244, 0.12);
+  width: 100%;
+  text-align: right;
+}
+
+.sejarah-caption-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  text-align: right;
+}
+
+.sejarah-caption-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-accent-warm, #C5A059);
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.sejarah-caption-text {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: rgba(244, 246, 244, 0.88);
+  margin: 0;
+  text-align: right;
+}
+
+.sejarah-carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(244, 246, 244, 0.25);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+  width: 28px;
+  border-radius: 50px;
+  background: var(--color-accent-warm, #C5A059);
+}
+
+@media (max-width: 1024px) {
+  .about-sejarah-bg-right {
+    width: 100%;
+  }
+
+  .about-sejarah-gradient-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(26, 40, 33, 0.88) 0%,
+        rgba(26, 40, 33, 0.92) 50%,
+        rgba(26, 40, 33, 0.96) 100%
+      );
+  }
+
+  .about-sejarah-2col-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .about-sejarah-brief-text {
+    max-width: 100%;
+  }
+}
