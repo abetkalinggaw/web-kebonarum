@@ -6,10 +6,13 @@ import "./DatabaseJemaatPage.css";
 import {
   AlertCircle,
   AlertTriangle,
+  Camera,
   CheckCircle,
   Edit,
   Grid,
   IdCard,
+  Image as ImageIcon,
+  Link as LinkIcon,
   List,
   Loader,
   Phone,
@@ -18,10 +21,11 @@ import {
   Search,
   Shield,
   Trash2,
+  Upload,
   UserPlus,
   X,
   FileSpreadsheet,
-} from 'lucide-react';
+} from "lucide-react";
 
 const DatabaseJemaatPage = () => {
   const { user } = useContext(AuthContext);
@@ -91,9 +95,11 @@ const DatabaseJemaatPage = () => {
     try {
       let query = "?";
       if (search) query += `search=${encodeURIComponent(search)}&`;
-      if (filterWilayah) query += `wilayah=${encodeURIComponent(filterWilayah)}&`;
+      if (filterWilayah)
+        query += `wilayah=${encodeURIComponent(filterWilayah)}&`;
       if (filterStatus) query += `status=${encodeURIComponent(filterStatus)}&`;
-      if (filterPeran) query += `peranGereja=${encodeURIComponent(filterPeran)}&`;
+      if (filterPeran)
+        query += `peranGereja=${encodeURIComponent(filterPeran)}&`;
 
       const data = await apiCall(`/jemaat${query}`);
       setJemaatList(Array.isArray(data) ? data : []);
@@ -218,9 +224,10 @@ const DatabaseJemaatPage = () => {
 
   // Export CSV Helper
   const exportToCSV = () => {
-    const dataToExport = selectedIds.length > 0
-      ? jemaatList.filter(j => selectedIds.includes(j.id))
-      : jemaatList;
+    const dataToExport =
+      selectedIds.length > 0
+        ? jemaatList.filter((j) => selectedIds.includes(j.id))
+        : jemaatList;
 
     if (dataToExport.length === 0) {
       showToast("Tidak ada data untuk diekspor", "danger");
@@ -228,37 +235,54 @@ const DatabaseJemaatPage = () => {
     }
 
     const headers = [
-      "ID", "NIK", "Nama Lengkap", "Peran Gereja", "Sub Peran", "Wilayah", "Komisi",
-      "Status Keanggotaan", "Jenis Kelamin", "No HP", "Alamat", "Status Perkawinan"
+      "ID",
+      "NIK",
+      "Nama Lengkap",
+      "Peran Gereja",
+      "Sub Peran",
+      "Wilayah",
+      "Komisi",
+      "Status Keanggotaan",
+      "Jenis Kelamin",
+      "No HP",
+      "Alamat",
+      "Status Perkawinan",
     ];
 
-    const rows = dataToExport.map(j => [
+    const rows = dataToExport.map((j) => [
       j.id,
-      `"${j.nik || ''}"`,
-      `"${j.namaLengkap || ''}"`,
-      `"${j.peranGereja || ''}"`,
-      `"${j.subPeran || ''}"`,
-      `"${j.wilayah || ''}"`,
-      `"${j.komisi || ''}"`,
-      `"${j.statusKeanggotaan || ''}"`,
-      `"${j.jenisKelamin || ''}"`,
-      `"${j.noHp || ''}"`,
-      `"${(j.alamat || '').replace(/"/g, '""')}"`,
-      `"${j.statusPerkawinan || ''}"`
+      `"${j.nik || ""}"`,
+      `"${j.namaLengkap || ""}"`,
+      `"${j.peranGereja || ""}"`,
+      `"${j.subPeran || ""}"`,
+      `"${j.wilayah || ""}"`,
+      `"${j.komisi || ""}"`,
+      `"${j.statusKeanggotaan || ""}"`,
+      `"${j.jenisKelamin || ""}"`,
+      `"${j.noHp || ""}"`,
+      `"${(j.alamat || "").replace(/"/g, '""')}"`,
+      `"${j.statusPerkawinan || ""}"`,
     ]);
 
-    const csvContent = "data:text/csv;charset=utf-8,\uFEFF" +
-      [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const csvContent =
+      "data:text/csv;charset=utf-8,\uFEFF" +
+      [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
 
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Data_Jemaat_GKJ_Kebonarum_${new Date().toISOString().slice(0,10)}.csv`);
+    link.setAttribute(
+      "download",
+      `Data_Jemaat_GKJ_Kebonarum_${new Date().toISOString().slice(0, 10)}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    showToast(`Berhasil mengekspor ${dataToExport.length} data jemaat ke CSV`, "success");
+    showToast(
+      `Berhasil mengekspor ${dataToExport.length} data jemaat ke CSV`,
+      "success",
+    );
   };
 
   const isReadOnly = (user?.role || "").toLowerCase() === "users";
@@ -274,15 +298,15 @@ const DatabaseJemaatPage = () => {
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelectedIds(jemaatList.map(j => j.id));
+      setSelectedIds(jemaatList.map((j) => j.id));
     } else {
       setSelectedIds([]);
     }
   };
 
   const handleSelectOne = (id) => {
-    setSelectedIds(prev =>
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -293,12 +317,18 @@ const DatabaseJemaatPage = () => {
         <div className="header-title-group">
           <h2>Database &bull; Digital Jemaat</h2>
           <p>
-            Pengelolaan data pribadi, sakramen, keluarga, dan komisi pelayanan jemaat GKJ Kebonarum.
+            Pengelolaan data pribadi, sakramen, keluarga, dan komisi pelayanan
+            jemaat GKJ Kebonarum.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <button className="admin-btn secondary" onClick={exportToCSV} title="Ekspor Data ke CSV">
-            <FileSpreadsheet size={17} /> Ekspor CSV ({selectedIds.length > 0 ? selectedIds.length : 'Semua'})
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+          <button
+            className="admin-btn secondary"
+            onClick={exportToCSV}
+            title="Ekspor Data ke CSV"
+          >
+            <FileSpreadsheet size={17} /> Ekspor CSV (
+            {selectedIds.length > 0 ? selectedIds.length : "Semua"})
           </button>
           {!isReadOnly && (
             <button className="admin-btn" onClick={openAddModal}>
@@ -380,16 +410,16 @@ const DatabaseJemaatPage = () => {
           <div className="admin-view-toggle">
             <button
               type="button"
-              className={`admin-view-toggle-btn ${viewMode === 'table' ? 'active' : ''}`}
-              onClick={() => setViewMode('table')}
+              className={`admin-view-toggle-btn ${viewMode === "table" ? "active" : ""}`}
+              onClick={() => setViewMode("table")}
               title="Tampilan Tabel"
             >
               <List size={15} /> <span>Tabel</span>
             </button>
             <button
               type="button"
-              className={`admin-view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
-              onClick={() => setViewMode('cards')}
+              className={`admin-view-toggle-btn ${viewMode === "cards" ? "active" : ""}`}
+              onClick={() => setViewMode("cards")}
               title="Tampilan Kartu"
             >
               <Grid size={15} /> <span>Kartu</span>
@@ -402,19 +432,26 @@ const DatabaseJemaatPage = () => {
       <div className="jemaat-table-card">
         {loading ? (
           <div className="jemaat-loading">
-            <Loader size={20} className="fa-spin" style={{ color: 'var(--admin-accent)', marginRight: '8px' }} />
+            <Loader
+              size={20}
+              className="fa-spin"
+              style={{ color: "var(--admin-accent)", marginRight: "8px" }}
+            />
             Memuat database jemaat...
           </div>
-        ) : viewMode === 'table' ? (
+        ) : viewMode === "table" ? (
           <div className="table-responsive">
             <table className="jemaat-table">
               <thead>
                 <tr>
-                  <th style={{ width: '40px' }}>
+                  <th style={{ width: "40px" }}>
                     <input
                       type="checkbox"
                       onChange={handleSelectAll}
-                      checked={selectedIds.length > 0 && selectedIds.length === jemaatList.length}
+                      checked={
+                        selectedIds.length > 0 &&
+                        selectedIds.length === jemaatList.length
+                      }
                     />
                   </th>
                   <th>Peran Gereja</th>
@@ -437,26 +474,37 @@ const DatabaseJemaatPage = () => {
                         />
                       </td>
                       <td>
-                        <span className={`peran-pill ${getPeranBadgeClass(item.peranGereja)}`}>
+                        <span
+                          className={`peran-pill ${getPeranBadgeClass(item.peranGereja)}`}
+                        >
                           <Shield size={13} />
-                          {item.subPeran || item.peranGereja || 'Jemaat'}
+                          {item.subPeran || item.peranGereja || "Jemaat"}
                         </span>
                       </td>
                       <td>
                         <div className="jemaat-nama-cell">
-                          <span className="jemaat-name">{item.namaLengkap}</span>
-                          <span className="jemaat-nik">NIK: {item.nik || '-'}</span>
+                          <span className="jemaat-name">
+                            {item.namaLengkap}
+                          </span>
+                          <span className="jemaat-nik">
+                            NIK: {item.nik || "-"}
+                          </span>
                           {item.tanggalLahir && (
                             <span className="jemaat-sub-meta">
-                              {item.tempatLahir ? `${item.tempatLahir}, ` : ''}{item.tanggalLahir}
+                              {item.tempatLahir ? `${item.tempatLahir}, ` : ""}
+                              {item.tanggalLahir}
                             </span>
                           )}
                         </div>
                       </td>
                       <td>
                         <div className="jemaat-wilayah-cell">
-                          <span className="wilayah-badge">{item.wilayah || 'Sumberejo'}</span>
-                          <span className="komisi-tag">{item.komisi || 'Komisi Dewasa'}</span>
+                          <span className="wilayah-badge">
+                            {item.wilayah || "Sumberejo"}
+                          </span>
+                          <span className="komisi-tag">
+                            {item.komisi || "Komisi Dewasa"}
+                          </span>
                         </div>
                       </td>
                       <td>
@@ -466,16 +514,18 @@ const DatabaseJemaatPage = () => {
                               <Phone size={14} /> {item.noHp}
                             </span>
                           )}
-                          <span className="alamat-text">{item.alamat || '-'}</span>
+                          <span className="alamat-text">
+                            {item.alamat || "-"}
+                          </span>
                         </div>
                       </td>
                       <td>
                         <span
                           className={`status-pill status-${(
-                            item.statusKeanggotaan || 'Aktif'
+                            item.statusKeanggotaan || "Aktif"
                           ).toLowerCase()}`}
                         >
-                          {item.statusKeanggotaan || 'Aktif'}
+                          {item.statusKeanggotaan || "Aktif"}
                         </span>
                       </td>
                       <td>
@@ -521,37 +571,119 @@ const DatabaseJemaatPage = () => {
           </div>
         ) : (
           /* Cards Grid Mode */
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem', padding: '1.5rem' }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: "1.25rem",
+              padding: "1.5rem",
+            }}
+          >
             {jemaatList.map((item) => (
-              <div key={item.id} className="admin-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', position: 'relative' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span className={`peran-pill ${getPeranBadgeClass(item.peranGereja)}`}>
-                    <Shield size={13} /> {item.subPeran || item.peranGereja || 'Jemaat'}
+              <div
+                key={item.id}
+                className="admin-card"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                  position: "relative",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span
+                    className={`peran-pill ${getPeranBadgeClass(item.peranGereja)}`}
+                  >
+                    <Shield size={13} />{" "}
+                    {item.subPeran || item.peranGereja || "Jemaat"}
                   </span>
-                  <span className={`status-pill status-${(item.statusKeanggotaan || 'Aktif').toLowerCase()}`}>
-                    {item.statusKeanggotaan || 'Aktif'}
+                  <span
+                    className={`status-pill status-${(item.statusKeanggotaan || "Aktif").toLowerCase()}`}
+                  >
+                    {item.statusKeanggotaan || "Aktif"}
                   </span>
                 </div>
                 <div>
-                  <h4 style={{ margin: '0 0 0.2rem', fontFamily: 'var(--admin-font-heading)', fontSize: '1.1rem' }}>{item.namaLengkap}</h4>
-                  <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--admin-accent)', fontFamily: 'var(--admin-font-mono)' }}>NIK: {item.nik || '-'}</p>
+                  <h4
+                    style={{
+                      margin: "0 0 0.2rem",
+                      fontFamily: "var(--admin-font-heading)",
+                      fontSize: "1.1rem",
+                    }}
+                  >
+                    {item.namaLengkap}
+                  </h4>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "0.78rem",
+                      color: "var(--admin-accent)",
+                      fontFamily: "var(--admin-font-mono)",
+                    }}
+                  >
+                    NIK: {item.nik || "-"}
+                  </p>
                 </div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--admin-text-secondary)', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                  <div><strong>Wilayah:</strong> {item.wilayah || 'Sumberejo'}</div>
-                  <div><strong>Komisi:</strong> {item.komisi || 'Komisi Dewasa'}</div>
-                  {item.noHp && <div><strong>HP:</strong> {item.noHp}</div>}
-                  {item.alamat && <div><strong>Alamat:</strong> {item.alamat}</div>}
+                <div
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "var(--admin-text-secondary)",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.3rem",
+                  }}
+                >
+                  <div>
+                    <strong>Wilayah:</strong> {item.wilayah || "Sumberejo"}
+                  </div>
+                  <div>
+                    <strong>Komisi:</strong> {item.komisi || "Komisi Dewasa"}
+                  </div>
+                  {item.noHp && (
+                    <div>
+                      <strong>HP:</strong> {item.noHp}
+                    </div>
+                  )}
+                  {item.alamat && (
+                    <div>
+                      <strong>Alamat:</strong> {item.alamat}
+                    </div>
+                  )}
                 </div>
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto', paddingTop: '0.75rem', borderTop: '1px solid var(--admin-border)' }}>
-                  <button className="admin-btn secondary sm" style={{ flex: 1 }} onClick={() => setCardItem(item)}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "0.5rem",
+                    marginTop: "auto",
+                    paddingTop: "0.75rem",
+                    borderTop: "1px solid var(--admin-border)",
+                  }}
+                >
+                  <button
+                    className="admin-btn secondary sm"
+                    style={{ flex: 1 }}
+                    onClick={() => setCardItem(item)}
+                  >
                     <IdCard size={14} /> Kartu
                   </button>
                   {!isReadOnly && (
                     <>
-                      <button className="admin-btn secondary sm" onClick={() => openEditModal(item)}>
+                      <button
+                        className="admin-btn secondary sm"
+                        onClick={() => openEditModal(item)}
+                      >
                         <Edit size={14} />
                       </button>
-                      <button className="admin-btn danger sm" onClick={() => setDeletingItem(item)}>
+                      <button
+                        className="admin-btn danger sm"
+                        onClick={() => setDeletingItem(item)}
+                      >
                         <Trash2 size={14} />
                       </button>
                     </>
@@ -566,32 +698,192 @@ const DatabaseJemaatPage = () => {
       {/* Kartu Anggota Jemaat Modal */}
       {cardItem && (
         <div className="admin-modal-overlay" onClick={() => setCardItem(null)}>
-          <div className="admin-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px', padding: '0', overflow: 'hidden' }}>
-            <div style={{ background: '#1A2821', color: '#F4F6F4', padding: '1.5rem', position: 'relative' }}>
-              <button onClick={() => setCardItem(null)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <div
+            className="admin-modal-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: "500px", padding: "0", overflow: "hidden" }}
+          >
+            <div
+              style={{
+                background: "#1A2821",
+                color: "#F4F6F4",
+                padding: "1.5rem",
+                position: "relative",
+              }}
+            >
+              <button
+                onClick={() => setCardItem(null)}
+                style={{
+                  position: "absolute",
+                  top: "1rem",
+                  right: "1rem",
+                  background: "none",
+                  border: "none",
+                  color: "#fff",
+                  cursor: "pointer",
+                }}
+              >
                 <X size={20} />
               </button>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ width: '54px', height: '54px', borderRadius: '50%', background: 'var(--admin-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', color: '#fff', fontWeight: 700 }}>
-                  {cardItem.namaLengkap?.charAt(0) || 'J'}
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+              >
+                <div
+                  style={{
+                    width: "54px",
+                    height: "54px",
+                    borderRadius: "50%",
+                    background: "var(--admin-accent)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.4rem",
+                    color: "#fff",
+                    fontWeight: 700,
+                  }}
+                >
+                  {cardItem.namaLengkap?.charAt(0) || "J"}
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, color: '#fff', fontSize: '1.2rem', fontFamily: 'var(--admin-font-heading)' }}>Gereja Kristen Jawa Kebonarum</h3>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--admin-accent)', fontFamily: 'var(--admin-font-mono)' }}>KARTU TANDA ANGGOTA JEMAAT</span>
+                  <h3
+                    style={{
+                      margin: 0,
+                      color: "#fff",
+                      fontSize: "1.2rem",
+                      fontFamily: "var(--admin-font-heading)",
+                    }}
+                  >
+                    Gereja Kristen Jawa Kebonarum
+                  </h3>
+                  <span
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "var(--admin-accent)",
+                      fontFamily: "var(--admin-font-mono)",
+                    }}
+                  >
+                    KARTU TANDA ANGGOTA JEMAAT
+                  </span>
                 </div>
               </div>
             </div>
-            <div style={{ padding: '1.5rem', background: '#fff', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontSize: '0.88rem' }}>
-                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>NAMA LENGKAP</span><strong>{cardItem.namaLengkap}</strong></div>
-                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>NIK</span><strong style={{ fontFamily: 'var(--admin-font-mono)', color: 'var(--admin-accent)' }}>{cardItem.nik || '-'}</strong></div>
-                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>WILAYAH</span><strong>{cardItem.wilayah || 'Sumberejo'}</strong></div>
-                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>KOMISI</span><strong>{cardItem.komisi || 'Komisi Dewasa'}</strong></div>
-                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>PERAN GEREJA</span><strong>{cardItem.subPeran || cardItem.peranGereja || 'Jemaat'}</strong></div>
-                <div><span style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', display: 'block' }}>STATUS</span><strong>{cardItem.statusKeanggotaan || 'Aktif'}</strong></div>
+            <div
+              style={{
+                padding: "1.5rem",
+                background: "#fff",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.75rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "0.75rem",
+                  fontSize: "0.88rem",
+                }}
+              >
+                <div>
+                  <span
+                    style={{
+                      color: "var(--admin-text-muted)",
+                      fontSize: "0.75rem",
+                      display: "block",
+                    }}
+                  >
+                    NAMA LENGKAP
+                  </span>
+                  <strong>{cardItem.namaLengkap}</strong>
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "var(--admin-text-muted)",
+                      fontSize: "0.75rem",
+                      display: "block",
+                    }}
+                  >
+                    NIK
+                  </span>
+                  <strong
+                    style={{
+                      fontFamily: "var(--admin-font-mono)",
+                      color: "var(--admin-accent)",
+                    }}
+                  >
+                    {cardItem.nik || "-"}
+                  </strong>
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "var(--admin-text-muted)",
+                      fontSize: "0.75rem",
+                      display: "block",
+                    }}
+                  >
+                    WILAYAH
+                  </span>
+                  <strong>{cardItem.wilayah || "Sumberejo"}</strong>
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "var(--admin-text-muted)",
+                      fontSize: "0.75rem",
+                      display: "block",
+                    }}
+                  >
+                    KOMISI
+                  </span>
+                  <strong>{cardItem.komisi || "Komisi Dewasa"}</strong>
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "var(--admin-text-muted)",
+                      fontSize: "0.75rem",
+                      display: "block",
+                    }}
+                  >
+                    PERAN GEREJA
+                  </span>
+                  <strong>
+                    {cardItem.subPeran || cardItem.peranGereja || "Jemaat"}
+                  </strong>
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "var(--admin-text-muted)",
+                      fontSize: "0.75rem",
+                      display: "block",
+                    }}
+                  >
+                    STATUS
+                  </span>
+                  <strong>{cardItem.statusKeanggotaan || "Aktif"}</strong>
+                </div>
               </div>
-              <div style={{ borderTop: '1px dashed var(--admin-border)', paddingTop: '0.75rem', marginTop: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>GKJ Kebonarum &bull; Klaten, Jawa Tengah</span>
+              <div
+                style={{
+                  borderTop: "1px dashed var(--admin-border)",
+                  paddingTop: "0.75rem",
+                  marginTop: "0.5rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "var(--admin-text-muted)",
+                  }}
+                >
+                  GKJ Kebonarum &bull; Klaten, Jawa Tengah
+                </span>
                 <button className="admin-btn sm" onClick={() => window.print()}>
                   <Printer size={14} /> Cetak
                 </button>
@@ -603,13 +895,25 @@ const DatabaseJemaatPage = () => {
 
       {/* Add / Edit Form Modal */}
       {showModal && (
-        <div className="admin-modal-overlay" onClick={() => setShowModal(false)}>
+        <div
+          className="admin-modal-overlay"
+          onClick={() => setShowModal(false)}
+        >
           <div
             className="admin-modal-content jemaat-modal-panel"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="admin-modal-header" style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--admin-border)' }}>
-              <h3 style={{ margin: 0, fontSize: '1.2rem' }}>
+            <div
+              className="admin-modal-header"
+              style={{
+                padding: "1.25rem 1.5rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom: "1px solid var(--admin-border)",
+              }}
+            >
+              <h3 style={{ margin: 0, fontSize: "1.2rem" }}>
                 {editingItem
                   ? `Edit Jemaat: ${editingItem.namaLengkap}`
                   : "Tambah Data Jemaat Baru"}
@@ -617,7 +921,12 @@ const DatabaseJemaatPage = () => {
               <button
                 className="admin-modal-close"
                 onClick={() => setShowModal(false)}
-                style={{ background: 'none', border: 'none', fontSize: '1.4rem', cursor: 'pointer' }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  fontSize: "1.4rem",
+                  cursor: "pointer",
+                }}
               >
                 &times;
               </button>
@@ -653,21 +962,33 @@ const DatabaseJemaatPage = () => {
               >
                 4. Pelayanan & Talenta
               </button>
+              <button
+                type="button"
+                className={`tab-btn ${activeTab === "foto" ? "active" : ""}`}
+                onClick={() => setActiveTab("foto")}
+              >
+                5. Foto Diri
+              </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} style={{ padding: '1.5rem' }}>
+            <form onSubmit={handleFormSubmit} style={{ padding: "1.5rem" }}>
               {/* Tab 1: Data Pribadi */}
               {activeTab === "pribadi" && (
                 <div className="tab-pane">
                   <div className="form-group">
-                    <label className="admin-input-label">Nama Lengkap (dengan Gelar jika ada)</label>
+                    <label className="admin-input-label">
+                      Nama Lengkap (dengan Gelar jika ada)
+                    </label>
                     <input
                       type="text"
                       className="admin-input"
                       placeholder="Contoh: Bpk. Sugeng Wibowo, S.Th."
                       value={formData.namaLengkap}
                       onChange={(e) =>
-                        setFormData({ ...formData, namaLengkap: e.target.value })
+                        setFormData({
+                          ...formData,
+                          namaLengkap: e.target.value,
+                        })
                       }
                       required
                     />
@@ -675,7 +996,9 @@ const DatabaseJemaatPage = () => {
 
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label className="admin-input-label">NIK (16 Digit)</label>
+                      <label className="admin-input-label">
+                        NIK (16 Digit)
+                      </label>
                       <input
                         type="text"
                         className="admin-input"
@@ -692,7 +1015,10 @@ const DatabaseJemaatPage = () => {
                         className="admin-select"
                         value={formData.jenisKelamin}
                         onChange={(e) =>
-                          setFormData({ ...formData, jenisKelamin: e.target.value })
+                          setFormData({
+                            ...formData,
+                            jenisKelamin: e.target.value,
+                          })
                         }
                       >
                         <option value="Laki-laki">Laki-laki</option>
@@ -710,7 +1036,10 @@ const DatabaseJemaatPage = () => {
                         placeholder="Klaten"
                         value={formData.tempatLahir}
                         onChange={(e) =>
-                          setFormData({ ...formData, tempatLahir: e.target.value })
+                          setFormData({
+                            ...formData,
+                            tempatLahir: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -721,7 +1050,10 @@ const DatabaseJemaatPage = () => {
                         className="admin-input"
                         value={formData.tanggalLahir}
                         onChange={(e) =>
-                          setFormData({ ...formData, tanggalLahir: e.target.value })
+                          setFormData({
+                            ...formData,
+                            tanggalLahir: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -729,7 +1061,9 @@ const DatabaseJemaatPage = () => {
 
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label className="admin-input-label">No. Telepon / WhatsApp</label>
+                      <label className="admin-input-label">
+                        No. Telepon / WhatsApp
+                      </label>
                       <input
                         type="text"
                         className="admin-input"
@@ -748,14 +1082,19 @@ const DatabaseJemaatPage = () => {
                         placeholder="PNS / Swasta / Guru"
                         value={formData.pekerjaan}
                         onChange={(e) =>
-                          setFormData({ ...formData, pekerjaan: e.target.value })
+                          setFormData({
+                            ...formData,
+                            pekerjaan: e.target.value,
+                          })
                         }
                       />
                     </div>
                   </div>
 
                   <div className="form-group">
-                    <label className="admin-input-label">Alamat Tempat Tinggal</label>
+                    <label className="admin-input-label">
+                      Alamat Tempat Tinggal
+                    </label>
                     <textarea
                       className="admin-textarea"
                       rows="2"
@@ -774,13 +1113,18 @@ const DatabaseJemaatPage = () => {
                 <div className="tab-pane">
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label className="admin-input-label">Tanggal Baptis</label>
+                      <label className="admin-input-label">
+                        Tanggal Baptis
+                      </label>
                       <input
                         type="date"
                         className="admin-input"
                         value={formData.tanggalBaptis}
                         onChange={(e) =>
-                          setFormData({ ...formData, tanggalBaptis: e.target.value })
+                          setFormData({
+                            ...formData,
+                            tanggalBaptis: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -791,7 +1135,10 @@ const DatabaseJemaatPage = () => {
                         className="admin-input"
                         value={formData.tanggalSidi}
                         onChange={(e) =>
-                          setFormData({ ...formData, tanggalSidi: e.target.value })
+                          setFormData({
+                            ...formData,
+                            tanggalSidi: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -799,18 +1146,25 @@ const DatabaseJemaatPage = () => {
 
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label className="admin-input-label">Tanggal Pernikahan Gerejawi</label>
+                      <label className="admin-input-label">
+                        Tanggal Pernikahan Gerejawi
+                      </label>
                       <input
                         type="date"
                         className="admin-input"
                         value={formData.tanggalNikah}
                         onChange={(e) =>
-                          setFormData({ ...formData, tanggalNikah: e.target.value })
+                          setFormData({
+                            ...formData,
+                            tanggalNikah: e.target.value,
+                          })
                         }
                       />
                     </div>
                     <div className="form-group">
-                      <label className="admin-input-label">Status Perkawinan</label>
+                      <label className="admin-input-label">
+                        Status Perkawinan
+                      </label>
                       <select
                         className="admin-select"
                         value={formData.statusPerkawinan}
@@ -829,7 +1183,9 @@ const DatabaseJemaatPage = () => {
                   </div>
 
                   <div className="form-group">
-                    <label className="admin-input-label">Status Keanggotaan Gereja</label>
+                    <label className="admin-input-label">
+                      Status Keanggotaan Gereja
+                    </label>
                     <select
                       className="admin-select"
                       value={formData.statusKeanggotaan}
@@ -853,7 +1209,9 @@ const DatabaseJemaatPage = () => {
                 <div className="tab-pane">
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label className="admin-input-label">Wilayah / Sektor Jemaat</label>
+                      <label className="admin-input-label">
+                        Wilayah / Sektor Jemaat
+                      </label>
                       <select
                         className="admin-select"
                         value={formData.wilayah}
@@ -877,19 +1235,27 @@ const DatabaseJemaatPage = () => {
                           setFormData({ ...formData, komisi: e.target.value })
                         }
                       >
-                        <option value="Anak (Sekolah Minggu)">Anak (Sekolah Minggu)</option>
+                        <option value="Anak (Sekolah Minggu)">
+                          Anak (Sekolah Minggu)
+                        </option>
                         <option value="Remaja">Komisi Remaja</option>
                         <option value="Pemuda">Komisi Pemuda</option>
                         <option value="Komisi Dewasa">Komisi Dewasa</option>
-                        <option value="Komisi Lansia (Adi Yuswa)">Komisi Lansia (Adi Yuswa)</option>
-                        <option value="Komisi Perempuann (PWG)">Komisi Perempuan (PWG)</option>
+                        <option value="Komisi Lansia (Adi Yuswa)">
+                          Komisi Lansia (Adi Yuswa)
+                        </option>
+                        <option value="Komisi Perempuann (PWG)">
+                          Komisi Perempuan (PWG)
+                        </option>
                       </select>
                     </div>
                   </div>
 
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label className="admin-input-label">Nama Kepala Keluarga (KK)</label>
+                      <label className="admin-input-label">
+                        Nama Kepala Keluarga (KK)
+                      </label>
                       <input
                         type="text"
                         className="admin-input"
@@ -904,7 +1270,9 @@ const DatabaseJemaatPage = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label className="admin-input-label">No. Kartu Keluarga (KK)</label>
+                      <label className="admin-input-label">
+                        No. Kartu Keluarga (KK)
+                      </label>
                       <input
                         type="text"
                         className="admin-input"
@@ -924,12 +1292,17 @@ const DatabaseJemaatPage = () => {
                 <div className="tab-pane">
                   <div className="form-row-2">
                     <div className="form-group">
-                      <label className="admin-input-label">Peran Utama Gereja</label>
+                      <label className="admin-input-label">
+                        Peran Utama Gereja
+                      </label>
                       <select
                         className="admin-select"
                         value={formData.peranGereja}
                         onChange={(e) =>
-                          setFormData({ ...formData, peranGereja: e.target.value })
+                          setFormData({
+                            ...formData,
+                            peranGereja: e.target.value,
+                          })
                         }
                       >
                         <option value="Jemaat">Jemaat Umum</option>
@@ -937,7 +1310,9 @@ const DatabaseJemaatPage = () => {
                       </select>
                     </div>
                     <div className="form-group">
-                      <label className="admin-input-label">Sub Peran (Diaken / Penatua / Pendeta)</label>
+                      <label className="admin-input-label">
+                        Sub Peran (Diaken / Penatua / Pendeta)
+                      </label>
                       <input
                         type="text"
                         className="admin-input"
@@ -951,7 +1326,9 @@ const DatabaseJemaatPage = () => {
                   </div>
 
                   <div className="form-group">
-                    <label className="admin-input-label">Talenta & Keahlian Khusus</label>
+                    <label className="admin-input-label">
+                      Talenta & Keahlian Khusus
+                    </label>
                     <textarea
                       className="admin-textarea"
                       rows="2"
@@ -968,7 +1345,147 @@ const DatabaseJemaatPage = () => {
                 </div>
               )}
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--admin-border)' }}>
+              {/* Tab 5: Foto Diri (Majelis & Kartu Jemaat) */}
+              {activeTab === "foto" && (
+                <div className="tab-pane">
+                  <div className="foto-upload-notice">
+                    <Camera size={18} />
+                    <span>
+                      Foto ini digunakan untuk <strong>Kartu Jemaat</strong> dan{" "}
+                      <strong>Profil Struktur Majelis</strong> di website
+                      publik.
+                    </span>
+                  </div>
+
+                  <div className="foto-upload-container">
+                    <div
+                      className="dropzone-area"
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        e.currentTarget.classList.add("drag-over");
+                      }}
+                      onDragLeave={(e) => {
+                        e.preventDefault();
+                        e.currentTarget.classList.remove("drag-over");
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        e.currentTarget.classList.remove("drag-over");
+                        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                          const file = e.dataTransfer.files[0];
+                          if (file.type.startsWith("image/")) {
+                            const reader = new FileReader();
+                            reader.onload = (loadEvent) => {
+                              setFormData({
+                                ...formData,
+                                imageUrl: loadEvent.target.result,
+                              });
+                            };
+                            reader.readAsDataURL(file);
+                          } else {
+                            showToast(
+                              "Silakan pilih file gambar (JPG/PNG/WEBP).",
+                              "error",
+                            );
+                          }
+                        }
+                      }}
+                    >
+                      {formData.imageUrl ? (
+                        <div className="foto-preview-wrapper">
+                          <img
+                            src={formData.imageUrl}
+                            alt="Preview Foto"
+                            className="foto-preview-img"
+                          />
+                          <button
+                            type="button"
+                            className="remove-foto-btn"
+                            title="Hapus / Ganti Foto"
+                            onClick={() =>
+                              setFormData({ ...formData, imageUrl: "" })
+                            }
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="dropzone-content">
+                          <div className="upload-icon-circle">
+                            <Upload size={24} />
+                          </div>
+                          <p className="dropzone-title">
+                            Tarik & Lepas Foto di Sini
+                          </p>
+                          <p className="dropzone-sub">
+                            atau klik tombol di bawah untuk memilih file dari
+                            komputer
+                          </p>
+                        </div>
+                      )}
+
+                      <input
+                        type="file"
+                        id="fotoFileInput"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            const file = e.target.files[0];
+                            const reader = new FileReader();
+                            reader.onload = (loadEvent) => {
+                              setFormData({
+                                ...formData,
+                                imageUrl: loadEvent.target.result,
+                              });
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+
+                      <div className="dropzone-actions">
+                        <label
+                          htmlFor="fotoFileInput"
+                          className="admin-btn secondary select-file-btn"
+                        >
+                          <ImageIcon size={16} /> Pilih File Gambar
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="form-group margin-top-md">
+                      <label className="admin-input-label">
+                        <LinkIcon
+                          size={14}
+                          style={{ display: "inline", marginRight: "4px" }}
+                        />{" "}
+                        Atau Masukkan URL Foto Online
+                      </label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="https://domain.com/foto-jemaat.jpg"
+                        value={formData.imageUrl}
+                        onChange={(e) =>
+                          setFormData({ ...formData, imageUrl: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  gap: "0.75rem",
+                  marginTop: "1.5rem",
+                  paddingTop: "1rem",
+                  borderTop: "1px solid var(--admin-border)",
+                }}
+              >
                 <button
                   type="button"
                   className="admin-btn secondary"
@@ -977,11 +1494,19 @@ const DatabaseJemaatPage = () => {
                 >
                   Batal
                 </button>
-                <button type="submit" className="admin-btn" disabled={submitting}>
+                <button
+                  type="submit"
+                  className="admin-btn"
+                  disabled={submitting}
+                >
                   {submitting ? (
-                    <><Loader size={18} className="fa-spin" /> Menyimpan...</>
+                    <>
+                      <Loader size={18} className="fa-spin" /> Menyimpan...
+                    </>
                   ) : (
-                    <><Save size={18} /> Simpan Data Jemaat</>
+                    <>
+                      <Save size={18} /> Simpan Data Jemaat
+                    </>
                   )}
                 </button>
               </div>
@@ -992,20 +1517,62 @@ const DatabaseJemaatPage = () => {
 
       {/* Delete Confirmation Modal */}
       {deletingItem && (
-        <div className="admin-modal-overlay" onClick={() => setDeletingItem(null)}>
-          <div className="admin-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '450px', padding: '1.5rem' }}>
-            <h3 style={{ margin: '0 0 0.75rem', color: 'var(--admin-danger)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div
+          className="admin-modal-overlay"
+          onClick={() => setDeletingItem(null)}
+        >
+          <div
+            className="admin-modal-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: "450px", padding: "1.5rem" }}
+          >
+            <h3
+              style={{
+                margin: "0 0 0.75rem",
+                color: "var(--admin-danger)",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
               <AlertTriangle size={20} /> Konfirmasi Hapus Data
             </h3>
-            <p style={{ margin: '0 0 1.25rem', fontSize: '0.92rem', color: 'var(--admin-text-secondary)' }}>
-              Apakah Anda yakin ingin menghapus data jemaat <strong>{deletingItem.namaLengkap}</strong>? Data yang dihapus tidak dapat dikembalikan.
+            <p
+              style={{
+                margin: "0 0 1.25rem",
+                fontSize: "0.92rem",
+                color: "var(--admin-text-secondary)",
+              }}
+            >
+              Apakah Anda yakin ingin menghapus data jemaat{" "}
+              <strong>{deletingItem.namaLengkap}</strong>? Data yang dihapus
+              tidak dapat dikembalikan.
             </p>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <button className="admin-btn secondary" onClick={() => setDeletingItem(null)} disabled={submitting}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "0.75rem",
+              }}
+            >
+              <button
+                className="admin-btn secondary"
+                onClick={() => setDeletingItem(null)}
+                disabled={submitting}
+              >
                 Batal
               </button>
-              <button className="admin-btn danger" onClick={handleDeleteItem} disabled={submitting}>
-                {submitting ? <Loader size={18} className="fa-spin" /> : <Trash2 size={18} />} Hapus
+              <button
+                className="admin-btn danger"
+                onClick={handleDeleteItem}
+                disabled={submitting}
+              >
+                {submitting ? (
+                  <Loader size={18} className="fa-spin" />
+                ) : (
+                  <Trash2 size={18} />
+                )}{" "}
+                Hapus
               </button>
             </div>
           </div>

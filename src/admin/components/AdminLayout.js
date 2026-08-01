@@ -7,8 +7,6 @@ import logo from "../../assets/logo.png";
 import {
   BarChart,
   CalendarDays,
-  ChevronLeft,
-  ChevronRight,
   ExternalLink,
   FileText,
   Gauge,
