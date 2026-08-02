@@ -4,7 +4,7 @@ import Footer from "../../components/menu/Footer";
 import "./StatistikPage.css";
 import { getStatistikData } from "../../services/statistikApi";
 import AnimatedNumber from "../../components/common/AnimatedNumber";
-import { ArrowUp, Award, Home, UserCheck, Users } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 const StatistikPage = () => {
   const [data, setData] = useState(null);
@@ -53,13 +53,6 @@ const StatistikPage = () => {
     );
   }
 
-  const metricIconMap = {
-    jemaat: Users,
-    kk: Home,
-    majelis: Award,
-    pendeta: UserCheck,
-  };
-
   return (
     <>
       <Navbar />
@@ -77,28 +70,20 @@ const StatistikPage = () => {
 
         <section className="statistik-content">
           <div className="statistik-grid">
-            {data.metrics.map((metric, idx) => {
-              const MetricIcon = metricIconMap[metric.id] || Users;
-              return (
-                <div key={idx} className="statistik-card">
-                  <div className="statistik-card-icon">
-                    <MetricIcon size={22} />
-                  </div>
-                  <div className="statistik-card-info">
-                    <h3 className="statistik-card-value">
-                      <AnimatedNumber
-                        targetValue={metric.value}
-                        startAnimating={showCharts}
-                      />
-                    </h3>
-                    <p className="statistik-card-label">{metric.label}</p>
-                  </div>
-                  <div className="statistik-card-trend">
-                    <ArrowUp size={14} /> {metric.trend} tahun ini
-                  </div>
+            {data.metrics.map((metric, idx) => (
+              <div key={idx} className="statistik-card">
+                <p className="statistik-card-label">{metric.label}</p>
+                <h3 className="statistik-card-value">
+                  <AnimatedNumber
+                    targetValue={metric.value}
+                    startAnimating={showCharts}
+                  />
+                </h3>
+                <div className="statistik-card-trend">
+                  <ArrowUp size={13} /> {metric.trend} tahun ini
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
 
           <div className="statistik-charts">

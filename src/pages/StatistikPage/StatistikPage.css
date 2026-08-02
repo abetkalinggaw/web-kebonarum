@@ -93,24 +93,44 @@
 
 .statistik-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.75rem;
   margin-bottom: 3.5rem;
 }
 
+/* Redesigned Card Layout (No Icons) */
 .statistik-card {
   background: var(--color-putih-soft);
   border-radius: var(--radius-lg);
   padding: 2.25rem 2rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   position: relative;
+  overflow: hidden;
   box-shadow: var(--shadow-sm);
   border: 1px solid rgba(28, 22, 18, 0.06);
   transition:
     transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.35s ease;
+    border-color 0.35s ease,
+    background-color 0.35s ease;
+}
+
+.statistik-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-kunyit);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.statistik-card:hover::before {
+  opacity: 1;
 }
 
 .statistik-card:hover {
@@ -120,44 +140,24 @@
   background: var(--color-putih);
 }
 
-.statistik-card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: rgba(196, 136, 74, 0.14);
-  color: var(--color-kunyit);
-  border: 1px solid rgba(196, 136, 74, 0.28);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.25rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.statistik-card:hover .statistik-card-icon {
-  background: rgba(196, 136, 74, 0.22);
-  color: var(--color-soga);
-  transform: scale(1.06);
+.statistik-card-label {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+  margin: 0 0 0.75rem;
 }
 
 .statistik-card-value {
-  font-family: var(--font-mono);
-  font-size: 2.8rem;
-  font-weight: 500;
-  color: var(--color-wenge);
-  line-height: 1.1;
-  margin: 0 0 0.35rem;
-  letter-spacing: -0.02em;
-}
-
-.statistik-card-label {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-family: var(--font-display, "Clash Display", monospace);
+  font-size: 3.1rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-secondary);
-  margin: 0 0 1rem;
+  color: var(--color-wenge);
+  line-height: 1;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
 }
 
 .statistik-card-trend {
@@ -166,7 +166,7 @@
   font-weight: 400;
   color: var(--color-kunyit);
   background: rgba(196, 136, 74, 0.1);
-  padding: 0.3rem 0.75rem;
+  padding: 0.35rem 0.8rem;
   border-radius: var(--radius-pill);
   display: inline-flex;
   align-items: center;
