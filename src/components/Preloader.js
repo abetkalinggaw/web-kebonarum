@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Preloader.css";
 
 const greetings = ["Shalom", "Berkah Dalem", "Selamat Datang di GKJ Kebonarum"];
@@ -12,44 +12,102 @@ const Preloader = ({
   const [progress, setProgress] = useState(0);
   const [greetingIndex, setGreetingIndex] = useState(0);
 
-  // Initial load logic
+  // Target progress calculated from actual asset loading
+  const targetProgressRef = useRef(0);
+
+  // 1. Asset Tracker & Real Load Calculation
   useEffect(() => {
     if (transitionState !== "initial") return;
 
-    document.body.style.overflow = "hidden";
-    const duration = 3400;
-    const interval = 20;
-    const steps = duration / interval;
-    let currentStep = 0;
+    // Reset progress
+    setProgress(0);
+    targetProgressRef.current = 0;
 
-    const timer = setInterval(() => {
-      currentStep++;
-      const currentProgress = Math.min(
-        Math.floor((currentStep / steps) * 100),
-        100,
+    const images = Array.from(document.images);
+    // +1 reserved for window load & font loading readiness
+    const totalAssets = images.length + 1;
+    let loadedAssets = 0;
+
+    const incrementAsset = () => {
+      loadedAssets++;
+      const calculated = Math.min(
+        Math.floor((loadedAssets / totalAssets) * 100),
+        99,
       );
-      setProgress(currentProgress);
+      if (calculated > targetProgressRef.current) {
+        targetProgressRef.current = calculated;
+      }
+    };
 
-      if (currentProgress < 33) {
-        setGreetingIndex(0);
-      } else if (currentProgress < 66) {
-        setGreetingIndex(1);
+    // Track Image Loading
+    images.forEach((img) => {
+      if (img.complete) {
+        incrementAsset();
       } else {
-        setGreetingIndex(2);
+        img.addEventListener("load", incrementAsset, { once: true });
+        img.addEventListener("error", incrementAsset, { once: true }); // Avoid sticking on error
       }
+    });
 
-      if (currentStep >= steps) {
-        clearInterval(timer);
-        if (onInitialDone) {
-          setTimeout(onInitialDone, 300);
+    // Track Window & Fonts Loading
+    const handleFullLoad = () => {
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          targetProgressRef.current = 100;
+        });
+      } else {
+        targetProgressRef.current = 100;
+      }
+    };
+
+    if (document.readyState === "complete") {
+      handleFullLoad();
+    } else {
+      window.addEventListener("load", handleFullLoad, { once: true });
+    }
+
+    // 2. Smooth Interpolation Loop for Percentage Counter
+    let animationFrameId;
+    const animateProgress = () => {
+      setProgress((prev) => {
+        if (prev < targetProgressRef.current) {
+          return prev + 1;
         }
-      }
-    }, interval);
+        return prev;
+      });
+      animationFrameId = requestAnimationFrame(animateProgress);
+    };
 
-    return () => clearInterval(timer);
-  }, [transitionState, onInitialDone]);
+    animationFrameId = requestAnimationFrame(animateProgress);
 
-  // Lock scrolling during transitions
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("load", handleFullLoad);
+    };
+  }, [transitionState]);
+
+  // 3. Update Greeting Index based on Current Progress
+  useEffect(() => {
+    if (progress < 33) {
+      setGreetingIndex(0);
+    } else if (progress < 66) {
+      setGreetingIndex(1);
+    } else {
+      setGreetingIndex(2);
+    }
+  }, [progress]);
+
+  // 4. Trigger completion when 100% is reached
+  useEffect(() => {
+    if (transitionState === "initial" && progress >= 100) {
+      const timer = setTimeout(() => {
+        if (onInitialDone) onInitialDone();
+      }, 400); // Brief pause at 100% before transition out
+      return () => clearTimeout(timer);
+    }
+  }, [progress, transitionState, onInitialDone]);
+
+  // 5. Lock scrolling during transitions
   useEffect(() => {
     if (
       transitionState === "initial" ||
@@ -66,7 +124,7 @@ const Preloader = ({
     }
   }, [transitionState]);
 
-  // Handle exiting animations
+  // 6. Handle Exiting Animations
   useEffect(() => {
     if (
       transitionState === "initial-exiting" ||
@@ -79,7 +137,7 @@ const Preloader = ({
     }
   }, [transitionState, onExitDone]);
 
-  // Determine classes based on transition state
+  // Determine CSS classes and layout
   let containerClass = "preloader-container ";
   let showPercentage = false;
   let titleContent = null;
