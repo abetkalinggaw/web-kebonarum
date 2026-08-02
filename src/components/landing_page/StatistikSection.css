@@ -109,11 +109,11 @@
   border-color: rgba(196, 136, 74, 0.2);
 }
 
-/* IBM Plex Mono for stat values — data credibility */
+
 .stat-landing-value {
-  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-family: var(--font-display, "Clash Display", monospace);
   font-size: 2.75rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-gading, #F2EBE0);
   margin: 0 0 0.5rem 0;
   line-height: 1.1;

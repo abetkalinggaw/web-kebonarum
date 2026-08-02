@@ -1,5 +1,5 @@
 .kemitraan-section {
-  padding: 4.5rem var(--container-pad-desktop) 5rem;
+  padding: 1rem var(--container-pad-desktop) 1rem;
   background-color: var(--color-wenge, #1C1612);
   color: var(--color-gading, #F2EBE0);
   position: relative;
@@ -8,24 +8,10 @@
 }
 
 .kemitraan-container {
-  max-width: var(--container-max, 1280px);
   margin: 0 auto;
 }
 
-.kemitraan-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-.kemitraan-title {
-  font-family: var(--font-display, serif);
-  font-size: clamp(1.8rem, 3vw, 2.3rem);
-  font-weight: 500;
-  color: var(--color-gading, #F2EBE0);
-  margin: 0.4rem 0 0;
-}
-
-/* Horizontal marquee container with gradient fade edges */
+/* Container marquee horizontal dengan efek gradien pudar di pinggir */
 .kemitraan-carousel-wrapper {
   width: 100%;
   overflow: hidden;
@@ -49,14 +35,11 @@
 .kemitraan-track {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 3.5rem;
   width: max-content;
   animation: logoScroll 28s linear infinite;
 }
 
-.kemitraan-carousel-wrapper:hover .kemitraan-track {
-  animation-play-state: paused;
-}
 
 @keyframes logoScroll {
   0% {
@@ -67,79 +50,27 @@
   }
 }
 
-.kemitraan-logo-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.25rem 2rem;
-  background: rgba(242, 235, 224, 0.03);
-  border: 1px solid rgba(242, 235, 224, 0.07);
-  border-radius: var(--radius-md, 12px);
-  min-width: 160px;
-  flex-shrink: 0;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-}
-
-.kemitraan-logo-item:hover {
-  background: rgba(196, 136, 74, 0.1);
-  border-color: rgba(196, 136, 74, 0.45);
-  box-shadow: 0 0 20px rgba(196, 136, 74, 0.25);
-}
-
-.kemitraan-logo-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(196, 136, 74, 0.12);
-  border: 1px solid rgba(196, 136, 74, 0.25);
-  color: var(--color-kunyit, #C4884A);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.kemitraan-logo-item:hover .kemitraan-logo-icon {
-  background: var(--color-kunyit, #C4884A);
-  color: var(--color-wenge, #1C1612);
-  box-shadow: 0 0 16px rgba(196, 136, 74, 0.45);
-}
-
-.kemitraan-logo-name {
-  font-family: var(--font-body, sans-serif);
-  font-size: 0.82rem;
+.kemitraan-text-item {
+  font-family: 'Clash Display', var(--font-display, sans-serif);
+  font-size: 2rem;
   font-weight: 500;
-  color: rgba(242, 235, 224, 0.75);
-  text-align: center;
+  letter-spacing: 0.02em;
+  color: var(--color-kunyit, #C4884A);
   white-space: nowrap;
-  transition: color 0.3s ease;
+  cursor: default; /* Restores standard arrow cursor */
+  user-select: none; /* Prevents text selection highlight during marquee interaction */
 }
 
-.kemitraan-logo-item:hover .kemitraan-logo-name {
-  color: var(--color-gading, #F2EBE0);
-}
-
-/* Responsive adjustments */
+/* Penyesuaian responsif layar kecil */
 @media (max-width: 768px) {
   .kemitraan-section {
-    padding: 3.5rem var(--container-pad-mobile, 1.25rem) 4rem;
-  }
-  .kemitraan-logo-item {
-    padding: 1rem 1.5rem;
-    min-width: 140px;
-  }
-  .kemitraan-logo-icon {
-    width: 42px;
-    height: 42px;
-    font-size: 1.1rem;
-  }
-  .kemitraan-logo-name {
-    font-size: 0.78rem;
+    padding: 1rem var(--container-pad-mobile, 1.25rem);
   }
   .kemitraan-track {
+    gap: 2.25rem;
     animation-duration: 20s;
+  }
+  .kemitraan-text-item {
+    font-size: 1rem;
   }
 }
