@@ -141,6 +141,34 @@
   flex: 1;
 }
 
+.persembahan-kasih-section {
+  padding-top: 3rem;
+  border-top: 1px solid rgba(28, 22, 18, 0.08);
+}
+
+.persembahan-section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.persembahan-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 500;
+  color: var(--color-wenge);
+  margin: 0 0 0.75rem;
+}
+
+.persembahan-section-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+
 .bank-info {
   background: rgba(28, 22, 18, 0.03);
   border: 1px solid rgba(28, 22, 18, 0.08);
@@ -353,6 +381,83 @@
   margin: 0;
 }
 
+.account-number-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.account-number-wrapper .account-number {
+  margin-bottom: 0;
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+  background: rgba(196, 136, 74, 0.12);
+  border: 1px solid rgba(196, 136, 74, 0.25);
+  color: var(--color-kunyit);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.copy-btn:hover {
+  background: var(--color-kunyit);
+  color: var(--color-wenge);
+  border-color: var(--color-kunyit);
+  transform: translateY(-1px);
+}
+
+.copy-btn.copied {
+  background: #2e7d32;
+  color: #ffffff;
+  border-color: #2e7d32;
+}
+
+.account-holder {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+.btn-download-qr-modal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 1.25rem;
+  background: var(--color-kunyit);
+  color: var(--color-wenge);
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(196, 136, 74, 0.25);
+}
+
+.btn-download-qr-modal:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(196, 136, 74, 0.35);
+}
+
+
 @media (max-width: 768px) {
   .persembahan-hero {
     padding: 6rem 0 3.5rem;
@@ -363,5 +468,8 @@
   }
   .persembahan-grid {
     grid-template-columns: 1fr;
+  }
+  .persembahan-section-header {
+    margin-bottom: 2.5rem;
   }
 }
